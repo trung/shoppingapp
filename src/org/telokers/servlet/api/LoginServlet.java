@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet{
 		
 		String user = req.getParameter("username");
 		String password = req.getParameter("password");
+		String errorMsg = "Invalid user/password";
 		
 		Query q = new Query("Customer");
 		q.addFilter("username", Query.FilterOperator.EQUAL, user);
@@ -53,19 +54,19 @@ public class LoginServlet extends HttpServlet{
 			else{
 				Map<String, String> jsonMap = new HashMap<String, String>(); 
 				jsonMap.put("success", Integer.toString(0));
-				jsonMap.put("error", "wrong password");
+				jsonMap.put("error", errorMsg);
 				out.write(JSONUtils.toJSON(jsonMap).toString());
 			}
 		}
 		else {
-			Entity customer = new Entity("Customer");
+			/*Entity customer = new Entity("Customer");
 			customer.setProperty("username", user);
 			customer.setProperty("password", password);
-			datastore.put(customer);
+			datastore.put(customer);*/
 			
 			Map<String, String> jsonMap = new HashMap<String, String>(); 
 			jsonMap.put("success", Integer.toString(0));
-			jsonMap.put("error", "no user");
+			jsonMap.put("error", errorMsg);
 			out.write(JSONUtils.toJSON(jsonMap).toString());	
 		}
 	}

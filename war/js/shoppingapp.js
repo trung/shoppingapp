@@ -15,7 +15,9 @@ function ajaxPost(url, params, onSuccess, onFailure, onComplete) {
 	transport.open("POST", url, true);
 	transport.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	setupListener(transport, onSuccess, onFailure, onComplete);
-	transport.send(params);
+	var queryString = toQueryString(params);
+	debug("url=" + url  + ", params = " + queryString);
+	transport.send(queryString);
 }
 
 function setupListener(transport, onSuccess, onFailure, onComplete) {
@@ -45,4 +47,32 @@ function createActiveXHR() {
     try {
         return new window.ActiveXObject("Microsoft.XMLHTTP");
     } catch (e) {}
+}
+
+function toQueryString(obj) {
+    var bits = [];
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            bits.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+        }
+    }
+    return bits.join("&");
+}
+
+function info(msg) {
+	if (console) {
+		console.info(msg);
+	}
+}
+
+function debug(msg) {
+	if (console) {
+		console.debug(msg);
+	}
+}
+
+function warn(msg) {
+	if (console) {
+		console.warn(msg);
+	}
 }

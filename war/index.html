@@ -16,15 +16,30 @@
     		padding: 5px;
     	}
     </style>
+    <script type="text/javascript" src="js/shoppingapp.js"></script>
   </head>
   <script type="text/javascript">
   	function startUp() {
-  		document.getElementById("search").focus();
+  		$("userName").focus();
   	}
 
-  	function onSearchClick() {
-  		// perform POST AJAX call to search thru all products
+  	function onLoginClick() {
+  		var params = {username: $("userName").value, password: $("password").value};
+		ajaxPost("/api/login", params,
+			function(json) {
+				if (json.success && json.success == 1) {
+					$("loginDiv").style.display = "none";
+				} else {
+					$("errorMsg").innerHTML = json.error;
+				}
+			},
 
+			function(readyState, status) {
+				$("errorMsg").innerHTML = "failed to call ajax: readyState = " + readyState + ": status=" + status;
+			},
+
+			function() {}
+		);
   	}
   </script>
   <body onload="startUp()">
@@ -32,9 +47,11 @@
     <div id="errorMsg">
 
     </div>
-	<p>
-		Search <input type="text" name="query" id="query" onclick="onSearchClick()" />
-	</p>
+	<div id="loginDiv">
+		Username: <input type="text" name="userName" id="userName" /> <br/>
+		Password: <input type="password" name="password" id="password" /> <br/>
+		<button id="login" name="login" onclick="onLoginClick()">Login</button>
+	</div>
 	<div id="searchResult">
 
 	</div>

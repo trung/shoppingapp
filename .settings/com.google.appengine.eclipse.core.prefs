@@ -1,7 +1,8 @@
-#Mon Mar 12 09:50:03 SGT 2012
+#Sun Apr 15 12:34:22 SGT 2012
 eclipse.preferences.version=1
 filesCopiedToWebInfLib=appengine-api-1.0-sdk-1.6.3.jar|appengine-api-labs-1.6.3.jar|appengine-jsr107cache-1.6.3.jar|jsr107cache-1.1.jar
 gaeDatanucleusEnabled=false
+gaeDeployDialogSettings=
 gaeHrdEnabled=true
 gaeIsEclipseDefaultInstPath=false
 googleCloudSqlEnabled=false

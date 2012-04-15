@@ -4,11 +4,8 @@
 package org.telokers.servlet.api;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -17,13 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.telokers.dao.DataStoreManager;
 import org.telokers.model.Category;
-import org.telokers.model.Item;
-import org.telokers.model.index.ItemIndex;
-import org.telokers.service.utils.JSONUtils;
-import org.telokers.service.utils.ModelUtils;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 
 /**
@@ -48,6 +43,15 @@ public class ImportStandingData extends HttpServlet {
 			throws ServletException, IOException {
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
+
+		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+		Entity entity = new Entity("Customer", 1l);
+		entity.setProperty("username", "telokers");
+		entity.setProperty("password", "12345");
+		ds.put(entity);
+
+		resp.getWriter().write("Done!");
+		/*
 		int categoryCount = 10;
 		int itemCount = 100;
 		List<Category> importedCategories = new ArrayList<Category>(categoryCount);
@@ -90,7 +94,7 @@ public class ImportStandingData extends HttpServlet {
 		response.put("categories", importedCategories);
 		response.put("items", importedItems);
 
-		resp.getWriter().write(JSONUtils.toJSON(response));
+		resp.getWriter().write(JSONUtils.toJSON(response));*/
 	}
 
 	/**

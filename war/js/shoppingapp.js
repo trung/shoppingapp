@@ -61,18 +61,30 @@ function toQueryString(obj) {
 
 function info(msg) {
 	if (console) {
-		console.info(msg);
+		if (console.info) {
+			console.info(msg);
+		} else {
+			console.log(msg);
+		}
 	}
 }
 
 function debug(msg) {
 	if (console) {
-		console.debug(msg);
+		if (console.debug) {
+			console.debug(msg);
+		} else {
+			console.log(msg);
+		}
 	}
 }
 
 function warn(msg) {
 	if (console) {
-		console.warn(msg);
+		if (console.warn) {
+			console.warn(msg);
+		} else {
+			console.log(msg);
+		}
 	}
 }

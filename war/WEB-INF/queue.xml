@@ -1,0 +1,6 @@
+<queue-entries>
+	<queue>
+		<name>sessionQueue</name>
+		<rate>5/s</rate> <!-- 5 tasks per seconds -->
+	</queue>
+</queue-entries>

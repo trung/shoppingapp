@@ -22,7 +22,7 @@ function ajaxPost(url, params, onSuccess, onFailure, onComplete) {
 
 function setupListener(transport, onSuccess, onFailure, onComplete) {
 	transport.onreadystatechange = function() {
-		if (transport.readyState == 4 && transport.status == 200) {
+		if (transport.status == 200) {
 			var jsonObject = eval('(' + transport.responseText + ')');
 			onSuccess(jsonObject);
 		} else if (transport.readystate == 2) {

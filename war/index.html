@@ -29,6 +29,7 @@
 			function(json) {
 				if (json.success && json.success == 1) {
 					$("loginDiv").style.display = "none";
+					$("errorMsg").innerHTML = "OK";
 				} else {
 					$("errorMsg").innerHTML = json.error;
 				}

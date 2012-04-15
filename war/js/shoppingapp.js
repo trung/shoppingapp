@@ -22,13 +22,13 @@ function ajaxPost(url, params, onSuccess, onFailure, onComplete) {
 
 function setupListener(transport, onSuccess, onFailure, onComplete) {
 	transport.onreadystatechange = function() {
-		if (transport.readystate == 4 && transport.status == 200) {
+		if (transport.readyState == 4 && transport.status == 200) {
 			var jsonObject = eval('(' + transport.responseText + ')');
 			onSuccess(jsonObject);
 		} else if (transport.readystate == 2) {
 			onComplete();
 		} else {
-			onFailure(transport.readysate, transport.status);
+			onFailure(transport.readyState, transport.status);
 		}
 	};
 }

@@ -25,6 +25,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-class>org.telokers.servlet.api.ImportStandingData</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>listItemsApi</servlet-name>
+		<servlet-class>org.telokers.servlet.api.ListItemsServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>org.telokers.servlet.api.LoginServlet</servlet-class>
 	</servlet>
@@ -35,6 +39,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>importStandingDataApi</servlet-name>
 		<url-pattern>/api/import</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>listItemsApi</servlet-name>
+		<url-pattern>/api/listItems</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>

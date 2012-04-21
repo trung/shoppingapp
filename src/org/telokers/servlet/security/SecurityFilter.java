@@ -4,6 +4,7 @@
 package org.telokers.servlet.security;
 
 import java.io.IOException;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,6 +55,7 @@ public class SecurityFilter implements Filter {
 					// only when it's secured, we will apply authentication/authorization
 					String sessionId = httpRequest.getSession().getId();
 					logger.log(Level.FINE, "SecurityFilter.doFilter() - SessionID: [" + sessionId + "]");
+					logger.log(Level.FINE, UUID.randomUUID().toString());
 					checkAuthenticationAndAuthorization(request, response);
 				}
 			}

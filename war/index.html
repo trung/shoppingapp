@@ -19,8 +19,84 @@
     <script type="text/javascript" src="js/shoppingapp.js"></script>
   </head>
   <script type="text/javascript">
+
+  	var cart = {};
+
   	function startUp() {
-  		$("userName").focus();
+  		ajaxPost("/secured/api/isAuthenticated", {},
+  				function(json) {
+					if (json.success && json.success == 1) {
+						$("loginDiv").style.display = "none";
+						$("errorMsg").innerHTML = "OK";
+					} else {
+						$("loginDiv").style.display = "block";
+						$("userName").focus();
+					}
+  				},
+  				function(readyState, status) {
+					$("loginDiv").style.display = "block";
+  					$("userName").focus();
+  				},
+
+  				function() {}
+  		);
+
+  		ajaxPost("/api/listItems", {},
+  				function(json) {
+					if (json.success && json.success == 1) {
+						loadDataTable(json.data);
+					} else {
+						$("errorMsg").innerHTML = "server returns success=0";
+					}
+				},
+				function(readyState, status) {
+					$("errorMsg").innerHTML = "failed to call ajax: readyState = " + readyState + ": status=" + status;
+				},
+
+				function() {}
+  		);
+  	}
+
+  	function loadDataTable(data) {
+  		var table = '<table><thead><tr><th></th>';
+		data.columns.shift();
+  		table += '<th>' + data.columns.join('</th><th>') + '</th></tr></thead>';
+  		table += '<tbody>';
+  		for (var i = 0; i < data.values.length; i++) {
+  			var value = data.values[i]; // value[0] is the item id
+  			var id = value[0];
+  			var price = value[2];
+  			value.shift();
+  			table += '<tr><td><input type="checkbox" name="item" value="" onclick="onSelectItem(this, ' + id + ',' + price + ')" /></td>';
+  		  	table += '<td>' + value.join('</td><td>') + '</td></tr>';
+  		};
+
+  		table += '</tbody>';
+  		table += '</table>';
+  		$("dataTableContainer").innerHTML = table;
+  	}
+
+  	function onSelectItem(cBox, id, price) {
+		if (cBox.checked == true) {
+			cart[id] = price;
+		} else {
+			delete cart[id];
+		}
+		updateCart();
+  	}
+
+  	function updateCart() {
+		var ids = '';
+		var totalPrice  = 0;
+		for (var id in cart) {
+			ids += id + ',';
+			totalPrice += cart[id];
+		}
+		if (totalPrice == 0) {
+			$("selectedItemsContainer").innerHTML = "";
+		} else {
+			$("selectedItemsContainer").innerHTML = ids + 'Total Price: <strong>' + totalPrice + '</strong>' + '<button id="checkoutBtn" name="checkout" onclick="checkout()">Check out</button>';
+		}
   	}
 
   	function onLoginClick() {
@@ -42,6 +118,34 @@
 			function() {}
 		);
   	}
+
+  	function checkout() {
+		// check if there's item in the cart
+		var hasItem = false;
+		var param = {items:''};
+		for (var id in cart) {
+			hasItem = true;
+			param.items += id + ',';
+		}
+
+		if (hasItem) {
+			ajaxPost("/api/checkout", param,
+				function(json) {
+					if (json.success && json.success == 1) {
+						$("errorMsg").innerHTML = "OK";
+					} else {
+						$("errorMsg").innerHTML = json.error;
+					}
+				},
+
+				function(readyState, status) {
+					$("errorMsg").innerHTML = "failed to call ajax: readyState = " + readyState + ": status=" + status;
+				},
+
+				function() {}
+			);
+		}
+  	}
   </script>
   <body onload="startUp()">
     <h1>Shopping App</h1>
@@ -53,7 +157,10 @@
 		Password: <input type="password" name="password" id="password" /> <br/>
 		<button id="login" name="login" onclick="onLoginClick()">Login</button>
 	</div>
-	<div id="searchResult">
+	<div id="dataTableContainer">
+		loading ...
+	</div>
+	<div id="selectedItemsContainer">
 
 	</div>
   </body>

@@ -18,9 +18,15 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.telokers.exception.LoginException;
 import org.telokers.exception.SecurityException;
+import org.telokers.model.User;
+import org.telokers.model.dao.JpaUserDao;
+import org.telokers.service.utils.MiscConstants;
+
+import com.google.appengine.api.datastore.KeyFactory;
 
 /**
  * Handle all incoming requests
@@ -31,7 +37,7 @@ import org.telokers.exception.SecurityException;
 public class SecurityFilter implements Filter {
 
 	private static final Logger logger = Logger.getLogger(SecurityFilter.class.getName());
-
+	private final JpaUserDao userDao = JpaUserDao.instance();
 	/**
 	 *
 	 */
@@ -82,7 +88,20 @@ public class SecurityFilter implements Filter {
 	 */
 	private void checkAuthenticationAndAuthorization(ServletRequest request,
 			ServletResponse response) throws LoginException, SecurityException {
-
+		
+		HttpServletRequest req = (HttpServletRequest)request;
+		HttpSession session = req.getSession(false);
+		
+		if(session != null){
+			String key = (String)session.getAttribute(MiscConstants.user_session_key);
+			if(key != null){
+				User user = userDao.findByKey(key);
+				if (user != null){
+					return;
+				}
+			}
+		}
+		throw new LoginException();
 	}
 
 	@Override

@@ -3,34 +3,33 @@
  */
 package org.telokers.model;
 
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 
 /**
  * @author trung
  *
  */
-@PersistenceCapable
+
+@Entity
 public class User extends AbstractModel {
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 8816546167522794945L;
-
-	@PrimaryKey
+	
+	@Id
 	private String email;
 
-	@Persistent
+
 	private String password;
 
-	@Persistent
+	
 	private String firstName;
 
-	@Persistent
-	private String lastName;
 
+	private String lastName;
+	
+	private String userKey;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -63,5 +62,12 @@ public class User extends AbstractModel {
 		this.lastName = lastName;
 	}
 
+	public void setUserKey(String key) {
+		this.userKey = key;
+	}
+
+	public String getUserKey() {
+		return userKey;
+	}
 
 }

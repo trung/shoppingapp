@@ -26,8 +26,9 @@ public class DataStoreManager {
 
 
 	private static DataStoreManager singleton = null;
-
-
+	
+	private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	
 	private DataStoreManager() {
 
 	}
@@ -100,6 +101,10 @@ public class DataStoreManager {
 	 */
 	public void commitTransaction() {
 		PMF.instance().getPersistenceManager().currentTransaction().commit();
+	}
+	
+	public DatastoreService getDatastore(){
+		return datastore;
 	}
 
 }

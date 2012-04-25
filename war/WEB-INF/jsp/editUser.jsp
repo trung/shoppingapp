@@ -60,7 +60,6 @@
 <body onload="startUp()">
 	<div id="createUserDiv">
 		<h1>Edit account</h1>
-		<h2><%=errorMsg%></2>
 		<div id="infoMsg">All fields are compulsory</div>
 		<form action="/secured/editUser" method="POST">
 		<h3>Profile</h3>

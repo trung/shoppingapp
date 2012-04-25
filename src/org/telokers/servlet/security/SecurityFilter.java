@@ -4,7 +4,7 @@
 package org.telokers.servlet.security;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,12 +18,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import org.telokers.dao.UserDao;
 import org.telokers.exception.LoginException;
 import org.telokers.exception.SecurityException;
 import org.telokers.model.User;
-import org.telokers.model.dao.JpaUserDao;
 import org.telokers.service.utils.MiscConstants;
 
 /**
@@ -35,7 +34,6 @@ import org.telokers.service.utils.MiscConstants;
 public class SecurityFilter implements Filter {
 
 	private static final Logger logger = Logger.getLogger(SecurityFilter.class.getName());
-	private final JpaUserDao userDao = JpaUserDao.instance();
 	/**
 	 *
 	 */
@@ -55,24 +53,16 @@ public class SecurityFilter implements Filter {
 		try {
 			boolean isLocal = (uri.startsWith("/_ah/") && "127.0.0.1".equals(httpRequest.getRemoteHost()));
 			if (!isLocal) {
-				if (uri.startsWith("/secured/")) {
-					// only when it's secured, we will apply authentication/authorization
-					String sessionId = httpRequest.getSession().getId();
-					logger.log(Level.FINE, "SecurityFilter.doFilter() - SessionID: [" + sessionId + "]");
-					logger.log(Level.FINE, UUID.randomUUID().toString());
-					checkAuthenticationAndAuthorization(request, response);
-				}
+				String sessionId = httpRequest.getSession().getId();
+				logger.log(Level.FINE, "SecurityFilter.doFilter() - SessionID: [" + sessionId + "]");
+				checkAuthenticationAndAuthorization(request, response, sessionId);
 			}
 			chain.doFilter(request, response);
 		} catch (LoginException le) {
 			logger.log(Level.FINE, "Login required!");
-			if (uri.startsWith("/secured/api/")) {
-				// return 401 if this is an RESTful call
-				((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Please login to continue");
-			} else {
-				RequestDispatcher rp = servletContext.getRequestDispatcher("/login.jsp");
-				rp.forward(request, response);
-			}
+			request.setAttribute(MiscConstants.ERROR_MESSAGE, "Login is required or your session has been expired");
+			RequestDispatcher rp = servletContext.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
+			rp.forward(request, response);
 		} catch (SecurityException se) {
 			logger.log(Level.FINE, "Security error");
 			((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, se.getMessage());
@@ -83,23 +73,18 @@ public class SecurityFilter implements Filter {
 	 * Perform authentication and authorization check here
 	 * @param request
 	 * @param response
+	 * @param sessionId
 	 */
 	private void checkAuthenticationAndAuthorization(ServletRequest request,
-			ServletResponse response) throws LoginException, SecurityException {
+			ServletResponse response, String sessionId) throws LoginException, SecurityException {
 
-		HttpServletRequest req = (HttpServletRequest)request;
-		HttpSession session = req.getSession(false);
-
-		if(session != null){
-			String key = (String)session.getAttribute(MiscConstants.USER_SESSION_KEY);
-			if(key != null){
-				User user = userDao.findByKey(key);
-				if (user != null){
-					return;
-				}
-			}
+		User user = UserDao.findBySession(sessionId);
+		if (user == null) {
+			throw new LoginException("Session not found");
+		} else {
+			user.setLastLogin(new Date());
+			UserDao.persistUser(user);
 		}
-		throw new LoginException();
 	}
 
 	@Override

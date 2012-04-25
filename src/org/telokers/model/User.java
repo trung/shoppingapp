@@ -5,7 +5,11 @@ package org.telokers.model;
 
 
 
+import java.util.Date;
+
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 
 /**
@@ -15,17 +19,23 @@ import com.google.appengine.api.datastore.Entity;
 
 public class User extends AbstractModel{
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -7610355287291683349L;
+
 	public static enum UserProperty {
 		name,
 		email,
 		userId,
 		password,
-		sessionId
+		sessionId,
+		lastLogin
 	}
 
 	public User(String userId) {
 		super(userId);
-		entity = new Entity(User.class.getSimpleName(), userId);
+		entity = new Entity(getKey(userId));
 		setUserId(userId);
 	}
 
@@ -85,6 +95,28 @@ public class User extends AbstractModel{
 	@Override
 	public Entity getEntity(){
 		return this.entity;
+	}
+
+	/**
+	 * @param userId
+	 * @return
+	 */
+	public static Key getKey(String userId) {
+		return KeyFactory.createKey(User.class.getSimpleName(), userId);
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getKind() {
+		return User.class.getSimpleName();
+	}
+
+	/**
+	 * @param date
+	 */
+	public void setLastLogin(Date date) {
+		entity.setProperty(UserProperty.lastLogin.toString(), date);
 	}
 
 }

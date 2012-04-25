@@ -16,6 +16,11 @@ import com.google.appengine.api.datastore.Entity;
  */
 
 public abstract class AbstractModel implements Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 4331406434638858032L;
+
 	protected Entity entity;
 
 	public AbstractModel(String key) {

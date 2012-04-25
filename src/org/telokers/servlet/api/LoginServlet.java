@@ -6,7 +6,6 @@
 package org.telokers.servlet.api;
 
 import java.io.IOException;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.telokers.dao.UserDao;
 import org.telokers.model.User;
-import org.telokers.model.dao.UserDao;
 import org.telokers.service.utils.MiscConstants;
 
 public class LoginServlet extends HttpServlet{
@@ -40,12 +39,9 @@ public class LoginServlet extends HttpServlet{
 		if(user != null && user.getPassword().equals(password)){
 			HttpSession session = req.getSession(true);
 			logger.log(Level.FINE, "user [" + userId + "] login successfully");
-			String key = UUID.randomUUID().toString();
-			user.setUserSessionId(key);
+			user.setUserSessionId(session.getId());
 			UserDao.persistUser(user);
-			session.setAttribute(MiscConstants.USER_SESSION_KEY, key);
-			RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/home.jsp");
-			rp.forward(req, resp);
+			resp.sendRedirect("/secured/home");
 		}
 		else {
 			logger.log(Level.FINE, "user [" + userId + "] login failed");

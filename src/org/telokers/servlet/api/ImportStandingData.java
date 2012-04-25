@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.telokers.dao.UserDao;
 import org.telokers.model.User;
-import org.telokers.model.dao.UserDao;
 
 /**
  *

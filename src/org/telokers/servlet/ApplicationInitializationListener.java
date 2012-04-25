@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.telokers.dao.UserDao;
 import org.telokers.model.User;
-import org.telokers.model.dao.UserDao;
 
 /**
  * @author trung

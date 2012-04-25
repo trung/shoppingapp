@@ -17,7 +17,9 @@
 
   <async-session-persistence enabled="true" queue-name="sessionQueue"/>
   <ssl-enabled>true</ssl-enabled>
-  
+
+  <sessions-enabled>true</sessions-enabled>
+
 
   <!--
     HTTP Sessions are disabled by default. To enable HTTP sessions specify:

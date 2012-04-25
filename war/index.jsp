@@ -1,3 +1,4 @@
+<%@page import="org.telokers.service.utils.RequestUtils"%>
 <%@page import="org.telokers.service.utils.HTMLEncode"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -15,10 +16,7 @@
   	}
   </script>
   <%
-  	String errorMsg = (String) request.getAttribute("errorMsg");
-  	if (errorMsg != null) {
-  		errorMsg = HTMLEncode.encode(errorMsg);
-  	}
+  	String errorMsg = RequestUtils.getAttribute(request, "errorMsg");
   %>
   <body onload="startUp()">
 	<div id="loginDiv">

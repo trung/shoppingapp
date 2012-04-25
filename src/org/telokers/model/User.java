@@ -23,8 +23,6 @@ public class User extends AbstractModel{
 		sessionId
 	}
 
-	private Entity entity;
-
 	public User(String userId) {
 		super(userId);
 		entity = new Entity(User.class.getSimpleName(), userId);

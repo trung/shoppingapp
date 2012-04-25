@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.telokers.model.Category;
 import org.telokers.model.User;
 import org.telokers.model.dao.JpaUserDao;
-import org.telokers.servlet.security.SecurityFilter;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -38,7 +37,7 @@ public class ImportStandingData extends HttpServlet {
 	 *
 	 */
 	private static final long serialVersionUID = -2488675157052092290L;
-	
+
 	private static final Logger logger = Logger.getLogger(ImportStandingData.class.getName());
 
 	/* (non-Javadoc)
@@ -47,7 +46,7 @@ public class ImportStandingData extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
 
@@ -58,22 +57,17 @@ public class ImportStandingData extends HttpServlet {
 		ds.put(entity);
 
 		resp.getWriter().write("Done!");
-		
+
 		User user = new User();
-		
-		user.setEmail("abc@def.com");
-		user.setFirstName("Tommy");
-		user.setLastName("Quang");
-		user.setPassword("abc123");
-		
+
 		JpaUserDao userDao = JpaUserDao.instance();
 		userDao.persistUser(user);
-		
+
 		User testUser = userDao.findByUserName("abc@def.com");
-		
-		
-		
-		
+
+
+
+
 		/*
 		int categoryCount = 10;
 		int itemCount = 100;

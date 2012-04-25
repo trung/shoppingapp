@@ -24,6 +24,8 @@ public class MiscConstants {
 
 	public static final String KEY_USER = "user";
 
+	public static final String KEY_USERS = "users";
+
 	//fields;
 
 	public static final String USER_ID = "userId";

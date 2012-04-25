@@ -5,6 +5,8 @@
 
 package org.telokers.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,6 +16,7 @@ import org.telokers.model.User.UserProperty;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -68,6 +71,27 @@ public class UserDao {
 		} catch (Exception e) {
 			logger.log(Level.FINE, "[" + sessionId + "] not found due to " + e.getMessage(), e);
 			return null;
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	public static List<User> findAll() {
+		try {
+			DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+			Query query = new Query(User.getKind());
+			query.addSort(UserProperty.userId.toString());
+			PreparedQuery pq = ds.prepare(query);
+			List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+			List<User> users = new ArrayList<User>();
+			for (Entity e : list) {
+				users.add(new User(e));
+			}
+			return users;
+		} catch (Exception e) {
+			logger.log(Level.FINE, "Can't get all users due to " + e.getMessage(), e);
+			return new ArrayList<User>();
 		}
 	}
 }

@@ -40,6 +40,7 @@ input.value {
 }
 
 input.button {
+	display: inline;
 	width: 100px;
 	font-size: 14px;
 }
@@ -68,4 +69,23 @@ div.infoMsg {
 	background-color: #FBF9EE;
 	color: #363636;
 	padding: 7px 10px;
+}
+
+div#menuDiv {
+	display:block;
+	height: 20px;
+}
+
+table.container {
+	width: 100%;
+	padding: 5px;
+}
+
+table.container th {
+	border-bottom: 1px solid #9c9c9c;
+	padding: 5px 3px;
+}
+
+table.container td {
+	padding: 5px 3px;
 }

@@ -6,18 +6,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link href="/css/shoppingapp.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/js/shoppingapp.js"></script>
 <title>Home</title>
 <%
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
 %>
 </head>
 <body>
-Welcome, <%= user.getName() %> <br/>
-<div id="menuDiv" style="float:right">
+<div id="menuDiv" style="height: 20px">
+<div style="float:right">
+Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <% if (user.isAdmin()) { %><a href="/secured/admin">Admin</a> |<% } %>
 <a href="/secured/editUser">Edit profile</a>
 |
 <a href="/logout">Log out</a>
 </div>
+</div>
+
 </body>
 </html>

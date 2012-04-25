@@ -18,4 +18,19 @@ public class MiscConstants {
 	
 	//Request attributes
 	public static final String ERROR_MESSAGE = "errorMsg";
+	
+	//fields; 
+	
+	public static final String USER_ID = "userId";
+	public static final String USER_NAME = "name";
+	public static final String EMAIL = "email";
+	public static final String PASSWORD = "password";
+	public static final String CARD_HOLDER_NAME = "cardHolderName";
+	public static final String CARD_NUMBER = "cardNumber";
+	public static final String EXP_MONTH = "expiryMonth";
+	public static final String EXP_YEAR = "expiryYear";
+	public static final String CARD_TYPE = "typeOfcard";
+	
+	
+	
 }

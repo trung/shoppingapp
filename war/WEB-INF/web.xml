@@ -10,7 +10,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</filter>
 	<filter-mapping>
 		<filter-name>SecurityFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/</url-pattern>
 	</filter-mapping>
 	<listener>
 		<description>Application initialization entry point</description>
@@ -50,7 +50,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
-		<url-pattern>/api/login</url-pattern>
+		<url-pattern>/loginServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>

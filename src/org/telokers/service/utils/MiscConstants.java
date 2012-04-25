@@ -1,7 +1,7 @@
 package org.telokers.service.utils;
 
 public class MiscConstants {
-	public static final String user_session_key = "user_session_key";
+	public static final String USER_SESSION_KEY = "user_session_key";
 
 	public static final String KEY_USER_ID_ERROR_MSG = "userIdErrorMsg";
 	public static final String KEY_NAME_ERROR_MSG = "nameErrorMsg";
@@ -13,6 +13,9 @@ public class MiscConstants {
 	public static final String KEY_EXPIRY_DATE_ERROR_MSG = "expiryDateErrorMsg";
 
 	//Misc Entities
-	public static final String authorized_session_entity = "authorized_session_entity";
-	public static final String sessionIdProp = "sessionID";
+	public static final String AUTHORIZED_SESSION_ENTITY = "authorized_session_entity";
+	public static final String SESSION_ID = "sessionID";
+	
+	//Request attributes
+	public static final String ERROR_MESSAGE = "errorMsg";
 }

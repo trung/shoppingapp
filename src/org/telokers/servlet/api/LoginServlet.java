@@ -40,12 +40,12 @@ public class LoginServlet extends HttpServlet{
 				String key = UUID.randomUUID().toString();
 				user.setUserSessionId(key);
 				UserDao.persistUser(user);
-				session.setAttribute(MiscConstants.user_session_key, key);
+				session.setAttribute(MiscConstants.USER_SESSION_KEY, key);
 				RequestDispatcher rp = getServletContext().getRequestDispatcher("/home.jsp");
 				rp.forward(req, resp);
 			}
 			else {
-				req.setAttribute("errorMsg", errorMsg);
+				req.setAttribute(MiscConstants.ERROR_MESSAGE, errorMsg);
 				RequestDispatcher rp = getServletContext().getRequestDispatcher("/index.jsp");
 				rp.forward(req, resp);
 			}

@@ -22,6 +22,8 @@ public class MiscConstants {
 	public static final String ROLE_USER = "ROLE_USER";
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
+	public static final String[] ROLES = new String[] {ROLE_ADMIN, ROLE_USER};
+
 	public static final String KEY_USER = "user";
 
 	public static final String KEY_USERS = "users";
@@ -40,8 +42,13 @@ public class MiscConstants {
 	public static final String EXP_YEAR = "expiryYear";
 	public static final String CARD_TYPE = "typeOfcard";
 	public static final String SIMPLE_EXP_DATE = "simpleExpiryDate";
-	
+
 	//isEdit
 	public static final String IS_EDIT = "isEdit";
 
+	public static final String KEY_EDIT_USER = "editUser";
+
+	public static final String STATUS_APPROVED = "Approved";
+	public static final String STATUS_SUSPEND = "Suspend";
+	public static final String[] STATUSES = new String[] {STATUS_APPROVED, STATUS_SUSPEND};
 }

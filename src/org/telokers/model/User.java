@@ -5,6 +5,7 @@ package org.telokers.model;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public class User extends AbstractModel{
 		sessionId,
 		lastLogin,
 		role,
-		active,
+		status,
 		cardNo,
 		cardType,
 		cardHolderName,
@@ -52,18 +53,25 @@ public class User extends AbstractModel{
 		entity = new Entity(getKey(userId));
 		setUserId(userId);
 		setRole(MiscConstants.ROLE_USER);
-		setActive(false);
+		setStatus(MiscConstants.STATUS_SUSPEND);
 	}
 
 	/**
 	 * @param b
 	 */
-	public void setActive(boolean b) {
-		setProperty(UserProperty.active, b);
+	public void setStatus(String status) {
+		setProperty(UserProperty.status, status);
 	}
 
 	public boolean isActive() {
-		return (Boolean) getProperty(UserProperty.active);
+		return MiscConstants.STATUS_APPROVED.equals(getStatus());
+	}
+
+	/**
+	 * @return
+	 */
+	public Object getStatus() {
+		return getProperty(UserProperty.status);
 	}
 
 	/**
@@ -154,7 +162,14 @@ public class User extends AbstractModel{
 	}
 
 	public boolean isAdmin() {
-		return MiscConstants.ROLE_ADMIN.equalsIgnoreCase((String)getProperty(UserProperty.role));
+		return MiscConstants.ROLE_ADMIN.equalsIgnoreCase(getRole());
+	}
+
+	/**
+	 * @return
+	 */
+	public String getRole() {
+		return (String)getProperty(UserProperty.role);
 	}
 
 	/**
@@ -235,5 +250,43 @@ public class User extends AbstractModel{
 
 	public Date getSuspensionStart() {
 		return (Date) getProperty(UserProperty.suspensionStart);
+	}
+
+	public Date getSuspensionEnd() {
+		return (Date) getProperty(UserProperty.suspensionEnd);
+	}
+
+	public void setRemarks(String remarks) {
+		setProperty(UserProperty.remarks, remarks);
+	}
+
+	public String getRemarks() {
+		return (String) getProperty(UserProperty.remarks);
+	}
+
+	public String getSuspensionStartString() {
+		Date d = getSuspensionStart();
+		if (d != null) {
+			return new SimpleDateFormat("dd/MM/yyyy").format(d);
+		} else {
+			return "";
+		}
+	}
+
+	public String getSuspensionEndString() {
+		Date d = getSuspensionEnd();
+		if (d != null) {
+			return new SimpleDateFormat("dd/MM/yyyy").format(d);
+		} else {
+			return "";
+		}
+	}
+
+	public String getLastModifiedOfStatusString() {
+		Date d = getLastModifiedOfstatus();
+		if (d == null) {
+			return  "";
+		}
+		return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(d);
 	}
 }

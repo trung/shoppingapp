@@ -37,7 +37,7 @@ public class ApplicationInitializationListener implements ServletContextListener
 		user.setPassword(SecurityUtils.hashPassword("admin"));
 		user.setName("Super Admin");
 		user.setRole(MiscConstants.ROLE_ADMIN);
-		user.setActive(true);
+		user.setStatus(MiscConstants.STATUS_APPROVED);
 		UserDao.persistUser(user);
 
 		user = new User("user");
@@ -45,7 +45,7 @@ public class ApplicationInitializationListener implements ServletContextListener
 		user.setPassword(SecurityUtils.hashPassword("user"));
 		user.setName("Telokers");
 		user.setRole(MiscConstants.ROLE_USER);
-		user.setActive(true);
+		user.setStatus(MiscConstants.STATUS_APPROVED);
 		UserDao.persistUser(user);
 
 

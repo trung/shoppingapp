@@ -4,8 +4,9 @@
 package org.telokers.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -38,15 +39,123 @@ public class AdminServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String approve = req.getParameter("approve");
-		String suspend = req.getParameter("suspend");
+		String action = req.getParameter("action");
+		if ("edit".equalsIgnoreCase(action)) {
+			String userId = req.getParameter("userId");
+			logger.fine("Editting user [" + userId + "]");
+			// edit user
+			User u = UserDao.findbyUserId(userId);
+			if (u == null) {
+				req.setAttribute(MiscConstants.ERROR_MESSAGE, "User [" + userId + "] not found");
+				render(req, resp);
+				return;
+			} else {
+				req.setAttribute(MiscConstants.KEY_EDIT_USER, u);
+				RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/admin.jsp");
+				rp.forward(req, resp);
+				return;
+			}
+		} else if ("save".equalsIgnoreCase(action)) {
+			String userId = req.getParameter("userId");
+			String accountType = req.getParameter("accountType");
+			String status = req.getParameter("status");
+			Date suspensionStart = toDate(req.getParameter("suspensionStart"));
+			Date suspensionEnd = toDate(req.getParameter("suspensionEnd"));
+			String remarks = req.getParameter("remarks");
 
-		if (approve != null) {
-			modifyActiveStatus(req, resp, true);
-		} else if (suspend != null) {
-			modifyActiveStatus(req, resp, false);
+			User u = UserDao.findbyUserId(userId);
+			String errorMsg = null;
+			if (u == null) {
+				errorMsg = "User [" + userId + "] not found";
+			} else if (invalidAccountType(accountType)) {
+				errorMsg = "Account type is invalid";
+			} else if (isInvalidStatus(status)) {
+				errorMsg = "Status is invalid";
+			} else if (status.equalsIgnoreCase(MiscConstants.STATUS_SUSPEND) && invalidSuspensionPeriod(suspensionStart, suspensionEnd)) {
+				errorMsg = "Suspension period is invalid";
+			}
+
+			if (errorMsg != null) {
+				req.setAttribute(MiscConstants.KEY_EDIT_USER, u);
+				req.setAttribute(MiscConstants.ERROR_MESSAGE, errorMsg);
+				RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/admin.jsp");
+				rp.forward(req, resp);
+				return;
+			}
+
+			u.setSuspensionPeriod(suspensionStart, suspensionEnd);
+			u.setRole(accountType);
+			if (!status.equals(u.getStatus())) {
+				u.setStatus(status);
+				u.setLastModifiedOfStatus(new Date());
+			}
+			if (MiscConstants.STATUS_APPROVED.equals(status)) {
+				u.setSuspensionPeriod(null, null);
+			}
+			u.setRemarks(remarks);
+			UserDao.persistUser(u);
+			resp.sendRedirect("/secured/admin");
+		} else {
+			render(req, resp);
 		}
-		render(req, resp);
+	}
+
+	/**
+	 * @param suspensionStart
+	 * @param suspensionEnd
+	 * @return
+	 */
+	private boolean invalidSuspensionPeriod(Date suspensionStart,
+			Date suspensionEnd) {
+		return suspensionStart == null || suspensionEnd == null || suspensionStart.getTime() > suspensionEnd.getTime();
+	}
+
+	/**
+	 * @param status
+	 * @return
+	 */
+	private boolean isInvalidStatus(String status) {
+		if (status == null) {
+			return true;
+		}
+		for (String r : MiscConstants.STATUSES) {
+			if (r.equals(status)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @param accountType
+	 * @return
+	 */
+	private boolean invalidAccountType(String accountType) {
+		if (accountType == null) {
+			return true;
+		}
+		for (String r : MiscConstants.ROLES) {
+			if (accountType.equals(r)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @param parameter
+	 * @return
+	 */
+	private Date toDate(String parameter) {
+		if (parameter == null) {
+			return null;
+		} else {
+			try {
+				return new SimpleDateFormat("dd/MM/yyyy").parse(parameter);
+			} catch (Exception e) {
+				return null;
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -57,28 +166,7 @@ public class AdminServlet extends HttpServlet {
 			throws ServletException, IOException {
 		doGet(req, resp);
 	}
-	/**
-	 * @param req
-	 * @param resp
-	 * @param b
-	 */
-	private void modifyActiveStatus(HttpServletRequest req,
-			HttpServletResponse resp, boolean b) {
-		String[] userIds = req.getParameterValues("userIds");
-		logger.log(Level.FINE, "Modifying active status for users .... set to [" + b + "]");
-		if (userIds == null  || userIds.length == 0) {
-			req.setAttribute(MiscConstants.ERROR_MESSAGE, "No users were selected");
-		} else {
-			for (String id : userIds) {
-				User u = UserDao.findbyUserId(id);
-				if (u != null) {
-					u.setActive(b);
-				}
-				UserDao.persistUser(u);
-				logger.fine("User Id [" + id + "] active status has been set to [" + b + "]");
-			}
-		}
-	}
+
 
 	/**
 	 * @param req

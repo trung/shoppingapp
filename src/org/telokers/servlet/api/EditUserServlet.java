@@ -65,17 +65,17 @@ public class EditUserServlet extends HttpServlet{
 		String cardHolderName = req.getParameter(MiscConstants.CARD_HOLDER_NAME);
 		String cardType = req.getParameter(MiscConstants.CARD_TYPE);
 		String cardNo = req.getParameter(MiscConstants.CARD_NUMBER);
-		String expMonth = req.getParameter(MiscConstants.EXP_YEAR);
+		String expMonth = req.getParameter(MiscConstants.EXP_MONTH);
 		String expYear = req.getParameter(MiscConstants.EXP_YEAR);	
 		
-		User user = new User(userId.trim());
-		user.setEmail(email.trim());
-		user.setName(name.trim());
-		user.setPassword(password.trim());
-		user.setCardHolderName(cardHolderName.trim());
-		user.setCardType(cardType.trim());
-		user.setCardNo(cardNo.trim());
-		user.setCardExpDate( (expMonth + expYear).trim() );
+		User user = new User(userId);
+		user.setEmail(email);
+		user.setName(name);
+		user.setPassword(password);
+		user.setCardHolderName(cardHolderName);
+		user.setCardType(cardType);
+		user.setCardNo(cardNo);
+		user.setCardExpDate(expMonth + expYear);
 		
 		proceed = validateUser(user);
 		
@@ -128,7 +128,7 @@ public class EditUserServlet extends HttpServlet{
 			int pwStatus = Validator.isValidPW(user.getUserId(), user.getPassword());
 			switch (pwStatus) {
 				case 1: passwordErrorMsg = "Password is the same as User"; proceed = false; break;
-				case 2: passwordErrorMsg = "Password length > 8"; proceed = false; break;
+				case 2: passwordErrorMsg = "Password length < 8"; proceed = false; break;
 				case 3: passwordErrorMsg = "Password must be alphanumeric"; proceed = false; break;
 				case 0: proceed = true; break;
 			}

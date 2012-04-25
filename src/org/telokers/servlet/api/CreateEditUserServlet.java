@@ -79,7 +79,7 @@ public class CreateEditUserServlet extends HttpServlet{
 		
 		if(proceed){
 			
-			if( ! ((operation != null) && operation.equals("Create")) ){
+			if( ! ((operation != null) || operation.equals("Create")) ){
 				user.setStatus(MiscConstants.STATUS_APPROVED);
 			}
 			

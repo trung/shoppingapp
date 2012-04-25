@@ -40,6 +40,18 @@
 			}
 		}
 	}
+	
+	function validate_and_submit(){
+		password = $("password").value;
+		cpassword = $("cpassword").value;
+		
+		if(password != cpassword){
+			alert("Confirmed password does not match");
+		}
+		else {
+			$("submitForm").submit();
+		}
+	}
 </script>
 </head>
 
@@ -60,7 +72,7 @@
 		<h1>Create new account</h1>
 		<h2><%=errorMsg%></2>
 		<div id="infoMsg">All fields are compulsory</div>
-		<form action="/createUser" method="POST">
+		<form id="submitForm" action="/createUser" method="POST">
 		<h3>Profile</h3>
 		<table border="0">
 			<tbody>
@@ -81,8 +93,13 @@
 				</tr>
 				<tr>
 					<td class="label">Password</td>
-					<td><input type="text" id="password" name="password" class="value"/></td>
+					<td><input type="password" id="password" name="password" class="value"/></td>
 					<td><div id="passwordErrorMsg" class="<%= (passwordErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= passwordErrorMsg%></div></td>
+				</tr>
+				<tr>
+					<td class="label">Confirm Password</td>
+					<td><input type="password" id="cpassword" name="cpassword" class="value"/></td>
+					<td><div id="cpasswordErrorMsg" class="<%= (passwordErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= passwordErrorMsg%></div></td>
 				</tr>
 			</tbody>
 		</table>
@@ -117,18 +134,9 @@
 					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value"/></td>
 					<td><div id="expiryDateErrorMsg" class="<%= (expiryDateErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= expiryDateErrorMsg%></div></td>
 				</tr>
-				<tr>
-					<td class="label">Expiry Date</td>
-					<td><select id="expiryMonth" name="expiryMonth" title="Month" >
-							<option selected="selected"  value="0">Month</option>
-						</select><select id="expiryYear" name="expiryYear" title="Year">
-							<option selected="selected">Year</option>
-						</select></td>
-					<td><div id="expiryDateErrorMsg" class="<%= (expiryDateErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= expiryDateErrorMsg%></div></td>
-				</tr>
 			</tbody>
 		</table>
-		<input type="submit" id="submit" name="submit" value="Create" class="button" />
+		<input id="Create" name="Create" value="Create" class="button" onclick="validate_and_submit()"/>
 		</form>
 	</div>
 </body>

@@ -67,5 +67,30 @@ public class Validator {
 		return 0;
 		
 	}
+	// to validate the extension of the image file 
+	public static boolean isImageFile(String filename)
+	{
+		if (filename.matches("([^\\s]+(\\.(?i)(jpg|png|gif|bmp))+$)"))
+			return true;
+		else return false;
+			
+		
+	}
+	
+	public static boolean isValidPrice(String productPrice)
+	{
+		return isNumber(productPrice);
+		
+	}
+	
+	//restrict Product name, catergory, seller comments to alphanumeric and space ? !
+	// this is in case the output encoding not working
+	
+	public static boolean isAlphaNumeric(String input)
+	{
+		if (input.matches("^\\w\\s''-'@\""))
+			return true;
+		else return false;
+	}
 }
 

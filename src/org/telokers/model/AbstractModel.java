@@ -12,6 +12,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 
 /**
@@ -21,30 +22,20 @@ import com.google.appengine.api.datastore.Key;
  * @author trung
  *
  */
-@PersistenceCapable
-@Inheritance(strategy=InheritanceStrategy.SUBCLASS_TABLE)
+
 public abstract class AbstractModel implements Serializable {
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 8569534621247635514L;
-
-	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.IDENTITY)
-	protected Key id;
-
-	/**
-	 * @return the id
-	 */
-	public Key getId() {
-		return id;
+	private Entity entity;
+	
+	public AbstractModel(String key) {
+		
 	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Key id) {
-		this.id = id;
+	
+	public AbstractModel(Entity entity) throws Exception{
+		if (entity.getKind().equals(this.getClass().getSimpleName())){
+			this.entity = entity;
+		}
+		else throw new Exception ("Incompatible Entity kind");
 	}
+	
+	public abstract Entity getEntity();
 }

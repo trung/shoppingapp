@@ -3,6 +3,8 @@
  */
 package org.telokers.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.Transaction;
@@ -105,6 +107,17 @@ public class DataStoreManager {
 	
 	public DatastoreService getDatastore(){
 		return datastore;
+	}
+	
+	public void persistEntity(AbstractModel model){
+		datastore.put(model.getEntity());
+	}
+	
+	public Iterable<Entity> findEntityByField(AbstractModel model, String field, String value){
+		Query query = new Query(model.getClass().getSimpleName());
+		query.addFilter(field, Query.FilterOperator.EQUAL, field);
+		PreparedQuery pq = datastore.prepare(query);
+		return pq.asIterable();
 	}
 
 }

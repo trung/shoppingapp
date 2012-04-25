@@ -14,20 +14,23 @@ import com.google.appengine.api.datastore.Entity;
 
 public class UserDao {
 	private static final User tempUser = new User("dummy");
-	
+
 	public static void persistUser(User user){
 		DataStoreManager.instance().persistEntity(user);
 	}
-	
-	public static User findbyUserId(String userId) throws Exception{
-		Iterator<Entity> userIterator = DataStoreManager.instance()
-									.findEntityByField(tempUser, User.UserProperty.userId.toString(), userId).iterator();
-		if(userIterator.hasNext()){
-			return new User(userIterator.next());
+
+	public static User findbyUserId(String userId) {
+		try {
+			Iterator<Entity> userIterator = DataStoreManager.instance()
+			.findEntityByField(tempUser, User.UserProperty.userId.toString(), userId).iterator();
+			if(userIterator.hasNext()){
+				return new User(userIterator.next());
+			}
+		} catch (Exception e) {
+			// TODO logging here
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 }
 

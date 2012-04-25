@@ -26,8 +26,6 @@ import org.telokers.model.User;
 import org.telokers.model.dao.JpaUserDao;
 import org.telokers.service.utils.MiscConstants;
 
-import com.google.appengine.api.datastore.KeyFactory;
-
 /**
  * Handle all incoming requests
  *
@@ -88,12 +86,12 @@ public class SecurityFilter implements Filter {
 	 */
 	private void checkAuthenticationAndAuthorization(ServletRequest request,
 			ServletResponse response) throws LoginException, SecurityException {
-		
+
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpSession session = req.getSession(false);
-		
+
 		if(session != null){
-			String key = (String)session.getAttribute(MiscConstants.user_session_key);
+			String key = (String)session.getAttribute(MiscConstants.USER_SESSION_KEY);
 			if(key != null){
 				User user = userDao.findByKey(key);
 				if (user != null){

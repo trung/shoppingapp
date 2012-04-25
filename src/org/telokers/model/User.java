@@ -4,8 +4,8 @@
 package org.telokers.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import com.google.appengine.api.datastore.Entity;
 
 
 /**
@@ -13,61 +13,24 @@ import javax.persistence.Id;
  *
  */
 
-@Entity
-public class User extends AbstractModel {
-	
-	@Id
-	private String email;
+public class User {
 
-
-	private String password;
-
-	
-	private String firstName;
-
-
-	private String lastName;
-	
-	private String userKey;
-	
-	public String getEmail() {
-		return email;
+	public static enum UserProperty {
+		email,
+		userId,
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	private Entity entity;
+
+	public User() {
+		entity = new Entity(User.class.getSimpleName());
 	}
 
-	public String getPassword() {
-		return password;
+	public void setProperty(UserProperty propertyName, Object value) {
+		entity.setProperty(propertyName.toString(), value);
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public Object getProperty(UserProperty propertyName) {
+		return entity.getProperty(propertyName.toString());
 	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public void setUserKey(String key) {
-		this.userKey = key;
-	}
-
-	public String getUserKey() {
-		return userKey;
-	}
-
 }

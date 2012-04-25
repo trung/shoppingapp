@@ -80,7 +80,7 @@ Admin
 				</tr>
 				<tr>
 					<td class="label">Remarks</td>
-					<td><input type="text" id="remarks" name="remarks" class="value"/></td>
+					<td><input type="text" id="remarks" name="remarks" class="value" value="<%= HTMLEncode.encode(editedUser.getRemarks())%>"/></td>
 				</tr>
 			</tbody>
 		</table>

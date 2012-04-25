@@ -15,12 +15,17 @@ public class MiscConstants {
 	//Misc Entities
 	public static final String AUTHORIZED_SESSION_ENTITY = "authorized_session_entity";
 	public static final String SESSION_ID = "sessionID";
-	
+
 	//Request attributes
 	public static final String ERROR_MESSAGE = "errorMsg";
-	
-	//fields; 
-	
+
+	public static final String ROLE_USER = "ROLE_USER";
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
+
+	public static final String KEY_USER = "user";
+
+	//fields;
+
 	public static final String USER_ID = "userId";
 	public static final String USER_NAME = "name";
 	public static final String EMAIL = "email";
@@ -30,7 +35,5 @@ public class MiscConstants {
 	public static final String EXP_MONTH = "expiryMonth";
 	public static final String EXP_YEAR = "expiryYear";
 	public static final String CARD_TYPE = "typeOfcard";
-	
-	
-	
+
 }

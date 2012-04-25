@@ -7,8 +7,8 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Shopping App</title>
-    <link href="css/shoppingapp.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="js/shoppingapp.js"></script>
+    <link href="/css/shoppingapp.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/js/shoppingapp.js"></script>
   </head>
   <script type="text/javascript">
   	function startUp() {

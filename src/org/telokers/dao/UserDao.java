@@ -17,13 +17,22 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Transaction;
 
 public class UserDao {
 
 	private static final Logger logger = Logger.getLogger(UserDao.class.getName());
 
 	public static void persistUser(User user){
-		DatastoreServiceFactory.getDatastoreService().put(user.getEntity());
+		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+		Transaction tx = ds.beginTransaction();
+		try {
+			ds.put(user.getEntity());
+			tx.commit();
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Can't persist user");
+			tx.rollback();
+		}
 	}
 
 	public static User findbyUserId(String userId) {
@@ -51,7 +60,11 @@ public class UserDao {
 			query.addFilter(UserProperty.sessionId.toString(), FilterOperator.EQUAL, sessionId);
 			PreparedQuery pq = ds.prepare(query);
 			Entity e = pq.asSingleEntity();
-			return new User(e);
+			if (e == null) {
+				return null;
+			} else {
+				return new User(e);
+			}
 		} catch (Exception e) {
 			logger.log(Level.FINE, "[" + sessionId + "] not found due to " + e.getMessage(), e);
 			return null;

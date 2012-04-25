@@ -35,16 +35,17 @@ public class LoginServlet extends HttpServlet{
 		String userId = req.getParameter("userId");
 		String password = req.getParameter("password");
 		String errorMsg = "Invalid user/password";
-		HttpSession session = req.getSession();
+		HttpSession session = req.getSession(true);
 		User user = UserDao.findbyUserId(userId);
-		logger.log(Level.FINE, "user [" + userId + "] logging in with session id [" + session.getId() + "]");
+		logger.log(Level.FINE, "user [" + userId + "] logging in with session id [" + session.getId() + "] where existing session is [" + (user == null ? null : user.getSessionId()) + "]");
 		if(user != null && user.getPassword().equals(password)){
-			if (!user.hasExistingSessionId(session.getId())) { // login from other browser?
-				req.setAttribute(MiscConstants.ERROR_MESSAGE, "Your session already exists. Please log out from that session and log in again.");
-				RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-				rp.forward(req, resp);
-			}
-			logger.log(Level.FINE, "user [" + userId + "] login successfully");
+//			if (user.hasExistingSessionId() && !user.getSessionId().equals(session.getId())) { // login from other browser?
+//				req.setAttribute(MiscConstants.ERROR_MESSAGE, "Your session already exists. Please log out from that session and log in again.");
+//				RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
+//				rp.forward(req, resp);
+//				return;
+//			}
+			logger.log(Level.FINE, "user [" + userId + "] login successfully on session [" + session.getId() + "]");
 			user.setUserSessionId(session.getId());
 			user.setLastLogin(new Date());
 			UserDao.persistUser(user);

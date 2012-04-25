@@ -8,8 +8,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Create new account</title>
-<link href="css/shoppingapp.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="js/shoppingapp.js"></script>
+<link href="/css/shoppingapp.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/js/shoppingapp.js"></script>
 <script type="text/javascript">
 	function startUp() {
 		$("userId").focus();

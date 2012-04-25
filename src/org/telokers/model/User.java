@@ -7,6 +7,8 @@ package org.telokers.model;
 
 import java.util.Date;
 
+import org.telokers.service.utils.MiscConstants;
+
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -38,6 +40,14 @@ public class User extends AbstractModel{
 		super(userId);
 		entity = new Entity(getKey(userId));
 		setUserId(userId);
+		setRole(MiscConstants.ROLE_USER);
+	}
+
+	/**
+	 * @param roleUser
+	 */
+	public void setRole(String role) {
+		setProperty(UserProperty.role, role);
 	}
 
 	public User(Entity entity) throws Exception{
@@ -121,15 +131,22 @@ public class User extends AbstractModel{
 	}
 
 	public boolean isAdmin() {
-		return "ADMINISTRATOR".equalsIgnoreCase((String)getProperty(UserProperty.role));
+		return MiscConstants.ROLE_ADMIN.equalsIgnoreCase((String)getProperty(UserProperty.role));
 	}
 
 	/**
 	 * @param string
 	 * @return
 	 */
-	public boolean hasExistingSessionId(String sessionId) {
+	public boolean hasExistingSessionId() {
 		String sid = (String) getProperty(UserProperty.sessionId);
-		return sid != null && sid.length() > 0 && sid.equals(sessionId);
+		return sid != null && sid.length() > 0;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getSessionId() {
+		return (String) getProperty(UserProperty.sessionId);
 	}
 }

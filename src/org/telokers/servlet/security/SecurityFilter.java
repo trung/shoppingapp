@@ -59,7 +59,7 @@ public class SecurityFilter implements Filter {
 			}
 			chain.doFilter(request, response);
 		} catch (LoginException le) {
-			logger.log(Level.FINE, "Login required!");
+			logger.log(Level.FINE, "Login required!" + le.getMessage());
 			request.setAttribute(MiscConstants.ERROR_MESSAGE, "Login is required or your session has been expired");
 			RequestDispatcher rp = servletContext.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
 			rp.forward(request, response);
@@ -80,12 +80,13 @@ public class SecurityFilter implements Filter {
 
 		User user = UserDao.findBySession(sessionId);
 		if (user == null) {
-			throw new LoginException("Session not found");
+			throw new LoginException("Session [" + sessionId + "] not found");
 		} else if (request.getRequestURI().startsWith("/secured/admin") && !user.isAdmin()){
 			throw new SecurityException("You are not authorized to access the resource");
 		}
 		user.setLastLogin(new Date());
 		UserDao.persistUser(user);
+		request.setAttribute(MiscConstants.KEY_USER, user);
 	}
 
 	@Override

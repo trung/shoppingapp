@@ -40,20 +40,19 @@ public class CreateEditUserServlet extends HttpServlet{
 		
 		//Re-initialize all error messages
 		ErrorMessageHolder errorMessageHolder = new ErrorMessageHolder();
-		// TODO Auto-generated method stub
-		
-		boolean isEdit = false;
-		User currentUser = null;
-		if(MiscUtils.isNullorBlank((String)req.getAttribute(MiscConstants.IS_EDIT))){
-			isEdit = Boolean.parseBoolean((String)req.getAttribute(MiscConstants.IS_EDIT));
-			currentUser = (User) req.getAttribute(MiscConstants.KEY_USER);
-		}
-		
-		
 		
 		boolean proceed = false;
 		
 		String userId = req.getParameter(MiscConstants.USER_ID);
+		
+		if( ((String)req.getParameter("submit")).equals("Create")
+		    && (UserDao.findbyUserId(userId) != null) ){
+			
+			req.setAttribute(MiscConstants.ERROR_MESSAGE, "User has already existed");
+			RequestDispatcher rp = getServletContext().getRequestDispatcher("/createUser.jsp");
+			rp.forward(req, resp);
+		}
+		
 		String name = req.getParameter(MiscConstants.USER_NAME);
 		String email = req.getParameter(MiscConstants.EMAIL);
 		String password = req.getParameter(MiscConstants.PASSWORD);
@@ -81,7 +80,8 @@ public class CreateEditUserServlet extends HttpServlet{
 			user.setPassword(SecurityUtils.hashPassword(user.getPassword()));
 			UserDao.persistUser(user);
 			logger.log(Level.FINE, "User created succesfully");
-			RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/home.jsp");
+			req.setAttribute(MiscConstants.ERROR_MESSAGE, "User created successfully. Please login");
+			RequestDispatcher rp = getServletContext().getRequestDispatcher("./");
 			rp.forward(req, resp);
 		}
 		else {
@@ -94,7 +94,14 @@ public class CreateEditUserServlet extends HttpServlet{
 			req.setAttribute(MiscConstants.KEY_TYPE_OF_CARD_ERROR_MSG, errorMessageHolder.typeOfCardErrorMsg);
 			req.setAttribute(MiscConstants.KEY_USER_ID_ERROR_MSG, errorMessageHolder.userIdErrorMsg);
 			
-			RequestDispatcher rp = getServletContext().getRequestDispatcher("/createUser.jsp");
+			RequestDispatcher rp = null;
+			
+			if( ((String)req.getParameter("submit")).equals("Create") ){
+				rp = getServletContext().getRequestDispatcher("/createUser.jsp");
+			}
+			else {
+				rp = getServletContext().getRequestDispatcher("/editUser.jsp");
+			}
 			rp.forward(req, resp);
 		}
 		

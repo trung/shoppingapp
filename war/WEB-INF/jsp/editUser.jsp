@@ -44,7 +44,8 @@
 </head>
 
 <%
-	String errorMsg = RequestUtils.getAttribute(request, MiscConstants.ERROR_MESSAGE);
+	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
+	String cardType = user.getCardType();
 	String userIdErrorMsg = RequestUtils.getAttribute(request, MiscConstants.KEY_USER_ID_ERROR_MSG);
 	String nameErrorMsg = RequestUtils.getAttribute(request, MiscConstants.KEY_NAME_ERROR_MSG);
 	String emailErrorMsg = RequestUtils.getAttribute(request, MiscConstants.KEY_EMAIL_ERROR_MSG);
@@ -57,31 +58,31 @@
 
 <body onload="startUp()">
 	<div id="createUserDiv">
-		<h1>Create new account</h1>
+		<h1>Edit account</h1>
 		<h2><%=errorMsg%></2>
 		<div id="infoMsg">All fields are compulsory</div>
-		<form action="/createUser" method="POST">
+		<form action="/secured/editUser" method="POST">
 		<h3>Profile</h3>
 		<table border="0">
 			<tbody>
 				<tr>
 					<td class="label">User Id</td>
-					<td><input type="text" id="userId" name="userId" class="value" /></td>
+					<td><input type="text" id="userId" name="userId" class="value" value="<%= user.getUserId()%>" /></td>
 					<td><div id="userIdErrorMsg" class="<%= (userIdErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= userIdErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Name</td>
-					<td><input type="text" id="name" name="name" class="value"/></td>
+					<td><input type="text" id="name" name="name" class="value" value="<%= user.getName()%>" /></td>
 					<td><div id="nameErrorMsg" class="<%= (nameErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= nameErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Email</td>
-					<td><input type="text" id="email" name="email" class="value"/></td>
+					<td><input type="text" id="email" name="email" class="value" value="<%= user.getEmail()%>" /></td>
 					<td><div id="emailErrorMsg" class="<%= (emailErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= emailErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Password</td>
-					<td><input type="text" id="password" name="password" class="value"/></td>
+					<td><input type="text" id="password" name="password" class="value" value="<%= user.getPassword()%>" /></td>
 					<td><div id="passwordErrorMsg" class="<%= (passwordErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= passwordErrorMsg%></div></td>
 				</tr>
 			</tbody>
@@ -91,15 +92,21 @@
 			<tbody>
 				<tr>
 					<td class="label">Card holder name</td>
-					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value"/></td>
+					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value" value="<%= user.getCardHolderName()()%> /></td>
 					<td><div id="cardHolderNameErrorMsg" class="<%= (cardHolderNameErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardHolderNameErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Type of card</td>
 					<td><table border="0" style="margin: 0; padding: 0">
-						<tr><td><input type="radio" id="typeOfCard" name="typeOfcard" value="VISA" checked="checked" /></td>
+						<tr><td><input type="radio" id="typeOfCard" name="typeOfcard" value="VISA" 
+								<% if (cardType.equals("VISA")) out.print("checked"); %>
+								checked="checked" />
+							</td>
 							<td>VISA &nbsp;</td>
-							<td><input type="radio" id="typeOfCard" name="typeOfcard" value="MASTER" checked="checked" /></td>
+							<td><input type="radio" id="typeOfCard" name="typeOfcard" value="MASTER"
+								<% if (cardType.equals("MASTER")) out.print("checked"); %>
+								/>
+							</td>
 							<td>MASTER</td>
 						</tr>
 					</table>
@@ -109,12 +116,12 @@
 				</tr>
 				<tr>
 					<td class="label">Credit Card number</td>
-					<td><input type="text" id="cardNumber" name="cardNumber" class="value"/></td>
+					<td><input type="text" id="cardNumber" name="cardNumber" class="value" value="<%= user.getCardNo()%>" /></td>
 					<td><div id="cardNumberErrorMsg" class="<%= (cardNumberErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardNumberErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Simple Expiry Date</td>
-					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value"/></td>
+					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value" value="<%= user.getCardExpDate()%>" /></td>
 					<td><div id="expiryDateErrorMsg" class="<%= (expiryDateErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= expiryDateErrorMsg%></div></td>
 				</tr>
 				<tr>
@@ -128,7 +135,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<input type="submit" id="submit" name="submit" value="Create" class="button" />
+		<input type="submit" id="submit" name="submit" value="Edit" class="button" />
 		</form>
 	</div>
 </body>

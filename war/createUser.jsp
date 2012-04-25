@@ -78,7 +78,7 @@
 			<tbody>
 				<tr>
 					<td class="label">User Id</td>
-					<td><input type="text" id="userId" name="userId" class="value" /></td>
+					<td><input type="text" id="userId" name="userId" class="value" value="<%= HTMLEncode.encode(request.getParameter("userId"))%>" /></td>
 					<td><div id="userIdErrorMsg" class="<%= (userIdErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= userIdErrorMsg%></div></td>
 				</tr>
 				<tr>
@@ -130,13 +130,14 @@
 					<td><div id="cardNumberErrorMsg" class="<%= (cardNumberErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardNumberErrorMsg%></div></td>
 				</tr>
 				<tr>
-					<td class="label">Simple Expiry Date</td>
-					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value"/></td>
+					<td class="label">Expiry Date (mmyyyy)</td>
+					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value" style="width: 45px"/></td>
 					<td><div id="expiryDateErrorMsg" class="<%= (expiryDateErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= expiryDateErrorMsg%></div></td>
 				</tr>
 			</tbody>
 		</table>
-		<input id="Create" name="Create" value="Create" class="button" onclick="validate_and_submit()"/>
+		<input type="hidden" id="action" name="action" value="Create"/>
+		<input type="button" id="createButton" name="createButton" value="Create" class="button" onclick="validate_and_submit()"/>
 		</form>
 	</div>
 </body>

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.telokers.dao.UserDao;
 import org.telokers.model.User;
-import org.telokers.model.User.UserProperty;
 import org.telokers.service.utils.MiscConstants;
 import org.telokers.service.utils.MiscUtils;
 import org.telokers.service.utils.MiscUtils.ErrorMessageHolder;
@@ -26,35 +25,35 @@ import org.telokers.service.utils.Validator;
 
 public class CreateEditUserServlet extends HttpServlet{
 	private static final Logger logger = Logger.getLogger(CreateEditUserServlet.class.getName());
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doPost(req, resp);
 	}
-	
-	
+
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		//Re-initialize all error messagespera
 		ErrorMessageHolder errorMessageHolder = new ErrorMessageHolder();
-		
+
 		boolean proceed = false;
-		
-		String operation = MiscUtils.blankifyString(req.getParameter("submit"));
+
+		String operation = MiscUtils.blankifyString(req.getParameter("action"));
 		String userId = MiscUtils.blankifyString(req.getParameter(MiscConstants.USER_ID));
-		
+
 		if( (operation != null && operation.equals("Create"))
 		    && (UserDao.findbyUserId(userId) != null) ){
-			
+
 			req.setAttribute(MiscConstants.ERROR_MESSAGE, "User has already existed");
 			RequestDispatcher rp = getServletContext().getRequestDispatcher("/createUser.jsp");
 			rp.forward(req, resp);
 		}
-		
+
 		String name = req.getParameter(MiscConstants.USER_NAME);
 		String email = req.getParameter(MiscConstants.EMAIL);
 		String password = req.getParameter(MiscConstants.PASSWORD);
@@ -64,7 +63,15 @@ public class CreateEditUserServlet extends HttpServlet{
 		/*String expMonth = req.getParameter(MiscConstants.EXP_MONTH);
 		String expYear = req.getParameter(MiscConstants.EXP_YEAR);*/
 		String simpleExpDate = req.getParameter(MiscConstants.SIMPLE_EXP_DATE);
-		
+
+		if (Validator.isEmpty(userId)) {
+			errorMessageHolder.userIdErrorMsg = "Empty user Id";
+			proceed = false;
+			if( (operation != null) && operation.equals("Create") ){
+				getServletContext().getRequestDispatcher("/createUser.jsp").forward(req, resp);
+			}
+		}
+
 		User user = new User(userId);
 		user.setEmail(email);
 		user.setName(name);
@@ -74,15 +81,15 @@ public class CreateEditUserServlet extends HttpServlet{
 		user.setCardNo(cardNo);
 		user.setCardExpDate(simpleExpDate);
 //		user.setCardExpDate(expMonth + expYear);
-		
+
 		proceed = validateUser(user, errorMessageHolder);
-		
+
 		if(proceed){
-			
+
 			if( ! ((operation != null) || operation.equals("Create")) ){
 				user.setStatus(MiscConstants.STATUS_APPROVED);
 			}
-			
+
 			//Persisting user
 			user.setPassword(SecurityUtils.hashPassword(user.getPassword()));
 			UserDao.persistUser(user);
@@ -100,9 +107,9 @@ public class CreateEditUserServlet extends HttpServlet{
 			req.setAttribute(MiscConstants.KEY_PASSWORD_ERROR_MSG, errorMessageHolder.passwordErrorMsg);
 			req.setAttribute(MiscConstants.KEY_TYPE_OF_CARD_ERROR_MSG, errorMessageHolder.typeOfCardErrorMsg);
 			req.setAttribute(MiscConstants.KEY_USER_ID_ERROR_MSG, errorMessageHolder.userIdErrorMsg);
-			
+
 			RequestDispatcher rp = null;
-			
+
 			if( (operation != null) && operation.equals("Create") ){
 				rp = getServletContext().getRequestDispatcher("/createUser.jsp");
 			}
@@ -111,14 +118,18 @@ public class CreateEditUserServlet extends HttpServlet{
 			}
 			rp.forward(req, resp);
 		}
-		
+
 	}
-	
+
 	private boolean validateUser (User user, ErrorMessageHolder errorMsgHolder) {
 		boolean proceed = true;
-		
+
 		if (Validator.isEmpty(user.getUserId())){
 			errorMsgHolder.userIdErrorMsg = "Empty User ID";
+			proceed = false;
+		}
+		if (!Validator.isAlphabet(user.getUserId())){
+			errorMsgHolder.userIdErrorMsg = "User ID must be alphabet";
 			proceed = false;
 		}
 		if (Validator.isEmpty(user.getName())){
@@ -126,7 +137,7 @@ public class CreateEditUserServlet extends HttpServlet{
 			proceed = false;
 		}
 		if (Validator.isEmpty(user.getEmail())){
-			errorMsgHolder.emailErrorMsg = "Empty name";
+			errorMsgHolder.emailErrorMsg = "Empty email";
 			proceed = false;
 		}
 		if (!Validator.isEmail(user.getEmail())){
@@ -147,7 +158,7 @@ public class CreateEditUserServlet extends HttpServlet{
 			}
 		}
 		if(Validator.isEmpty(user.getCardHolderName())){
-			errorMsgHolder.cardNumberErrorMsg = "Empty card holder name";
+			errorMsgHolder.cardHolderNameErrorMsg = "Empty card holder name";
 			proceed = false;
 		}
 		if(Validator.isEmpty(user.getCardNo()) || !Validator.isCreditCardNumber(user.getCardNo())){
@@ -164,6 +175,6 @@ public class CreateEditUserServlet extends HttpServlet{
 		}
 		return proceed;
 	}
-	
+
 }
 

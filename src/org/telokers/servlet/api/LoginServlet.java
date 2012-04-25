@@ -35,17 +35,13 @@ public class LoginServlet extends HttpServlet{
 	throws ServletException, IOException {
 		String userId = req.getParameter("userId");
 		String password = req.getParameter("password");
-		String errorMsg = "Invalid user/password";
+		String errorMsg = "Invalid user/password or your account has not been approved yet.";
 		HttpSession session = req.getSession(true);
 		User user = UserDao.findbyUserId(userId);
 		logger.log(Level.FINE, "user [" + userId + "] logging in with session id [" + session.getId() + "] where existing session is [" + (user == null ? null : user.getSessionId()) + "]");
-		if(user != null && user.getPassword().equals(SecurityUtils.hashPassword(password))){
-//			if (user.hasExistingSessionId() && !user.getSessionId().equals(session.getId())) { // login from other browser?
-//				req.setAttribute(MiscConstants.ERROR_MESSAGE, "Your session already exists. Please log out from that session and log in again.");
-//				RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-//				rp.forward(req, resp);
-//				return;
-//			}
+		if(user != null
+				&& user.getPassword().equals(SecurityUtils.hashPassword(password))
+				&& user.isActive()){
 			logger.log(Level.FINE, "user [" + userId + "] login successfully on session [" + session.getId() + "]");
 			user.setUserSessionId(session.getId());
 			user.setLastLogin(new Date());

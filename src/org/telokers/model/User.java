@@ -70,8 +70,8 @@ public class User extends AbstractModel{
 	/**
 	 * @return
 	 */
-	public Object getStatus() {
-		return getProperty(UserProperty.status);
+	public String getStatus() {
+		return (String) getProperty(UserProperty.status);
 	}
 
 	/**

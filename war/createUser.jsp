@@ -1,3 +1,4 @@
+<%@page import="org.telokers.service.utils.HTMLEncode"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -40,6 +41,15 @@
 </script>
 </head>
 
+<%
+	String userIdErrorMsg = (String) request.getAttribute("userIdErrorMsg");
+	if (userIdErrorMsg != null) {
+		userIdErrorMsg = HTMLEncode.encode(userIdErrorMsg.trim());
+	} else {
+		userIdErrorMsg = "";
+	}
+%>
+
 <body onload="startUp()">
 	<div id="createUserDiv">
 		<h1>Create new account</h1>
@@ -51,7 +61,7 @@
 				<tr>
 					<td class="label">User Id</td>
 					<td><input type="text" id="userId" name="userId" class="value" /></td>
-					<td><div id="userIdErrorMsg" class="errorMsg"></div></td>
+					<td><div id="userIdErrorMsg" class="<%= (userIdErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= userIdErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Name</td>
@@ -70,7 +80,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<h3>Payment Details</h3>
+		<h3>Credit Card Details</h3>
 		<table border="0">
 			<tbody>
 				<tr>
@@ -80,8 +90,15 @@
 				</tr>
 				<tr>
 					<td class="label">Type of card</td>
-					<td><input type="radio" id="typeOfCard" name="typeOfcard" value="visa" checked="checked" /> VISA
-					<input type="radio" id="typeOfCard" name="typeOfcard" value="master" checked="checked" /> MASTER</td>
+					<td><table border="0" style="margin: 0; padding: 0">
+						<tr><td><input type="radio" id="typeOfCard" name="typeOfcard" value="VISA" checked="checked" /></td>
+							<td>VISA &nbsp;</td>
+							<td><input type="radio" id="typeOfCard" name="typeOfcard" value="MASTER" checked="checked" /></td>
+							<td>MASTER</td>
+						</tr>
+					</table>
+					</td>
+
 					<td><div id="typeOfCardErrorMsg" class="errorMsg"></div></td>
 				</tr>
 				<tr>

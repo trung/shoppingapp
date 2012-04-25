@@ -1,3 +1,4 @@
+<%@page import="org.telokers.service.utils.HTMLEncode"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -12,18 +13,19 @@
   	function startUp() {
 		$("userId").focus();
   	}
-
-  	function onLoginClick() {
-
-  	}
-
   </script>
+  <%
+  	String errorMsg = (String) request.getAttribute("errorMsg");
+  	if (errorMsg != null) {
+  		errorMsg = HTMLEncode.encode(errorMsg);
+  	}
+  %>
   <body onload="startUp()">
 	<div id="loginDiv">
 		<center>
 		<form action="/loginServlet" method="POST">
 		    <h1>Shopping App</h1>
-		    <div id="errorMsg"></div>
+		    <% if (errorMsg != null && errorMsg.length() > 0) { %><div id="errorMsg" class="errorMsg"><%= errorMsg%></div><% } %>
 		    <table border="0">
 		    	<tbody>
 		    		<tr>
@@ -36,7 +38,7 @@
 		    		</tr>
 		    		<tr>
 		    			<td colspan="2">
-		    				<a href="createUser.jsp" style="float:left">Create new account</a>
+		    				<a href="createUser.jsp" style="float:left; padding-top: 10px">Create new account</a>
 		    				<input type="submit" id="login" name="login" style="float:right" class="button" />
 		    			</td>
 		    		</tr>

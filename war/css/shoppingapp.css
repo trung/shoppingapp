@@ -41,6 +41,7 @@ input.value {
 
 input.button {
 	width: 100px;
+	font-size: 14px;
 }
 
 div#createUserDiv {
@@ -55,14 +56,14 @@ div#createUserDiv h3 {
 	border-bottom: 1px solid #9c9c9c;
 }
 
-div#errorMsg {
+div.errorMsg {
 	border: 1px solid #CD0A0A;
 	background-color: #FEF1EC;
 	color: #CD0A0A;
 	padding: 7px 10px;
 }
 
-div#infoMsg {
+div.infoMsg {
 	border: 1px solid #FCEFA1;
 	background-color: #FBF9EE;
 	color: #363636;

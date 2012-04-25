@@ -38,5 +38,8 @@ public class MiscConstants {
 	public static final String EXP_YEAR = "expiryYear";
 	public static final String CARD_TYPE = "typeOfcard";
 	public static final String SIMPLE_EXP_DATE = "simpleExpiryDate";
+	
+	//isEdit
+	public static final String IS_EDIT = "isEdit";
 
 }

@@ -25,7 +25,7 @@ public class Validator {
 	// input MMYYYY   e.g. 052013
 	public static boolean isCCExpirationDate(String input)
 	{	
-		return input.matches("0[1-9]|1[0-2]20[1-9][0-9]");
+		return input.matches("(0[1-9]|1[0-2])20[1-9][0-9]");
 	}
 	public static boolean isAlphabet(String input)
 	{
@@ -62,7 +62,8 @@ public class Validator {
 	 
 		if (password.length() <8)	return 2;
 			
-		if (!password.matches("^[a-zA-Z]+$") || !password.matches("^[0-9]+$")) return 3;
+	//	if (!password.matches("^[a-zA-Z]+$") || !password.matches("^[0-9]+$")) return 3;
+		if (!password.matches("^.*[\\d\\W]+.*$") ) return 3; 
 		
 		return 0;
 		

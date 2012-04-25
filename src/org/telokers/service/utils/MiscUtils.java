@@ -14,5 +14,23 @@ public class MiscUtils {
 		else return false;
 	}
 	
+	public static String blankifyString(String input){
+		if(isNullorBlank(input)){
+			input = "";
+		}
+		return input;
+	}
+	
+	public static class ErrorMessageHolder {
+		public String userIdErrorMsg = "";
+		public String nameErrorMsg = "";
+		public String emailErrorMsg = "";
+		public String passwordErrorMsg = "";
+		public String cardHolderNameErrorMsg = "";
+		public String typeOfCardErrorMsg = "";
+		public String cardNumberErrorMsg = "";
+		public String expiryDateErrorMsg = "";
+	}
+	
 }
 

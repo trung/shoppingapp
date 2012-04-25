@@ -111,6 +111,11 @@
 					<td><div id="cardNumberErrorMsg" class="<%= (cardNumberErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardNumberErrorMsg%></div></td>
 				</tr>
 				<tr>
+					<td class="label">Simple Expiry Date</td>
+					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value"/></td>
+					<td><div id="expiryDateErrorMsg" class="<%= (expiryDateErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= expiryDateErrorMsg%></div></td>
+				</tr>
+				<tr>
 					<td class="label">Expiry Date</td>
 					<td><select id="expiryMonth" name="expiryMonth" title="Month" >
 							<option selected="selected"  value="0">Month</option>

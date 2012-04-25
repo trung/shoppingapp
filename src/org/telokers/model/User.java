@@ -33,7 +33,11 @@ public class User extends AbstractModel{
 		password,
 		sessionId,
 		lastLogin,
-		role
+		role,
+		cardNo,
+		cardType,
+		cardHolderName,
+		expDate,
 	}
 
 	public User(String userId) {
@@ -148,5 +152,37 @@ public class User extends AbstractModel{
 	 */
 	public String getSessionId() {
 		return (String) getProperty(UserProperty.sessionId);
+	}
+	
+	public String getCardHolderName() {
+		return (String) getProperty(UserProperty.cardHolderName);
+	}
+
+	public void setCardHolderName(String cardHolderName) {
+		setProperty(UserProperty.cardHolderName, cardHolderName);
+	}
+	
+	public String getCardNo() {
+		return (String) getProperty(UserProperty.cardNo);
+	}
+
+	public void setCardNo(String cardNo) {
+		setProperty(UserProperty.cardNo, cardNo);
+	}
+	
+	public String getCardType() {
+		return (String) getProperty(UserProperty.cardType);
+	}
+
+	public void setCardType(String cardType) {
+		setProperty(UserProperty.cardType, cardType);
+	}
+	
+	public String getCardExpDate() {
+		return (String) getProperty(UserProperty.expDate);
+	}
+
+	public void setCardExpDate(String expDate) {
+		setProperty(UserProperty.expDate, expDate); 	 	
 	}
 }

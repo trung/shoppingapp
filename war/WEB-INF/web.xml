@@ -40,6 +40,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>LogoutServlet</servlet-name>
 		<servlet-class>org.telokers.servlet.api.LogoutServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>editUserServlet</servlet-name>
+		<servlet-class>org.telokers.servlet.api.EditUserServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>searchServletApi</servlet-name>
 		<url-pattern>/api/search</url-pattern>
@@ -63,6 +67,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>editUserServlet</servlet-name>
+		<url-pattern>/createNewUserServlet</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>30</session-timeout>

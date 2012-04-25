@@ -64,7 +64,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/api/logout</url-pattern>
 	</servlet-mapping>
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
 	<welcome-file-list>
 		<welcome-file>login</welcome-file>
 	</welcome-file-list>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/500.html</location>
+	</error-page>
 </web-app>

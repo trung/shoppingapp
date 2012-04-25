@@ -55,7 +55,7 @@ public class SecurityFilter implements Filter {
 			if (!isLocal) {
 				String sessionId = httpRequest.getSession().getId();
 				logger.log(Level.FINE, "SecurityFilter.doFilter() - SessionID: [" + sessionId + "]");
-				checkAuthenticationAndAuthorization(request, response, sessionId);
+				checkAuthenticationAndAuthorization(httpRequest, response, sessionId);
 			}
 			chain.doFilter(request, response);
 		} catch (LoginException le) {
@@ -75,16 +75,17 @@ public class SecurityFilter implements Filter {
 	 * @param response
 	 * @param sessionId
 	 */
-	private void checkAuthenticationAndAuthorization(ServletRequest request,
+	private void checkAuthenticationAndAuthorization(HttpServletRequest request,
 			ServletResponse response, String sessionId) throws LoginException, SecurityException {
 
 		User user = UserDao.findBySession(sessionId);
 		if (user == null) {
 			throw new LoginException("Session not found");
-		} else {
-			user.setLastLogin(new Date());
-			UserDao.persistUser(user);
+		} else if (request.getRequestURI().startsWith("/secured/admin") && !user.isAdmin()){
+			throw new SecurityException("You are not authorized to access the resource");
 		}
+		user.setLastLogin(new Date());
+		UserDao.persistUser(user);
 	}
 
 	@Override

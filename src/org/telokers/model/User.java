@@ -30,7 +30,8 @@ public class User extends AbstractModel{
 		userId,
 		password,
 		sessionId,
-		lastLogin
+		lastLogin,
+		role
 	}
 
 	public User(String userId) {
@@ -102,7 +103,7 @@ public class User extends AbstractModel{
 	 * @return
 	 */
 	public static Key getKey(String userId) {
-		return KeyFactory.createKey(User.class.getSimpleName(), userId);
+		return KeyFactory.createKey(getKind(), userId);
 	}
 
 	/**
@@ -116,7 +117,19 @@ public class User extends AbstractModel{
 	 * @param date
 	 */
 	public void setLastLogin(Date date) {
-		entity.setProperty(UserProperty.lastLogin.toString(), date);
+		setProperty(UserProperty.lastLogin, date);
 	}
 
+	public boolean isAdmin() {
+		return "ADMINISTRATOR".equalsIgnoreCase((String)getProperty(UserProperty.role));
+	}
+
+	/**
+	 * @param string
+	 * @return
+	 */
+	public boolean hasExistingSessionId(String sessionId) {
+		String sid = (String) getProperty(UserProperty.sessionId);
+		return sid != null && sid.length() > 0 && sid.equals(sessionId);
+	}
 }

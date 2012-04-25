@@ -18,12 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.telokers.dao.UserDao;
 import org.telokers.model.User;
 import org.telokers.service.utils.MiscConstants;
+import org.telokers.service.utils.MiscUtils;
 import org.telokers.service.utils.MiscUtils.ErrorMessageHolder;
 import org.telokers.service.utils.SecurityUtils;
 import org.telokers.service.utils.Validator;
 
-public class EditUserServlet extends HttpServlet{
-	private static final Logger logger = Logger.getLogger(EditUserServlet.class.getName());
+public class CreateEditUserServlet extends HttpServlet{
+	private static final Logger logger = Logger.getLogger(CreateEditUserServlet.class.getName());
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -40,6 +41,15 @@ public class EditUserServlet extends HttpServlet{
 		//Re-initialize all error messages
 		ErrorMessageHolder errorMessageHolder = new ErrorMessageHolder();
 		// TODO Auto-generated method stub
+		
+		boolean isEdit = false;
+		User currentUser = null;
+		if(MiscUtils.isNullorBlank((String)req.getAttribute(MiscConstants.IS_EDIT))){
+			isEdit = Boolean.parseBoolean((String)req.getAttribute(MiscConstants.IS_EDIT));
+			currentUser = (User) req.getAttribute(MiscConstants.KEY_USER);
+		}
+		
+		
 		
 		boolean proceed = false;
 		

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import org.telokers.dao.UserDao;
 import org.telokers.model.User;
 import org.telokers.service.utils.MiscConstants;
+import org.telokers.service.utils.SecurityUtils;
 
 public class LoginServlet extends HttpServlet{
 	/**
@@ -38,7 +39,7 @@ public class LoginServlet extends HttpServlet{
 		HttpSession session = req.getSession(true);
 		User user = UserDao.findbyUserId(userId);
 		logger.log(Level.FINE, "user [" + userId + "] logging in with session id [" + session.getId() + "] where existing session is [" + (user == null ? null : user.getSessionId()) + "]");
-		if(user != null && user.getPassword().equals(password)){
+		if(user != null && user.getPassword().equals(SecurityUtils.hashPassword(password))){
 //			if (user.hasExistingSessionId() && !user.getSessionId().equals(session.getId())) { // login from other browser?
 //				req.setAttribute(MiscConstants.ERROR_MESSAGE, "Your session already exists. Please log out from that session and log in again.");
 //				RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");

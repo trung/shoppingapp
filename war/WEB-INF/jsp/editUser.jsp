@@ -1,7 +1,7 @@
-<%@page import="org.telokers.model.User"%>
 <%@page import="org.telokers.service.utils.MiscConstants"%>
 <%@page import="org.telokers.service.utils.RequestUtils"%>
 <%@page import="org.telokers.service.utils.HTMLEncode"%>
+<%@page import="org.telokers.model.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -46,6 +46,7 @@
 
 <%
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
+	String errorMsg = RequestUtils.getAttribute(request, MiscConstants.ERROR_MESSAGE);
 	String cardType = user.getCardType();
 	String userIdErrorMsg = RequestUtils.getAttribute(request, MiscConstants.KEY_USER_ID_ERROR_MSG);
 	String nameErrorMsg = RequestUtils.getAttribute(request, MiscConstants.KEY_NAME_ERROR_MSG);
@@ -60,8 +61,9 @@
 <body onload="startUp()">
 	<div id="createUserDiv">
 		<h1>Edit account</h1>
+		<h2><%=errorMsg%></2>
 		<div id="infoMsg">All fields are compulsory</div>
-		<form action="/secured/editUser" method="POST">
+		<form action="/secured/createUser" method="POST">
 		<h3>Profile</h3>
 		<table border="0">
 			<tbody>
@@ -82,7 +84,7 @@
 				</tr>
 				<tr>
 					<td class="label">Password</td>
-					<td><input type="text" id="password" name="password" class="value" value="<%= user.getPassword()%>" /></td>
+					<td><input type="text" id="password" name="password" class="value" value="" /></td>
 					<td><div id="passwordErrorMsg" class="<%= (passwordErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= passwordErrorMsg%></div></td>
 				</tr>
 			</tbody>
@@ -92,19 +94,19 @@
 			<tbody>
 				<tr>
 					<td class="label">Card holder name</td>
-					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value" value="<%= user.getCardHolderName()%>"/></td>
+					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value" value="<%= user.getCardHolderName()%>" /></td>
 					<td><div id="cardHolderNameErrorMsg" class="<%= (cardHolderNameErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardHolderNameErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Type of card</td>
 					<td><table border="0" style="margin: 0; padding: 0">
-						<tr><td><input type="radio" id="typeOfCard" name="typeOfcard" value="VISA"
-								<% if (cardType.equals("VISA")) out.print("checked"); %>
+						<tr><td><input type="radio" id="typeOfCard" name="typeOfcard" value="VISA" 
+								<% if ("VISA".equals(cardType)) out.print("checked"); %>
 								checked="checked" />
 							</td>
 							<td>VISA &nbsp;</td>
 							<td><input type="radio" id="typeOfCard" name="typeOfcard" value="MASTER"
-								<% if (cardType.equals("MASTER")) out.print("checked"); %>
+								<% if ("VISA".equals(cardType)) out.print("checked"); %>
 								/>
 							</td>
 							<td>MASTER</td>

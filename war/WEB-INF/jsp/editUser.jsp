@@ -1,3 +1,4 @@
+<%@page import="org.telokers.model.User"%>
 <%@page import="org.telokers.service.utils.MiscConstants"%>
 <%@page import="org.telokers.service.utils.RequestUtils"%>
 <%@page import="org.telokers.service.utils.HTMLEncode"%>
@@ -92,13 +93,13 @@
 			<tbody>
 				<tr>
 					<td class="label">Card holder name</td>
-					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value" value="<%= user.getCardHolderName()()%> /></td>
+					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value" value="<%= user.getCardHolderName()%>"/></td>
 					<td><div id="cardHolderNameErrorMsg" class="<%= (cardHolderNameErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardHolderNameErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Type of card</td>
 					<td><table border="0" style="margin: 0; padding: 0">
-						<tr><td><input type="radio" id="typeOfCard" name="typeOfcard" value="VISA" 
+						<tr><td><input type="radio" id="typeOfCard" name="typeOfcard" value="VISA"
 								<% if (cardType.equals("VISA")) out.print("checked"); %>
 								checked="checked" />
 							</td>

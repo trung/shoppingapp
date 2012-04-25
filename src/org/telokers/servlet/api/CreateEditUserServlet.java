@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.telokers.dao.UserDao;
 import org.telokers.model.User;
+import org.telokers.model.User.UserProperty;
 import org.telokers.service.utils.MiscConstants;
 import org.telokers.service.utils.MiscUtils;
 import org.telokers.service.utils.MiscUtils.ErrorMessageHolder;
@@ -77,6 +78,11 @@ public class CreateEditUserServlet extends HttpServlet{
 		proceed = validateUser(user, errorMessageHolder);
 		
 		if(proceed){
+			
+			if( ! ((operation != null) && operation.equals("Create")) ){
+				user.setStatus(MiscConstants.STATUS_APPROVED);
+			}
+			
 			//Persisting user
 			user.setPassword(SecurityUtils.hashPassword(user.getPassword()));
 			UserDao.persistUser(user);

@@ -51,12 +51,9 @@ public class SecurityFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String uri = httpRequest.getRequestURI();
 		try {
-			boolean isLocal = (uri.startsWith("/_ah/") && "127.0.0.1".equals(httpRequest.getRemoteHost()));
-			if (!isLocal) {
-				String sessionId = httpRequest.getSession().getId();
-				logger.log(Level.FINE, "SecurityFilter.doFilter() - SessionID: [" + sessionId + "]");
-				checkAuthenticationAndAuthorization(httpRequest, response, sessionId);
-			}
+			String sessionId = httpRequest.getSession().getId();
+			logger.log(Level.FINE, "SecurityFilter.doFilter() - SessionID: [" + sessionId + "]");
+			checkAuthenticationAndAuthorization(httpRequest, response, sessionId);
 			chain.doFilter(request, response);
 		} catch (LoginException le) {
 			logger.log(Level.FINE, "Login required!" + le.getMessage());

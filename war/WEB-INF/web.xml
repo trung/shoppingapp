@@ -21,6 +21,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-class>org.telokers.servlet.api.SearchServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>pictureServlet</servlet-name>
+		<servlet-class>org.telokers.servlet.PictureServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>importStandingDataApi</servlet-name>
 		<servlet-class>org.telokers.servlet.api.ImportStandingData</servlet-class>
 	</servlet>
@@ -87,6 +91,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>createUser</servlet-name>
 		<url-pattern>/createUser</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>pictureServlet</servlet-name>
+		<url-pattern>/picture</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>createUser</servlet-name>

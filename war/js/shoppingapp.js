@@ -88,3 +88,33 @@ function warn(msg) {
 		}
 	}
 }
+
+function checkFileExtension(elem) {
+    var filePath = elem.value;
+
+
+    if(filePath.indexOf('.') == -1)
+
+        return false;
+
+
+    var validExtensions = new Array();
+    var ext = filePath.substring(filePath.lastIndexOf('.') + 1).toLowerCase();
+
+
+
+    validExtensions[0] = 'png';
+
+
+    for(var i = 0; i < validExtensions.length; i++) {
+
+        if(ext == validExtensions[i])
+            return true;
+    }
+
+
+    alert('The file extension ' + ext.toUpperCase() +
+' is not allowed!');
+
+    return false;
+}

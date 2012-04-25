@@ -57,6 +57,12 @@ public class LoginServlet extends HttpServlet{
 			logger.log(Level.FINE, "user [" + userId + "] login failed");
 			if (userId != null) {
 				req.setAttribute(MiscConstants.ERROR_MESSAGE, errorMsg);
+			} else {
+				User u = UserDao.findBySession(session.getId());
+				if (u != null) {
+					resp.sendRedirect("/secured/home");
+					return;
+				}
 			}
 			RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
 			rp.forward(req, resp);

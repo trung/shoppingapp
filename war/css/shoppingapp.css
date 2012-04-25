@@ -50,9 +50,10 @@ div#createUserDiv {
 	padding-right: 100px;
 }
 
-div#createUserDiv h3 {
+div h3 {
 	margin: 0px;
-	padding: 10px 0px;
+	padding: 10px 0px 0px 0px;
+	margin-bottom: 10px;
 	display:block;
 	border-bottom: 1px solid #9c9c9c;
 }
@@ -62,6 +63,7 @@ div.errorMsg {
 	background-color: #FEF1EC;
 	color: #CD0A0A;
 	padding: 7px 10px;
+	margin-top: 10px;
 }
 
 div.infoMsg {

@@ -85,15 +85,6 @@ public class User extends AbstractModel{
 		super(entity);
 	}
 
-
-	public void setProperty(UserProperty propertyName, Object value) {
-		entity.setProperty(propertyName.toString(), value);
-	}
-
-	public Object getProperty(UserProperty propertyName) {
-		return entity.getProperty(propertyName.toString());
-	}
-
 	public void setPassword(String password) {
 		setProperty(UserProperty.password, password);
 	}

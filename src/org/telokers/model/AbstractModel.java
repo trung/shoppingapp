@@ -35,4 +35,13 @@ public abstract class AbstractModel implements Serializable {
 	}
 
 	public abstract Entity getEntity();
+
+	public void setProperty(Enum<?> propertyName, Object value) {
+		entity.setProperty(propertyName.toString(), value);
+	}
+
+	public Object getProperty(Enum<?> propertyName) {
+		return entity == null ? null : entity.getProperty(propertyName.toString());
+	}
+
 }

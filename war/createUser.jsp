@@ -40,11 +40,11 @@
 			}
 		}
 	}
-	
+
 	function validate_and_submit(){
 		password = $("password").value;
 		cpassword = $("cpassword").value;
-		
+
 		if(password != cpassword){
 			alert("Confirmed password does not match");
 		}
@@ -70,8 +70,8 @@
 <body onload="startUp()">
 	<div id="createUserDiv">
 		<h1>Create new account</h1>
-		<h2><%=errorMsg%></2>
 		<div id="infoMsg">All fields are compulsory</div>
+		<div class="<%= (errorMsg.length() > 0 ? "errorMsg" : "") %>"><%= errorMsg%></div>
 		<form id="submitForm" action="/createUser" method="POST">
 		<h3>Profile</h3>
 		<table border="0">

@@ -51,4 +51,8 @@ public class MiscConstants {
 	public static final String STATUS_APPROVED = "Approved";
 	public static final String STATUS_SUSPEND = "Suspend";
 	public static final String[] STATUSES = new String[] {STATUS_APPROVED, STATUS_SUSPEND};
+
+	public static final String KEY_MY_PRODUCTS = "myProducts";
+	public static final String KEY_MY_EDIT_PRODUCT = "myProductEdit";
+
 }

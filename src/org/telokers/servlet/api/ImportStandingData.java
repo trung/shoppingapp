@@ -4,10 +4,6 @@
 package org.telokers.servlet.api;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -15,14 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.telokers.model.Category;
 import org.telokers.model.User;
-import org.telokers.model.dao.JpaUserDao;
-
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
+import org.telokers.model.dao.UserDao;
 
 /**
  *
@@ -47,23 +37,12 @@ public class ImportStandingData extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		resp.setContentType("application/json");
-		resp.setCharacterEncoding("UTF-8");
+		User user = new User("bear");
+		user.setEmail("bear@grizzly.com");
+		user.setPassword("abc123");
+		user.setName("Super Bear");
 
-		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-		Entity entity = new Entity("Customer", 1l);
-		entity.setProperty("username", "telokers");
-		entity.setProperty("password", "12345");
-		ds.put(entity);
-
-		resp.getWriter().write("Done!");
-
-		User user = new User();
-
-		JpaUserDao userDao = JpaUserDao.instance();
-		userDao.persistUser(user);
-
-		User testUser = userDao.findByUserName("abc@def.com");
+		UserDao.persistUser(user);
 
 
 
@@ -119,7 +98,7 @@ public class ImportStandingData extends HttpServlet {
 	 * @param count
 	 * @return
 	 */
-	private Set<Key> randomCategorySelection(
+	/*private Set<Key> randomCategorySelection(
 			List<Category> importedCategories, int count) {
 		Set<Key> ids = new HashSet<Key>();
 		int i = 0;
@@ -134,5 +113,5 @@ public class ImportStandingData extends HttpServlet {
 			i++;
 		}
 		return ids;
-	}
+	}*/
 }

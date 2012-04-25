@@ -6,6 +6,7 @@ package org.telokers.model;
 
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.telokers.service.utils.MiscConstants;
 
@@ -38,7 +39,12 @@ public class User extends AbstractModel{
 		cardNo,
 		cardType,
 		cardHolderName,
-		expDate
+		expDate,
+		csrfToken,
+		lastModifiedOfStatus,
+		suspensionStart,
+		suspensionEnd,
+		remarks
 	}
 
 	public User(String userId) {
@@ -197,5 +203,37 @@ public class User extends AbstractModel{
 
 	public void setCardExpDate(String expDate) {
 		setProperty(UserProperty.expDate, expDate);
+	}
+
+	/**
+	 * @return
+	 */
+	public Date getLastLogin() {
+		return (Date)getProperty(UserProperty.lastLogin);
+	}
+
+	public void createCSRFToken() {
+		setProperty(UserProperty.csrfToken, UUID.randomUUID().toString());
+	}
+
+	public String getCSRFToken() {
+		return (String) getProperty(UserProperty.csrfToken);
+	}
+
+	public void setLastModifiedOfStatus(Date d) {
+		setProperty(UserProperty.lastModifiedOfStatus, d);
+	}
+
+	public Date getLastModifiedOfstatus() {
+		return (Date) getProperty(UserProperty.lastModifiedOfStatus);
+	}
+
+	public void setSuspensionPeriod(Date start, Date end) {
+		setProperty(UserProperty.suspensionStart, start);
+		setProperty(UserProperty.suspensionEnd, end);
+	}
+
+	public Date getSuspensionStart() {
+		return (Date) getProperty(UserProperty.suspensionStart);
 	}
 }

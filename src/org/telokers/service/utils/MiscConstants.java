@@ -26,6 +26,8 @@ public class MiscConstants {
 
 	public static final String KEY_USERS = "users";
 
+	public static final String KEY_CSRF_TOKEN = "csrfToken";
+
 	//fields;
 
 	public static final String USER_ID = "userId";

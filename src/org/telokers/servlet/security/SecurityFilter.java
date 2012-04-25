@@ -60,7 +60,7 @@ public class SecurityFilter implements Filter {
 			chain.doFilter(request, response);
 		} catch (LoginException le) {
 			logger.log(Level.FINE, "Login required!" + le.getMessage());
-			request.setAttribute(MiscConstants.ERROR_MESSAGE, "Login is required or your session has been expired");
+			request.setAttribute(MiscConstants.ERROR_MESSAGE, "Login is required, your session has been expired or your account has not been approved");
 			RequestDispatcher rp = servletContext.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
 			rp.forward(request, response);
 		} catch (SecurityException se) {
@@ -79,14 +79,29 @@ public class SecurityFilter implements Filter {
 			ServletResponse response, String sessionId) throws LoginException, SecurityException {
 
 		User user = UserDao.findBySession(sessionId);
-		if (user == null) {
-			throw new LoginException("Session [" + sessionId + "] not found");
+		String requestToken = request.getParameter(MiscConstants.KEY_CSRF_TOKEN);
+		if (user == null || isSessionExpired(user, request)) {
+			throw new LoginException("Session [" + sessionId + "] not found or expired");
 		} else if (request.getRequestURI().startsWith("/secured/admin") && !user.isAdmin()){
 			throw new SecurityException("You are not authorized to access the resource");
+		} else if (!user.isActive()) {
+			throw new LoginException("User is not active");
+		} else if (requestToken != null && !requestToken.equals(user.getCSRFToken())) {
+			throw new SecurityException("Invalid token");
 		}
 		user.setLastLogin(new Date());
 		UserDao.persistUser(user);
 		request.setAttribute(MiscConstants.KEY_USER, user);
+	}
+
+	/**
+	 * @param user
+	 * @param request
+	 * @return
+	 */
+	private boolean isSessionExpired(User user, HttpServletRequest request) {
+		return (user.getLastLogin() != null
+				&& new Date().getTime() - user.getLastLogin().getTime() >= request.getSession().getMaxInactiveInterval() * 60 * 1000);
 	}
 
 	@Override

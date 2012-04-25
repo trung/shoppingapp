@@ -82,6 +82,7 @@ table.container {
 }
 
 table.container th {
+	text-align: left;
 	border-bottom: 1px solid #9c9c9c;
 	padding: 5px 3px;
 }

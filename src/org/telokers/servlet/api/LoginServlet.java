@@ -49,6 +49,7 @@ public class LoginServlet extends HttpServlet{
 			logger.log(Level.FINE, "user [" + userId + "] login successfully on session [" + session.getId() + "]");
 			user.setUserSessionId(session.getId());
 			user.setLastLogin(new Date());
+			user.createCSRFToken();
 			UserDao.persistUser(user);
 			resp.sendRedirect("/secured/home");
 		}

@@ -1,3 +1,4 @@
+<%@page import="org.telokers.service.utils.RequestUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="org.telokers.model.User"%>
 <%@page import="org.telokers.service.utils.MiscConstants"%>
@@ -9,10 +10,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link href="/css/shoppingapp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/js/shoppingapp.js"></script>
-<title>Home</title>
+<title>Admin</title>
 <%
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
 	List<User> users = (List<User>) request.getAttribute(MiscConstants.KEY_USERS);
+	String errorMsg = RequestUtils.getAttribute(request, MiscConstants.ERROR_MESSAGE);
 %>
 <script type="text/javascript">
 	function onSelectAllClick() {
@@ -29,6 +31,7 @@
 <div style="float:right">
 Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Admin
+|
 <a href="/secured/editUser">Edit profile</a>
 |
 <a href="/logout">Log out</a>
@@ -37,9 +40,12 @@ Admin
 
 <div id="mainDiv">
 	<h3>Users</h3>
+	<form action="/secured/admin" method="POST">
+	<input type="hidden" id="csrfToken" name="csrfToken" value="<%= user.getCSRFToken()%>" />
+	<div class="<%= (errorMsg.length() > 0 ? "errorMsg" : "") %>"><%= errorMsg%></div>
 	<div id="buttons">
-		<input type="button" id="approve" name="approve" value="Approve" class="button" />
-		<input type="button" id="suspend" name="suspend" value="Suspend" class="button" />
+		<input type="submit" id="approve" name="approve" value="Approve" class="button" />
+		<input type="submit" id="suspend" name="suspend" value="Suspend" class="button" />
 	</div>
 	<br/>
 	<table border="0" class="container">
@@ -47,9 +53,11 @@ Admin
 			<tr>
 				<th><input type="checkbox" id="selectAll" name="selectAll" onclick="onSelectAllClick()"/></th>
 				<th>User Id</th>
-				<th>Name</th>
-				<th>Email</th>
+				<th>Account Type</th>
 				<th>Status</th>
+				<th>Last Modified of Status</th>
+				<th>Suspension Period</th>
+				<th>Remarks</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -60,7 +68,7 @@ Admin
 					}
 			%>
 				<tr>
-					<td width="19"><input type="checkbox" name="userIds" /></td>
+					<td width="19"><input type="checkbox" name="userIds" value="<%= u.getUserId()%>" /></td>
 					<td><%= u.getUserId()%></td>
 					<td><%= u.getName()%></td>
 					<td><%= u.getEmail()%></td>
@@ -71,6 +79,7 @@ Admin
 			%>
 		</tbody>
 	</table>
+	</form>
 </div>
 </body>
 </html>

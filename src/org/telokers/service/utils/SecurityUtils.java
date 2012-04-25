@@ -46,7 +46,8 @@ public class SecurityUtils {
 		byte[] salt = new byte[16];
 		byte[] hash = null;
 		Random random = new Random(); 
-		random.nextBytes(salt);
+		//random.nextBytes(salt);
+		//KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 2048, 160);
 		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 2048, 160);
 		SecretKeyFactory f = null;
 		try {

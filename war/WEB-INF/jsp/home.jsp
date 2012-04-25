@@ -129,15 +129,14 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<tr>
 					<td width="100"><table border="0" style="margin: 0; padding: 0; border-collapse: collapse;">
 						<tr><td><a href="javascript:void()" onclick="onEditClick('<%= p.getProductId()%>')">Edit</a></td>
-							<td><<a href="javascript:void()" onclick="onDeleteClick('<%= p.getProductId()%>')">Delete</a></td>
+							<td><a href="javascript:void()" onclick="onDeleteClick('<%= p.getProductId()%>')">Delete</a></td>
 						</tr>
 					</table></td>
-					<td></td>
-					<td></td>
-					<td><%= HTMLEncode.encode(product.getProductName())%></td>
-					<td><%= HTMLEncode.encode(product.getCategory())%></td>
-					<td><%= product.getPriceString()%></td>
-					<td><%= HTMLEncode.encode(product.getComment())%></td>
+					<td><% if (p.hasPicture()) { %><img alt="picture" height="150px" src="<%= p.getPictureUrl()%>"/> <% } %></td>
+					<td><%= HTMLEncode.encode(p.getProductName())%></td>
+					<td><%= HTMLEncode.encode(p.getCategory())%></td>
+					<td><%= p.getPriceString()%></td>
+					<td><%= HTMLEncode.encode(p.getComment())%></td>
 				</tr>
 			<%
 				}

@@ -21,7 +21,7 @@
   <body onload="startUp()">
 	<div id="loginDiv">
 		<center>
-		<form action="/loginServlet" method="POST">
+		<form action="/login" method="POST">
 		    <h1>Shopping App</h1>
 		    <% if (errorMsg != null && errorMsg.length() > 0) { %><div id="errorMsg" class="errorMsg"><%= errorMsg%></div><% } %>
 		    <table border="0">

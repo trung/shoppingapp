@@ -20,6 +20,9 @@ public class UserDao {
 	}
 
 	public static User findbyUserId(String userId) {
+		if (userId == null || userId.length() == 0) {
+			return null;
+		}
 		try {
 			Iterator<Entity> userIterator = DataStoreManager.instance()
 			.findEntityByField(tempUser, User.UserProperty.userId.toString(), userId).iterator();

@@ -5,8 +5,6 @@ package org.telokers.model;
 
 
 
-import org.telokers.service.utils.MiscUtils;
-
 import com.google.appengine.api.datastore.Entity;
 
 
@@ -21,7 +19,7 @@ public class User extends AbstractModel{
 		name,
 		email,
 		userId,
-		password, 
+		password,
 		sessionId
 	}
 
@@ -32,7 +30,7 @@ public class User extends AbstractModel{
 		entity = new Entity(User.class.getSimpleName(), userId);
 		setUserId(userId);
 	}
-	
+
 	public User(Entity entity) throws Exception{
 		super(entity);
 	}
@@ -45,7 +43,7 @@ public class User extends AbstractModel{
 	public Object getProperty(UserProperty propertyName) {
 		return entity.getProperty(propertyName.toString());
 	}
-	
+
 	public void setPassword(String password) {
 		setProperty(UserProperty.password, password);
 	}
@@ -57,11 +55,11 @@ public class User extends AbstractModel{
 	public void setUserSessionId(String sid) {
 		setProperty(UserProperty.sessionId, sid);
 	}
-	
+
 	public void getUserSessionId(String sid) {
 		setProperty(UserProperty.sessionId, sid);
 	}
-	
+
 	public String getName() {
 		return (String) getProperty(UserProperty.name);
 	}
@@ -69,7 +67,7 @@ public class User extends AbstractModel{
 	public void setName(String name) {
 		setProperty(UserProperty.name, name);
 	}
-	
+
 	public String getUserId() {
 		return (String) getProperty(UserProperty.userId);
 	}
@@ -77,7 +75,7 @@ public class User extends AbstractModel{
 	private void setUserId(String userId) {
 		setProperty(UserProperty.userId, userId);
 	}
-	
+
 	public String getEmail() {
 		return (String) getProperty(UserProperty.email);
 	}
@@ -86,8 +84,9 @@ public class User extends AbstractModel{
 		setProperty(UserProperty.email, email);
 	}
 
+	@Override
 	public Entity getEntity(){
 		return this.entity;
 	}
-	
+
 }

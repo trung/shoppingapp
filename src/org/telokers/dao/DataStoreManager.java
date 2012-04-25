@@ -115,7 +115,7 @@ public class DataStoreManager {
 	
 	public Iterable<Entity> findEntityByField(AbstractModel model, String field, String value){
 		Query query = new Query(model.getClass().getSimpleName());
-		query.addFilter(field, Query.FilterOperator.EQUAL, field);
+		query.addFilter(field, Query.FilterOperator.EQUAL, value);
 		PreparedQuery pq = datastore.prepare(query);
 		return pq.asIterable();
 	}

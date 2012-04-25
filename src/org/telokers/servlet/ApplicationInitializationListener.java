@@ -12,6 +12,7 @@ import javax.servlet.ServletContextListener;
 import org.telokers.dao.UserDao;
 import org.telokers.model.User;
 import org.telokers.service.utils.MiscConstants;
+import org.telokers.service.utils.SecurityUtils;
 
 /**
  * @author trung
@@ -33,7 +34,7 @@ public class ApplicationInitializationListener implements ServletContextListener
 		// all application initialization comes here
 		User user = new User("admin");
 		user.setEmail("admin@telokers.org");
-		user.setPassword("admin");
+		user.setPassword(SecurityUtils.hashPassword("admin"));
 		user.setName("Super Admin");
 		user.setRole(MiscConstants.ROLE_ADMIN);
 		user.setActive(true);
@@ -41,7 +42,7 @@ public class ApplicationInitializationListener implements ServletContextListener
 
 		user = new User("user");
 		user.setEmail("user@telokers.org");
-		user.setPassword("user");
+		user.setPassword(SecurityUtils.hashPassword("user"));
 		user.setName("Telokers");
 		user.setRole(MiscConstants.ROLE_USER);
 		user.setActive(true);

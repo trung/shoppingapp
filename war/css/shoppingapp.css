@@ -1,0 +1,56 @@
+a {
+	text-decoration: none;
+	border-bottom: dotted 1px #9c9c9c;
+	color: black;
+}
+
+a:visited a:hover {
+	color: black;
+	border-botton: solid 1px #9c9c9c;
+}
+
+input {
+	display: block;
+	border: solid 1px #9c9c9c;
+	padding: 5px 8px 5px 8px;
+}
+
+div#loginDiv
+{
+	border: solid 1px #9c9c9c;
+	width: 400px;
+	padding: 5px 10px 5px 10px;
+}
+
+div#loginDiv h1, table {
+	padding: 10px 0px 20px 0px;
+	margin: 0px;
+}
+
+div#loginDiv table {
+	width: 300px;
+}
+
+td.label {
+	width: 150px;
+}
+
+input.value {
+	width: 200px;
+}
+
+input.button {
+	width: 100px;
+}
+
+div#createUserDiv {
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
+div#createUserDiv h3 {
+	margin: 0px;
+	padding: 10px 0px;
+	display:block;
+	border-bottom: solid 1px #9c9c9c;
+}

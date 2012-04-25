@@ -1,26 +1,49 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
-<!-- above set at the top of the file will set     -->
-<!-- the browser's rendering engine into           -->
-<!-- "Quirks Mode". Replacing this declaration     -->
-<!-- with a "Standards Mode" doctype is supported, -->
-<!-- but may lead to some differences in layout.   -->
-
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Shopping App</title>
+    <link href="css/shoppingapp.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="js/shoppingapp.js"></script>
-    <script type="text/javascript" src="css/shoppingapp.css"></script>
   </head>
+  <script type="text/javascript">
+  	function startUp() {
+		$("userId").focus();
+  	}
 
+  	function onLoginClick() {
+
+  	}
+
+  </script>
   <body onload="startUp()">
 	<div id="loginDiv">
-	    <h1>Shopping App</h1>
-	    <span id="userName">Username</span> <input type="text" name="userName" id="userName" /> <br/>
-		<span id="password">Password</span> <input type="password" name="password" id="password" /> <br/>
-		<a href="createUser.jsp">Create new account</a>
-		<button id="login" name="login" onclick="onLoginClick()">Login</button>
+		<center>
+		<form action="/loginServlet" method="POST">
+		    <h1>Shopping App</h1>
+		    <div id="errorMsg"></div>
+		    <table border="0">
+		    	<tbody>
+		    		<tr>
+		    			<td class="label">User Id</td>
+		    			<td><input type="text" name="userId" id="userId" class="value" /></td>
+		    		</tr>
+		    		<tr>
+		    			<td class="label">Password</td>
+		    			<td><input type="password" name="password" id="password" class="value" /></td>
+		    		</tr>
+		    		<tr>
+		    			<td colspan="2">
+		    				<a href="createUser.jsp" style="float:left">Create new account</a>
+		    				<input type="submit" id="login" name="login" style="float:right" class="button" />
+		    			</td>
+		    		</tr>
+		    	</tbody>
+		    </table>
+		</form>
+		</center>
 	</div>
   </body>
 </html>

@@ -72,4 +72,11 @@ public class ProductDao {
 		DatastoreServiceFactory.getDatastoreService().put(p.getEntity());
 	}
 
+	/**
+	 * @param productId
+	 */
+	public static void deleteById(Product p) {
+		DatastoreServiceFactory.getDatastoreService().delete(p.getEntity().getKey());
+	}
+
 }

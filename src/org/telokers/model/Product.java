@@ -4,6 +4,9 @@
 package org.telokers.model;
 
 import java.text.DecimalFormat;
+import java.util.Date;
+
+import org.telokers.service.utils.MiscUtils;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
@@ -22,12 +25,22 @@ public class Product extends AbstractModel {
 		picture,
 		price,
 		comment,
-		seller
+		seller,
+		postedDate
 	}
 
 	public Product(String id) {
 		super(id);
 		entity = new Entity(getKey(id));
+		setProductId(id);
+		setPostedDate(new Date());
+	}
+
+	/**
+	 * @param id
+	 */
+	public void setProductId(String id) {
+		setProperty(ProductProperty.productId, id);
 	}
 
 	/**
@@ -127,5 +140,18 @@ public class Product extends AbstractModel {
 	 */
 	public void setPictureBlobKey(String keyString) {
 		setProperty(ProductProperty.picture, keyString);
+	}
+
+	public void setPostedDate(Date d) {
+		setProperty(ProductProperty.postedDate, d);
+	}
+
+	public Date getPostedDate() {
+		return (Date) getProperty(ProductProperty.postedDate);
+	}
+
+	public String getPostedDateString() {
+		Date d = getPostedDate();
+		return MiscUtils.formatDateTime(d);
 	}
 }

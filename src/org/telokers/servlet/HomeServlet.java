@@ -49,12 +49,43 @@ public class HomeServlet extends HttpServlet {
 			createProduct(req, resp);
 		} else if ("save".equalsIgnoreCase(action)){
 			saveProduct(req, resp);
+		} else if ("delete".equalsIgnoreCase(action)){
+			deleteProduct(req, resp);
 		} else {
-			User u = (User) req.getAttribute(MiscConstants.KEY_USER);
-			req.setAttribute(MiscConstants.KEY_MY_PRODUCTS, ProductDao.findByUserId(u.getUserId()));
-			RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/home.jsp");
-			rp.forward(req, resp);
+			render(req, resp);
 		}
+	}
+
+	/**
+	 * @param req
+	 * @param resp
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void render(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		User u = (User) req.getAttribute(MiscConstants.KEY_USER);
+		req.setAttribute(MiscConstants.KEY_MY_PRODUCTS, ProductDao.findByUserId(u.getUserId()));
+		RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/home.jsp");
+		rp.forward(req, resp);
+	}
+
+	/**
+	 * @param req
+	 * @param resp
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void deleteProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String productId = req.getParameter("productId");
+		Product product = ProductDao.findById(productId);
+		if (product == null) {
+			req.setAttribute(MiscConstants.ERROR_MESSAGE, "Product [" + productId + "] is not found");
+			render(req, resp);
+			return;
+		}
+		ProductDao.deleteById(product);
+		resp.sendRedirect("/secured/home");
+
 	}
 
 	/**
@@ -109,6 +140,7 @@ public class HomeServlet extends HttpServlet {
 		}
 
 		ProductDao.persist(p);
+		resp.sendRedirect("/secured/home");
 	}
 
 	/**

@@ -52,9 +52,12 @@
 	}
 
 	function onDeleteClick(pId) {
-		$("productId").value = pId;
-		$("action").value = "delete";
-		$("myProductForm").submit();
+		var r = confirm("Do you want to delete the selected product?");
+		if (r ==  true) {
+			$("productId").value = pId;
+			$("action").value = "delete";
+			$("myProductForm").submit();
+		}
 	}
 
 	function startUp() {
@@ -101,7 +104,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</tr>
 				<tr>
 					<td class="label">Comment</td>
-					<td><input type="text" id="name" name="name" class="value" value="<%= HTMLEncode.encode(product.getComment())%>"/></td>
+					<td><input type="text" id="comment" name="comment" class="value" value="<%= HTMLEncode.encode(product.getComment())%>"/></td>
 				</tr>
 			</tbody>
 		</table>
@@ -132,10 +135,10 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<td><a href="javascript:void()" onclick="onDeleteClick('<%= p.getProductId()%>')">Delete</a></td>
 						</tr>
 					</table></td>
-					<td><% if (p.hasPicture()) { %><img alt="picture" height="150px" src="<%= p.getPictureUrl()%>"/> <% } %></td>
+					<td width="110"><% if (p.hasPicture()) { %><img alt="picture" width="100px" src="<%= p.getPictureUrl()%>"/> <% } %></td>
 					<td><%= HTMLEncode.encode(p.getProductName())%></td>
 					<td><%= HTMLEncode.encode(p.getCategory())%></td>
-					<td><%= p.getPriceString()%></td>
+					<td width="100"><%= p.getPriceString()%></td>
 					<td><%= HTMLEncode.encode(p.getComment())%></td>
 				</tr>
 			<%

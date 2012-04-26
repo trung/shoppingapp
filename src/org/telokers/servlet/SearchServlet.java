@@ -49,6 +49,7 @@ public class SearchServlet extends HttpServlet {
 			if (p != null) { // just display the details
 				p.setCommentAllowed(PaymentTransactionDao.hasTransaction(p.getProductId(), u.getUserId()));
 				p.setComments(ProductDao.getComments(p.getProductId()));
+				logger.fine("There are comments " + p.getComments());
 				req.setAttribute(MiscConstants.KEY_MY_EDIT_PRODUCT, p);
 			} else {
 				list = ProductDao.findByKeyword(q);
@@ -56,9 +57,6 @@ public class SearchServlet extends HttpServlet {
 		}
 		if (list == null) {
 			list = new ArrayList<Product>();
-		}
-		for (Product p : list) {
-			p.setComments(ProductDao.getComments(p.getProductId()));
 		}
 		req.setAttribute(MiscConstants.KEY_ALL_PRODUCTS, list);
 		getServletContext().getRequestDispatcher("/WEB-INF/jsp/search.jsp").forward(req, resp);

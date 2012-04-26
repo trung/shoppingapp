@@ -173,6 +173,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<table id="myTransactionTable" border="0" class="container">
 		<thead>
 			<tr>
+				<th>Transaction Id</th>
 				<th>Ref Id</th>
 				<th>Status</th>
 				<th>Transaction Date</th>
@@ -184,6 +185,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				for (PaymentTransaction p : myTransactions) {
 			%>
 				<tr>
+					<td><%= p.getTransactionId() %></td>
 					<td><%= HTMLEncode.encode(p.getRefId())%></td>
 					<td><%= HTMLEncode.encode(p.getStatus())%></td>
 					<td><%= p.getTimestampString()%></td>

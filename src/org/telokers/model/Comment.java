@@ -57,7 +57,7 @@ public class Comment extends AbstractModel {
 	}
 
 	public int getRating() {
-		Integer r = (Integer) getProperty(CommentProperty.rating);
+		Long r = (Long) getProperty(CommentProperty.rating);
 		return  r == null ? -1 : r.intValue();
 	}
 
@@ -82,6 +82,10 @@ public class Comment extends AbstractModel {
 	 */
 	public static String getKind() {
 		return Comment.class.getSimpleName();
+	}
+
+	public Date getCreatedDate() {
+		return (Date) getProperty(CommentProperty.createdDate);
 	}
 
 }

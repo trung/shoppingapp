@@ -172,7 +172,7 @@ public class Product extends AbstractModel {
 	}
 
 	public int getRating() {
-		Integer i = (Integer) getProperty(ProductProperty.rating);
+		Long i = (Long) getProperty(ProductProperty.rating);
 		if (i == null) {
 			return 0;
 		}
@@ -192,7 +192,7 @@ public class Product extends AbstractModel {
 	}
 
 	public int getCountRating() {
-		Integer i = (Integer) getProperty(ProductProperty.countRating);
+		Long i = (Long) getProperty(ProductProperty.countRating);
 		if (i == null) {
 			return 0;
 		}

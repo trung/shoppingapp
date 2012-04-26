@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -104,7 +103,7 @@ public class MakePaymentServlet extends HttpServlet {
 		String refId = parseRefId(response);
 		String info = parseInfo(response);
 
-		PaymentTransaction pt = new PaymentTransaction(UUID.randomUUID().toString());
+		PaymentTransaction pt = new PaymentTransaction(String.valueOf(System.currentTimeMillis()));
 		pt.setProductIds(cart.getProductIds());
 		pt.setUserId(u.getUserId());
 		pt.setTimestamp(transactionDate);

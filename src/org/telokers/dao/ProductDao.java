@@ -5,6 +5,8 @@ package org.telokers.dao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -24,7 +26,6 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Transaction;
 
 /**
@@ -172,7 +173,6 @@ public class ProductDao {
 		try {
 			Query query = new Query(Comment.getKind());
 			query.addFilter(CommentProperty.productId.toString(), FilterOperator.EQUAL, productId);
-			query.addSort(CommentProperty.createdDate.toString(), SortDirection.DESCENDING);
 			List<Entity> e = DatastoreServiceFactory.getDatastoreService().prepare(query).asList(FetchOptions.Builder.withDefaults());
 			if (e == null || e.size() == 0) {
 				return new ArrayList<Comment>();
@@ -181,9 +181,18 @@ public class ProductDao {
 			for (Entity ee : e) {
 				list.add(new Comment(ee));
 			}
+			Collections.sort(list, new Comparator<Comment>() {
+				/* (non-Javadoc)
+				 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+				 */
+				@Override
+				public int compare(Comment o1, Comment o2) {
+					return o2.getCreatedDate().compareTo(o1.getCreatedDate());
+				}
+			});
 			return list;
 		} catch (Exception e) {
-			logger.info("Can't get comments");
+			logger.log(Level.SEVERE, "Can't get comments",e);
 			return new ArrayList<Comment>();
 		}
 	}

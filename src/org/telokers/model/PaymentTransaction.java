@@ -29,6 +29,7 @@ public class PaymentTransaction extends AbstractModel {
 	public PaymentTransaction(String key) {
 		super(key);
 		entity = new Entity(getKind(), key);
+		setId(key);
 	}
 
 	public void setId(String key) {
@@ -102,6 +103,10 @@ public class PaymentTransaction extends AbstractModel {
 
 	public String getAmountString() {
 		return MiscUtils.formatPrice((Double) getProperty(PaymentTransactionProperty.amount));
+	}
+
+	public String getTransactionId() {
+		return (String) getProperty(PaymentTransactionProperty.id);
 	}
 
 }

@@ -116,10 +116,10 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<table border="0">
 			<tbody>
 				<tr>
-					<td><%= c.getUserId()%></td>
 					<td><%= c.getCreatedDateString()%></td>
-					<td><%= c.getRating()%></td>
-					<td><%= c.getComment()%></td>
+					<td><%= c.getUserId()%></td>
+					<td>rated: <%= c.getRating()%></td>
+					<td>, said: <%= HTMLEncode.encode(c.getComment())%></td>
 				</tr>
 			</tbody>
 		</table>

@@ -136,7 +136,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<input type="hidden" id="action" name="action" value="Create"/>
+		<input type="hidden" id="action" name="action" value="CreateUser"/>
 		<input type="button" id="createButton" name="createButton" value="Create" class="button" onclick="validate_and_submit()"/>
 		</form>
 	</div>

@@ -49,7 +49,7 @@ public class CreateEditUserServlet extends HttpServlet{
 		String userId = MiscUtils.blankifyString(req.getParameter(MiscConstants.USER_ID));
 		
 		//If "create"
-		if( (operation != null && operation.equals("Create"))
+		if( (operation != null && operation.equals("CreateUser"))
 		    && (UserDao.findbyUserId(userId) != null) ){
 
 			req.setAttribute(MiscConstants.ERROR_MESSAGE, "User has already existed");
@@ -70,7 +70,7 @@ public class CreateEditUserServlet extends HttpServlet{
 		if (Validator.isEmpty(userId)) {
 			errorMessageHolder.userIdErrorMsg = "Empty user Id";
 			proceed = false;
-			if( (operation != null) && operation.equals("Create") ){
+			if( (operation != null) && operation.equals("CreateUser") ){
 				getServletContext().getRequestDispatcher("/createUser.jsp").forward(req, resp);
 			}
 		}
@@ -90,7 +90,7 @@ public class CreateEditUserServlet extends HttpServlet{
 		if(proceed){
 			
 			//Pre approve user in edit mode
-			if( ((operation != null) && !operation.equals("Create")) ){
+			if( ((operation != null) && !operation.equals("CreateUser")) ){
 				user.setStatus(MiscConstants.STATUS_APPROVED);
 			}
 
@@ -100,9 +100,11 @@ public class CreateEditUserServlet extends HttpServlet{
 			logger.log(Level.FINE, "User created succesfully");
 			
 			RequestDispatcher rp = null;
-			if( ((operation != null) && !operation.equals("Create")) ){
-				req.setAttribute(MiscConstants.ERROR_MESSAGE, "User profile edited successfully");
-				rp = getServletContext().getRequestDispatcher("/secured/home");
+			if( ((operation != null) && !operation.equals("CreateUser")) ){
+				//req.setAttribute(MiscConstants.ERROR_MESSAGE, "User profile edited successfully");
+				//rp = getServletContext().getRequestDispatcher("/secured/home");
+//				resp.sendRedirect("/secured/home?" + MiscConstants.ERROR_MESSAGE +"='user profile edited successfully'");
+				resp.sendRedirect("/secured/home");
 			}
 			else {
 				req.setAttribute(MiscConstants.ERROR_MESSAGE, "User created successfully. Please login");
@@ -122,7 +124,7 @@ public class CreateEditUserServlet extends HttpServlet{
 
 			RequestDispatcher rp = null;
 
-			if( (operation != null) && operation.equals("Create") ){
+			if( (operation != null) && operation.equals("CreateUser") ){
 				rp = getServletContext().getRequestDispatcher("/createUser.jsp");
 			}
 			else {

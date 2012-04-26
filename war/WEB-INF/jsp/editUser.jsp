@@ -158,8 +158,8 @@
 				</tr>
 			</tbody>
 		</table>
-		<input type="hidden" id="action" name="action" value="Edit"/>
-		<input type="button" id="editButton" name="createButton" value="Edit" class="button" onclick="validate_and_submit()"/>
+		<input type="hidden" id="action" name="action" value="EditUser"/>
+		<input type="button" id="editButton" name="createButton" value="SaveDetails" class="button" onclick="validate_and_submit()"/>
 		</form>
 	</div>
 </body>

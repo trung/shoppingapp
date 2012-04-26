@@ -68,6 +68,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>cartServlet</servlet-name>
 		<servlet-class>org.telokers.servlet.CartServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>makePaymentServlet</servlet-name>
+		<servlet-class>org.telokers.servlet.MakePaymentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>makePaymentServlet</servlet-name>
+		<url-pattern>/secured/makePayment</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>searchServlet</servlet-name>
 		<url-pattern>/secured/search</url-pattern>

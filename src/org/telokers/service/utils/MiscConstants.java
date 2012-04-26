@@ -1,6 +1,9 @@
 package org.telokers.service.utils;
 
 public class MiscConstants {
+	public static final String SHARE_SECRET = "8skjh32sms";
+	public static final String TEAM_NAME = "syscanteam6";
+
 	public static final String USER_SESSION_KEY = "user_session_key";
 
 	public static final String KEY_USER_ID_ERROR_MSG = "userIdErrorMsg";

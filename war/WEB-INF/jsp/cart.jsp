@@ -106,6 +106,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	</form>
 
 	<form id="makePaymentForm" action="/secured/makePayment" method="POST">
+		<input type="hidden" id="csrfToken" name="csrfToken" value="<%= user.getCSRFToken()%>" />
 	</form>
 
 </div>

@@ -39,19 +39,24 @@ public class CreateEditUserServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
+		
 		//Re-initialize all error messagespera
 		ErrorMessageHolder errorMessageHolder = new ErrorMessageHolder();
 
-		boolean proceed = false;
-
+		boolean outerproceed = true;
+		boolean innerproceed = false;
+		
+		boolean isEdit = true;
+		
 		String operation = MiscUtils.blankifyString(req.getParameter("action"));
 		String userId = MiscUtils.blankifyString(req.getParameter(MiscConstants.USER_ID));
 		
 		//If "create"
-		if( (operation != null && operation.equals("CreateUser"))
-		    && (UserDao.findbyUserId(userId) != null) ){
-
+		if( operation != null && operation.equals("CreateUser") ){
+			isEdit = false;
+		}
+				
+		if (!isEdit && UserDao.findbyUserId(userId) != null){
 			req.setAttribute(MiscConstants.ERROR_MESSAGE, "User has already existed");
 			RequestDispatcher rp = getServletContext().getRequestDispatcher("/createUser.jsp");
 			rp.forward(req, resp);
@@ -67,50 +72,70 @@ public class CreateEditUserServlet extends HttpServlet{
 		String expYear = req.getParameter(MiscConstants.EXP_YEAR);*/
 		String simpleExpDate = req.getParameter(MiscConstants.SIMPLE_EXP_DATE);
 
-		if (Validator.isEmpty(userId)) {
+		if (!isEdit && Validator.isEmpty(userId)) {
 			errorMessageHolder.userIdErrorMsg = "Empty user Id";
-			proceed = false;
-			if( (operation != null) && operation.equals("CreateUser") ){
-				getServletContext().getRequestDispatcher("/createUser.jsp").forward(req, resp);
-			}
+			outerproceed = false;
 		}
-
-		User user = new User(userId);
+		
+		User user = null;
+		if(isEdit){
+			user = (User) req.getAttribute(MiscConstants.KEY_USER);
+		}
+		else {
+			user = new User(userId);
+		}
+		
 		user.setEmail(email);
 		user.setName(name);
-		user.setPassword(password);
 		user.setCardHolderName(cardHolderName);
 		user.setCardType(cardType);
 		user.setCardNo(cardNo);
 		user.setCardExpDate(simpleExpDate);
-//		user.setCardExpDate(expMonth + expYear);
-
-		proceed = validateUser(user, errorMessageHolder);
-
-		if(proceed){
-			
-			//Pre approve user in edit mode
-			if( ((operation != null) && !operation.equals("CreateUser")) ){
-				user.setStatus(MiscConstants.STATUS_APPROVED);
+		
+		if(isEdit){
+			user.setStatus(MiscConstants.STATUS_APPROVED);
+		}
+		
+		
+		if(isEdit){
+			if (!MiscUtils.isNullorBlank(password)){
+				user.setPassword(SecurityUtils.hashPassword(password));
 			}
+		}
+		else {
+			if(Validator.isEmpty(password)){
+				errorMessageHolder.passwordErrorMsg = "Empty password";
+				outerproceed = false;
+			}
+			else {
+				int pwStatus = Validator.isValidPW(user.getUserId(), password);
+				switch (pwStatus) {
+					case 1: errorMessageHolder.passwordErrorMsg = "Password is the same as User"; outerproceed = false; break;
+					case 2: errorMessageHolder.passwordErrorMsg = "Password length < 8"; outerproceed = false; break;
+					case 3: errorMessageHolder.passwordErrorMsg = "Password must be alphanumeric"; outerproceed = false; break;
+				}
+			}
+			user.setPassword(SecurityUtils.hashPassword(password));
+		}
+		
 
-			//Persisting user
-			user.setPassword(SecurityUtils.hashPassword(user.getPassword()));
+		innerproceed = validateUser(user, errorMessageHolder);
+
+		if(outerproceed && innerproceed){
+			//Pre approve user in edit mode
 			UserDao.persistUser(user);
 			logger.log(Level.FINE, "User created succesfully");
 			
 			RequestDispatcher rp = null;
-			if( ((operation != null) && !operation.equals("CreateUser")) ){
-				//req.setAttribute(MiscConstants.ERROR_MESSAGE, "User profile edited successfully");
-				//rp = getServletContext().getRequestDispatcher("/secured/home");
-//				resp.sendRedirect("/secured/home?" + MiscConstants.ERROR_MESSAGE +"='user profile edited successfully'");
+			if(isEdit){
+				//resp.sendRedirect("/secured/home?" + MiscConstants.INFO_MESSAGE +"=user profile edited successfully");
 				resp.sendRedirect("/secured/home");
 			}
 			else {
 				req.setAttribute(MiscConstants.ERROR_MESSAGE, "User created successfully. Please login");
 				rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
+				rp.forward(req, resp);
 			}
-			rp.forward(req, resp);
 		}
 		else {
 			req.setAttribute(MiscConstants.KEY_CARD_HOLDER_NAME_ERROR_MSG, errorMessageHolder.cardHolderNameErrorMsg);
@@ -124,11 +149,11 @@ public class CreateEditUserServlet extends HttpServlet{
 
 			RequestDispatcher rp = null;
 
-			if( (operation != null) && operation.equals("CreateUser") ){
-				rp = getServletContext().getRequestDispatcher("/createUser.jsp");
+			if(isEdit){
+				rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/editUser.jsp");
 			}
 			else {
-				rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/editUser.jsp");
+				rp = getServletContext().getRequestDispatcher("/createUser.jsp");
 			}
 			rp.forward(req, resp);
 		}
@@ -150,6 +175,10 @@ public class CreateEditUserServlet extends HttpServlet{
 			errorMsgHolder.nameErrorMsg = "Empty name";
 			proceed = false;
 		}
+		if (!Validator.isAlphabet(user.getName())){
+			errorMsgHolder.nameErrorMsg = "Name must be alphabetc";
+			proceed = false;
+		}
 		if (Validator.isEmpty(user.getEmail())){
 			errorMsgHolder.emailErrorMsg = "Empty email";
 			proceed = false;
@@ -157,19 +186,6 @@ public class CreateEditUserServlet extends HttpServlet{
 		if (!Validator.isEmail(user.getEmail())){
 			errorMsgHolder.emailErrorMsg = "Wrong email format";
 			proceed = false;
-		}
-		if(Validator.isEmpty(user.getPassword())){
-			errorMsgHolder.passwordErrorMsg = "Empty password";
-			proceed = false;
-		}
-		else {
-			int pwStatus = Validator.isValidPW(user.getUserId(), user.getPassword());
-			switch (pwStatus) {
-				case 1: errorMsgHolder.passwordErrorMsg = "Password is the same as User"; proceed = false; break;
-				case 2: errorMsgHolder.passwordErrorMsg = "Password length < 8"; proceed = false; break;
-				case 3: errorMsgHolder.passwordErrorMsg = "Password must be alphanumeric"; proceed = false; break;
-				//case 0: proceed = true; break;
-			}
 		}
 		if(Validator.isEmpty(user.getCardHolderName())){
 			errorMsgHolder.cardHolderNameErrorMsg = "Empty card holder name";

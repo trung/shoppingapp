@@ -63,14 +63,14 @@
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
 	
 	//Decrypt credit card
-	String encryptedCreditCardNo = user.getCardNo();
+	/* String encryptedCreditCardNo = user.getCardNo();
 	if(!MiscUtils.isNullorBlank(encryptedCreditCardNo)){
 		RSA rsa = new RSA();
 		String encryptKeyString = user.getEncryptKeyString();
 		String decryptedCreditCardNo = rsa.decrypt(new BigInteger(encryptedCreditCardNo), encryptKeyString).toString();
 		user.setCardNo(MiscUtils.blankifyString(decryptedCreditCardNo));
-	}
-
+	} */
+	String decryptedCreditCardNo = user.getDecryptedCreditCardNo();
 	String errorMsg = RequestUtils.getAttribute(request, MiscConstants.ERROR_MESSAGE);
 	String cardType = user.getCardType();
 	String userIdErrorMsg = RequestUtils.getAttribute(request, MiscConstants.KEY_USER_ID_ERROR_MSG);
@@ -148,7 +148,7 @@
 				</tr>
 				<tr>
 					<td class="label">Credit Card number</td>
-					<td><input type="text" id="cardNumber" name="cardNumber" class="value" value="<%=HTMLEncode.encode(user.getCardNo())%>" /></td>
+					<td><input type="text" id="cardNumber" name="cardNumber" class="value" value="<%=HTMLEncode.encode(decryptedCreditCardNo)%>" /></td>
 					<td><div id="cardNumberErrorMsg" class="<%= (cardNumberErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardNumberErrorMsg%></div></td>
 				</tr>
 				<tr>

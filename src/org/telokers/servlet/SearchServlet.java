@@ -48,6 +48,7 @@ public class SearchServlet extends HttpServlet {
 			Product p = ProductDao.findById(q);
 			if (p != null) { // just display the details
 				p.setCommentAllowed(PaymentTransactionDao.hasTransaction(p.getProductId(), u.getUserId()));
+				p.setComments(ProductDao.getComments(p.getProductId()));
 				req.setAttribute(MiscConstants.KEY_MY_EDIT_PRODUCT, p);
 			} else {
 				list = ProductDao.findByKeyword(q);

@@ -295,30 +295,6 @@ public class User extends AbstractModel{
 		return (String) getProperty(UserProperty.skusHashReference);
 	}
 
-	public void addRating(int r) {
-		int rating = getRating();
-		int count = getCountRating();
-		rating = (rating * count + r) / (count + 1);
-		setProperty(UserProperty.rating, rating);
-		setProperty(UserProperty.countRating, count + 1);
-	}
-
-	public int getRating() {
-		Integer i = (Integer) getProperty(UserProperty.rating);
-		if (i == null) {
-			return 0;
-		}
-		return i.intValue();
-	}
-
-	public int getCountRating() {
-		Integer i = (Integer) getProperty(UserProperty.countRating);
-		if (i == null) {
-			return 0;
-		}
-		return i.intValue();
-	}
-	
 	public String getDecryptedCreditCardNo() {
 		String encryptedCreditCardNo = this.getCardNo();
 		String decryptedCreditCardNo = "";

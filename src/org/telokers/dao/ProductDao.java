@@ -24,6 +24,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Transaction;
 
 /**
@@ -171,6 +172,7 @@ public class ProductDao {
 		try {
 			Query query = new Query(Comment.getKind());
 			query.addFilter(CommentProperty.productId.toString(), FilterOperator.EQUAL, productId);
+			query.addSort(CommentProperty.createdDate.toString(), SortDirection.DESCENDING);
 			List<Entity> e = DatastoreServiceFactory.getDatastoreService().prepare(query).asList(FetchOptions.Builder.withDefaults());
 			if (e == null || e.size() == 0) {
 				return new ArrayList<Comment>();

@@ -183,14 +183,6 @@ public class Product extends AbstractModel {
 		return comments;
 	}
 
-
-	/**
-	 * @param comments
-	 */
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
 	public void addRating(int r) {
 		int rating = getRating();
 		int count = getCountRating();
@@ -208,6 +200,13 @@ public class Product extends AbstractModel {
 	}
 
 	/**
+	 * @param comments
+	 */
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	/**
 	 * @param commentAllowed the commentAllowed to set
 	 */
 	public void setCommentAllowed(boolean commentAllowed) {
@@ -220,5 +219,4 @@ public class Product extends AbstractModel {
 	public boolean isCommentAllowed() {
 		return commentAllowed;
 	}
-
 }

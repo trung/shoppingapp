@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.telokers.dao.CommentDao;
 import org.telokers.dao.PaymentTransactionDao;
 import org.telokers.dao.ProductDao;
-import org.telokers.dao.UserDao;
 import org.telokers.model.Comment;
 import org.telokers.model.Comment.CommentProperty;
 import org.telokers.model.Product;
@@ -61,9 +60,8 @@ public class AddCommentServlet extends HttpServlet {
 			comment.setProperty(CommentProperty.createdDate, new Date());
 			comment.setProperty(CommentProperty.comment, commentStr);
 			comment.setProperty(CommentProperty.rating, Integer.parseInt(rating));
-			User s = UserDao.findbyUserId(p.getSeller());
-			s.addRating(Integer.parseInt(rating));
-			UserDao.persistUser(s);
+			p.addRating(Integer.parseInt(rating));
+			ProductDao.persist(p);
 			CommentDao.persist(comment);
 			resp.sendRedirect("/secured/search?infoMsg=Comment added successfully");
 		} else {

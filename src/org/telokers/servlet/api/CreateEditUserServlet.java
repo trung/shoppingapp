@@ -166,7 +166,7 @@ public class CreateEditUserServlet extends HttpServlet{
 				case 1: errorMsgHolder.passwordErrorMsg = "Password is the same as User"; proceed = false; break;
 				case 2: errorMsgHolder.passwordErrorMsg = "Password length < 8"; proceed = false; break;
 				case 3: errorMsgHolder.passwordErrorMsg = "Password must be alphanumeric"; proceed = false; break;
-				case 0: proceed = true; break;
+				//case 0: proceed = true; break;
 			}
 		}
 		if(Validator.isEmpty(user.getCardHolderName())){

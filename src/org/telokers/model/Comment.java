@@ -31,6 +31,7 @@ public class Comment extends AbstractModel {
 
 	public Comment(String id) {
 		super(id);
+		entity = new Entity(getKind(), id);
 		setCommentId(id);
 		setCreatedDate(new Date());
 	}

@@ -5,11 +5,14 @@ package org.telokers.model;
 
 
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
 import org.telokers.service.utils.MiscConstants;
+import org.telokers.service.utils.MiscUtils;
+import org.telokers.service.utils.RSA;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
@@ -39,7 +42,7 @@ public class User extends AbstractModel{
 		status,
 		cardNo,
 		cardType,
-		encryptKeyString,
+		skusHashReference,
 		cardHolderName,
 		expDate,
 		csrfToken,
@@ -285,11 +288,11 @@ public class User extends AbstractModel{
 	}
 
 	public void setEncryptKeyString(String encryptKey) {
-		setProperty(UserProperty.encryptKeyString, encryptKey);
+		setProperty(UserProperty.skusHashReference, encryptKey);
 	}
 
 	public String getEncryptKeyString() {
-		return (String) getProperty(UserProperty.encryptKeyString);
+		return (String) getProperty(UserProperty.skusHashReference);
 	}
 
 	public void addRating(int r) {
@@ -314,6 +317,20 @@ public class User extends AbstractModel{
 			return 0;
 		}
 		return i.intValue();
+	}
+	
+	public String getDecryptedCreditCardNo() {
+		String encryptedCreditCardNo = this.getCardNo();
+		String decryptedCreditCardNo = "";
+		if(!MiscUtils.isNullorBlank(encryptedCreditCardNo)){
+			RSA rsa = new RSA();
+			String encryptKeyString = this.getEncryptKeyString();
+			BigInteger creditcardNo = rsa.decrypt(new BigInteger(encryptedCreditCardNo), encryptKeyString);
+			if (creditcardNo != null){
+				decryptedCreditCardNo = creditcardNo.toString();
+			}
+		}
+		return decryptedCreditCardNo;
 	}
 
 }

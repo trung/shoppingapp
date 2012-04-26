@@ -39,6 +39,7 @@ public class User extends AbstractModel{
 		status,
 		cardNo,
 		cardType,
+		encryptKeyString,
 		cardHolderName,
 		expDate,
 		csrfToken,
@@ -280,4 +281,13 @@ public class User extends AbstractModel{
 		}
 		return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(d);
 	}
+	
+	public void setEncryptKeyString(String encryptKey) {
+		setProperty(UserProperty.encryptKeyString, encryptKey);
+	}
+
+	public String getEncryptKeyString() {
+		return (String) getProperty(UserProperty.encryptKeyString);
+	}
+	
 }

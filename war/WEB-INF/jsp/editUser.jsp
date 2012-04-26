@@ -1,7 +1,10 @@
+<%@page import="org.telokers.service.utils.MiscUtils"%>
 <%@page import="org.telokers.service.utils.MiscConstants"%>
 <%@page import="org.telokers.service.utils.RequestUtils"%>
 <%@page import="org.telokers.service.utils.HTMLEncode"%>
+<%@page import="org.telokers.service.utils.RSA"%>
 <%@page import="org.telokers.model.User"%>
+<%@page import="java.math.BigInteger" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -58,6 +61,16 @@
 
 <%
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
+	
+	//Decrypt credit card
+	String encryptedCreditCardNo = user.getCardNo();
+	if(!MiscUtils.isNullorBlank(encryptedCreditCardNo)){
+		RSA rsa = new RSA();
+		String encryptKeyString = user.getEncryptKeyString();
+		String decryptedCreditCardNo = rsa.decrypt(new BigInteger(encryptedCreditCardNo), encryptKeyString).toString();
+		user.setCardNo(MiscUtils.blankifyString(decryptedCreditCardNo));
+	}
+
 	String errorMsg = RequestUtils.getAttribute(request, MiscConstants.ERROR_MESSAGE);
 	String cardType = user.getCardType();
 	String userIdErrorMsg = RequestUtils.getAttribute(request, MiscConstants.KEY_USER_ID_ERROR_MSG);

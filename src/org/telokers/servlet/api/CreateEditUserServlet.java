@@ -6,6 +6,7 @@
 package org.telokers.servlet.api;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +21,7 @@ import org.telokers.model.User;
 import org.telokers.service.utils.MiscConstants;
 import org.telokers.service.utils.MiscUtils;
 import org.telokers.service.utils.MiscUtils.ErrorMessageHolder;
+import org.telokers.service.utils.RSA;
 import org.telokers.service.utils.SecurityUtils;
 import org.telokers.service.utils.Validator;
 
@@ -175,10 +177,17 @@ public class CreateEditUserServlet extends HttpServlet{
 			errorMsgHolder.cardNumberErrorMsg = "Empty or wrong format card number";
 			proceed = false;
 		}
+		else {
+			RSA rsa = new RSA();
+			String encryptedCardNo = rsa.encrypt(new BigInteger(user.getCardNo())).toString();
+			user.setCardNo(encryptedCardNo);
+			user.setEncryptKeyString(rsa.getComboString());
+		}
 		if(!Validator.isValidCCType(user.getCardType())){
 			errorMsgHolder.typeOfCardErrorMsg = "Invalid card type";
 			proceed = false;
 		}
+		
 		if(!Validator.isCCExpirationDate(user.getCardExpDate())){
 			errorMsgHolder.expiryDateErrorMsg = "Invalid expiry date";
 			proceed = false;

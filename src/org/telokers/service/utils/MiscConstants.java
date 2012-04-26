@@ -18,6 +18,7 @@ public class MiscConstants {
 
 	//Request attributes
 	public static final String ERROR_MESSAGE = "errorMsg";
+	public static final String INFO_MESSAGE = "infoMsg";
 
 	public static final String ROLE_USER = "ROLE_USER";
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";

@@ -28,6 +28,10 @@
 		myProducts = new ArrayList<Product>();
 	}
 	String errorMsg = RequestUtils.getAttribute(request, MiscConstants.ERROR_MESSAGE);
+	if (errorMsg == null || errorMsg.length() == 0) {
+		errorMsg = RequestUtils.getParameter(request, MiscConstants.ERROR_MESSAGE);
+	}
+	String infoMsg = RequestUtils.getParameter(request, MiscConstants.INFO_MESSAGE);
 %>
 <script type="text/javascript">
 	function onCreateClick() {
@@ -88,6 +92,7 @@ My cart (<%= (cart == null ? 0 : cart.countProducts())%>) |
 	<input type="hidden" id="productId" name="productId" value="<%= productId%>"/>
 	<input type="hidden" id="action" name="action" value=""/>
 	<div class="<%= (errorMsg.length() > 0 ? "errorMsg" : "") %>"><%= errorMsg%></div>
+	<div class="<%= (infoMsg.length() > 0 ? "infoMsg" : "") %>"><%= infoMsg%></div>
 
 	<% if (product != null) { %>
 		<h3><%= (isEdit ? "Edit" : "Create") %> Product</h3>

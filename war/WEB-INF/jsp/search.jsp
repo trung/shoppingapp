@@ -53,7 +53,7 @@
 <div style="float:left"><a href="/secured/home">&laquo; Home</a></div>
 <div style="float:right">
 Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-My cart (<%= (cart == null ? 0 : cart.countProducts())%>) |
+<a href="/secured/cart">My cart (<%= (cart == null ? 0 : cart.countProducts())%>)</a> |
 <% if (user.isAdmin()) { %><a href="/secured/admin">Admin</a> |<% } %>
 <a href="/secured/editUser">Edit profile</a>
 |

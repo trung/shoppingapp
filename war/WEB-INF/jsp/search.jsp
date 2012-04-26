@@ -1,3 +1,4 @@
+<%@page import="org.telokers.model.ShoppingCart"%>
 <%@page import="org.telokers.model.Comment"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
@@ -18,9 +19,14 @@
 <title>Home</title>
 <%
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
+	ShoppingCart cart = (ShoppingCart) request.getAttribute(MiscConstants.KEY_CART);
 	List<Product> products = (List<Product>) request.getAttribute(MiscConstants.KEY_ALL_PRODUCTS);
 	Product product = (Product) request.getAttribute(MiscConstants.KEY_MY_EDIT_PRODUCT);
 	String errorMsg = RequestUtils.getAttribute(request, MiscConstants.ERROR_MESSAGE);
+	if (errorMsg == null || errorMsg.length() == 0) {
+		errorMsg = RequestUtils.getParameter(request, "errorMsg");
+	}
+	String infoMsg = RequestUtils.getParameter(request, "infoMsg");
 %>
 <script type="text/javascript">
 	function onDetailsClick(id) {
@@ -33,6 +39,11 @@
 		$("searchForm").submit();
 	}
 
+	function onAddToCartClick(productId) {
+		$("productId").value = productId;
+		$("addToCartForm").submit();
+	}
+
 	function startUp() {
 	}
 </script>
@@ -42,6 +53,7 @@
 <div style="float:left"><a href="/secured/home">&laquo; Home</a></div>
 <div style="float:right">
 Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+My cart (<%= (cart == null ? 0 : cart.countProducts())%>) |
 <% if (user.isAdmin()) { %><a href="/secured/admin">Admin</a> |<% } %>
 <a href="/secured/editUser">Edit profile</a>
 |
@@ -50,6 +62,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 <div id="productDiv">
 	<div class="<%= (errorMsg.length() > 0 ? "errorMsg" : "") %>"><%= errorMsg%></div>
+	<div class="<%= (infoMsg.length() > 0 ? "infoMsg" : "") %>"><%= infoMsg%></div>
 	<h3>Search product</h3>
 	<a href="/secured/search">Browse all</a><p/>
 	<table border="0" style="margin: 0; padding: 0; border-collapse: collapse;">
@@ -60,6 +73,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					</table>
 	<% if (product != null) { %>
 		<h3>Product details</h3>
+		<input type="button" id="addToCartBtn" name="addToCartBtn" value="Add to shopping cart" onclick="onAddToCartClick('<%= product.getProductId()%>')" />
 		<table border="0">
 			<tbody>
 				<tr>
@@ -143,6 +157,10 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<% } %>
 	<form id="searchForm" action="/secured/search" method="POST">
 		<input type="hidden" id="q" name="q" />
+	</form>
+
+	<form id="addToCartForm" action="/secured/addToCart" method="POST">
+		<input type="hidden" id="productId" name="productId" />
 	</form>
 
 </div>

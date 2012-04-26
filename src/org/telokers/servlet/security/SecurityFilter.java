@@ -19,6 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.telokers.dao.ShoppingCartDao;
 import org.telokers.dao.UserDao;
 import org.telokers.exception.LoginException;
 import org.telokers.exception.SecurityException;
@@ -89,6 +90,7 @@ public class SecurityFilter implements Filter {
 		user.setLastLogin(new Date());
 		UserDao.persistUser(user);
 		request.setAttribute(MiscConstants.KEY_USER, user);
+		request.setAttribute(MiscConstants.KEY_CART, ShoppingCartDao.findByUserId(user.getUserId()));
 	}
 
 	/**

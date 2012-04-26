@@ -1,3 +1,4 @@
+<%@page import="org.telokers.model.ShoppingCart"%>
 <%@page import="org.telokers.service.utils.HTMLEncode"%>
 <%@page import="org.telokers.service.utils.RequestUtils"%>
 <%@page import="java.util.List"%>
@@ -14,6 +15,7 @@
 <title>Admin</title>
 <%
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
+	ShoppingCart cart = (ShoppingCart) request.getAttribute(MiscConstants.KEY_CART);
 	User editedUser = (User) request.getAttribute(MiscConstants.KEY_EDIT_USER);
 	String editedUserId = editedUser != null ? editedUser.getUserId() : "";
 	List<User> users = (List<User>) request.getAttribute(MiscConstants.KEY_USERS);
@@ -31,6 +33,7 @@
 <div style="float:left"><a href="/secured/home">&laquo; Home</a></div>
 <div style="float:right">
 Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+My cart (<%= (cart == null ? 0 : cart.countProducts())%>) |
 Admin
 |
 <a href="/secured/editUser">Edit profile</a>

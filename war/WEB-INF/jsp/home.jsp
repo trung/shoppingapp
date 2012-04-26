@@ -1,3 +1,4 @@
+<%@page import="org.telokers.model.ShoppingCart"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
 <%@page import="org.telokers.service.utils.HTMLEncode"%>
@@ -17,6 +18,7 @@
 <title>Home</title>
 <%
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
+	ShoppingCart cart = (ShoppingCart) request.getAttribute(MiscConstants.KEY_CART);
 	Product product = (Product) request.getAttribute(MiscConstants.KEY_MY_EDIT_PRODUCT);
 	Boolean isEditO = (Boolean) request.getAttribute(MiscConstants.IS_EDIT);
 	boolean isEdit = isEditO == null ? false : isEditO.booleanValue();
@@ -73,6 +75,7 @@
 <div id="menuDiv" style="height: 20px">
 <div style="float:right">
 Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+My cart (<%= (cart == null ? 0 : cart.countProducts())%>) |
 <% if (user.isAdmin()) { %><a href="/secured/admin">Admin</a> |<% } %>
 <a href="/secured/editUser">Edit profile</a>
 |

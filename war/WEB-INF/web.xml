@@ -56,9 +56,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>editUser</servlet-name>
 		<servlet-class>org.telokers.servlet.api.EditUserServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>addToCartServlet</servlet-name>
+		<servlet-class>org.telokers.servlet.AddToCartServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>searchServlet</servlet-name>
 		<url-pattern>/secured/search</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>addToCartServlet</servlet-name>
+		<url-pattern>/secured/addToCart</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>importStandingDataApi</servlet-name>

@@ -5,6 +5,7 @@
 
 package org.telokers.service.utils;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -48,5 +49,8 @@ public class MiscUtils {
 		return new SimpleDateFormat(DATE_TIME_FORMAT).format(d);
 	}
 
+	public static String formatPrice(double d) {
+		return String.valueOf(new DecimalFormat("#,###00.##").format(d));
+	}
 }
 

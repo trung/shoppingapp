@@ -56,4 +56,6 @@ public class MiscConstants {
 	public static final String KEY_ALL_PRODUCTS = "allProducts";
 	public static final String KEY_MY_EDIT_PRODUCT = "myProductEdit";
 
+	public static final String KEY_CART = "shoppingCart";
+
 }

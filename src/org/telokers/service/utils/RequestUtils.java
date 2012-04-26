@@ -19,4 +19,14 @@ public class RequestUtils {
 		}
 		return v;
 	}
+
+	public static String getParameter(HttpServletRequest request, String name) {
+		String v = request.getParameter(name);
+		if (v != null) {
+			v = HTMLEncode.encode(v.trim());
+		} else {
+			v = "";
+		}
+		return v;
+	}
 }

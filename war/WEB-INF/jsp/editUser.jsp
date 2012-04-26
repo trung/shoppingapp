@@ -136,7 +136,7 @@
 							</td>
 							<td>VISA &nbsp;</td>
 							<td><input type="radio" id="typeOfCard" name="typeOfcard" value="MASTER"
-								<% if ("VISA".equals(cardType)) out.print("checked"); %>
+								<% if ("MASTER".equals(cardType)) out.print("checked"); %>
 								/>
 							</td>
 							<td>MASTER</td>

@@ -99,7 +99,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<table border="0">
 			<tbody>
 				<tr>
-					<td class="label">Picture</td>
+					<td class="label">Picture (PNG only)</td>
 					<td><% if (product.hasPicture()) { %><img alt="picture" height="150px" src="<%= product.getPictureUrl()%>"/> <% } %>
 					<input type="file" id="picture" name="picture" style="border: none" onchange="return checkFileExtension(this);" /></td>
 				</tr>

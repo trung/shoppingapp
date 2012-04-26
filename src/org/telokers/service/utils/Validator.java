@@ -29,7 +29,7 @@ public class Validator {
 	}
 	public static boolean isAlphabet(String input)
 	{
-		return input.matches("^[a-zA-Z]+$");
+		return input.matches("^[a-zA-Z\\s]+$");
 	}
 	public static boolean isEmail(String input)
 	{

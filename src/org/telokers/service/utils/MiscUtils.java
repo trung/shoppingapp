@@ -49,8 +49,12 @@ public class MiscUtils {
 		return new SimpleDateFormat(DATE_TIME_FORMAT).format(d);
 	}
 
-	public static String formatPrice(double d) {
-		return String.valueOf(new DecimalFormat("####00.##").format(d));
+	public static String formatPrice(Double d) {
+		if (d == null) {
+			return "";
+		} else {
+			return String.valueOf(new DecimalFormat("####00.##").format(d));
+		}
 	}
 }
 

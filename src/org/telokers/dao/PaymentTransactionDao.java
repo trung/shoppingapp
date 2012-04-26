@@ -4,6 +4,7 @@
 package org.telokers.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,6 +52,28 @@ public class PaymentTransactionDao {
 			logger.log(Level.SEVERE, "Failed to get list of products by user id [" + userId + "]", e);
 		}
 		return list;
+	}
+
+	/**
+	 * @param productId
+	 * @param userId
+	 * @return
+	 */
+	public static boolean hasTransaction(String productId, String userId) {
+		try {
+			Query query = new Query(PaymentTransaction.getKind());
+			query.addFilter(PaymentTransactionProperty.userId.toString(), FilterOperator.EQUAL, userId);
+			query.addFilter(PaymentTransactionProperty.productIds.toString(), FilterOperator.IN, Arrays.asList(productId));
+			query.setKeysOnly();
+			List<Entity> listE = DatastoreServiceFactory.getDatastoreService().prepare(query).asList(FetchOptions.Builder.withDefaults());
+			if (listE != null && listE.size() > 0) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Failed to check comment permission by user id [" + userId + "]", e);
+			return false;
+		}
 	}
 
 }

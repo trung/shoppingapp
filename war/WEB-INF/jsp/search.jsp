@@ -124,7 +124,33 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</tbody>
 		</table>
 		<% } %>
-		<% %>
+		<% if (product.isCommentAllowed()) { %>
+		<hr/>
+		<form action="/secured/addComment" method="POST">
+		<input type="hidden" id="csrfToken" name="csrfToken" value="<%= user.getCSRFToken()%>" />
+		<input type="hidden" id="productId" name="productId" value="<%= product.getProductId()%>" />
+		<table border="0">
+			<tbody>
+				<tr>
+					<td class="label">Comment</td>
+					<td><input type="text" id="comment" name="comment" class="value"/></td>
+				</tr>
+				<tr>
+					<td class="label">Rating</td>
+					<td><select id="rating" name="rating">
+						<option value="0" selected="selected">0</option>
+						<option value="1" selected="selected">1</option>
+						<option value="2" selected="selected">2</option>
+						<option value="3" selected="selected">3</option>
+						<option value="4" selected="selected">4</option>
+						<option value="5" selected="selected">5</option>
+					</select></td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="submit" id="submit" name="submit" value="Submit" />
+		</form>
+		<% } %>
 	<% } else if (products == null || products.size() == 0)  {%>
 	<div class="infoMsg">No products found</div>
 	<% } else { %>

@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.telokers.dao.PaymentTransactionDao;
 import org.telokers.dao.ProductDao;
 import org.telokers.model.Product;
+import org.telokers.model.User;
 import org.telokers.service.utils.MiscConstants;
 
 /**
@@ -38,12 +40,14 @@ public class SearchServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String q = req.getParameter("q");
+		User u = (User) req.getAttribute(MiscConstants.KEY_USER);
 		List<Product> list = new ArrayList<Product>();
 		if (q == null || q.length() == 0) {
 			list = ProductDao.findAll();
 		} else {
 			Product p = ProductDao.findById(q);
 			if (p != null) { // just display the details
+				p.setCommentAllowed(PaymentTransactionDao.hasTransaction(p.getProductId(), u.getUserId()));
 				req.setAttribute(MiscConstants.KEY_MY_EDIT_PRODUCT, p);
 			} else {
 				list = ProductDao.findByKeyword(q);

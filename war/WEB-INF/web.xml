@@ -77,6 +77,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-class>org.telokers.servlet.DeleteProductServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
+		<servlet-name>makePaymentServlet</servlet-name>
+		<url-pattern>/secured/makePayment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>deleteProductServlet</servlet-name>
 		<url-pattern>/secured/deleteProduct</url-pattern>
 	</servlet-mapping>

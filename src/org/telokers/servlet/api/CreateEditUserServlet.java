@@ -49,11 +49,18 @@ public class CreateEditUserServlet extends HttpServlet{
 		boolean isEdit = true;
 		
 		String operation = MiscUtils.blankifyString(req.getParameter("action"));
-		String userId = MiscUtils.blankifyString(req.getParameter(MiscConstants.USER_ID));
+		
+		
 		
 		//If "create"
 		if( operation != null && operation.equals("CreateUser") ){
 			isEdit = false;
+		}
+		
+		String userId = "";
+		
+		if(!isEdit){
+			userId = MiscUtils.blankifyString(req.getParameter(MiscConstants.USER_ID));
 		}
 				
 		if (!isEdit && UserDao.findbyUserId(userId) != null){
@@ -61,7 +68,9 @@ public class CreateEditUserServlet extends HttpServlet{
 			RequestDispatcher rp = getServletContext().getRequestDispatcher("/createUser.jsp");
 			rp.forward(req, resp);
 		}
-
+		
+		
+		
 		String name = req.getParameter(MiscConstants.USER_NAME);
 		String email = req.getParameter(MiscConstants.EMAIL);
 		String password = req.getParameter(MiscConstants.PASSWORD);
@@ -82,7 +91,9 @@ public class CreateEditUserServlet extends HttpServlet{
 			user = (User) req.getAttribute(MiscConstants.KEY_USER);
 		}
 		else {
-			user = new User(userId);
+			if(!MiscUtils.isNullorBlank(userId)){
+				user = new User(userId);
+			}
 		}
 		
 		user.setEmail(email);
@@ -126,15 +137,17 @@ public class CreateEditUserServlet extends HttpServlet{
 			UserDao.persistUser(user);
 			logger.log(Level.FINE, "User created succesfully");
 			
-			RequestDispatcher rp = null;
+			//RequestDispatcher rp = null;
 			if(isEdit){
-				//resp.sendRedirect("/secured/home?" + MiscConstants.INFO_MESSAGE +"=user profile edited successfully");
-				resp.sendRedirect("/secured/home");
+				resp.sendRedirect("/secured/home?" + MiscConstants.INFO_MESSAGE +"=user profile edited successfully");
+				//resp.sendRedirect("/secured/home");
 			}
 			else {
-				req.setAttribute(MiscConstants.ERROR_MESSAGE, "User created successfully. Please login");
+				resp.sendRedirect("/login?" + MiscConstants.INFO_MESSAGE +"=User profile created successfully. Please wait until admin has approved your account");
+				
+				/*req.setAttribute(MiscConstants.ERROR_MESSAGE, "User created successfully. Please login");
 				rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-				rp.forward(req, resp);
+				rp.forward(req, resp);*/
 			}
 		}
 		else {
@@ -176,7 +189,7 @@ public class CreateEditUserServlet extends HttpServlet{
 			proceed = false;
 		}
 		if (!Validator.isAlphabet(user.getName())){
-			errorMsgHolder.nameErrorMsg = "Name must be alphabetc";
+			errorMsgHolder.nameErrorMsg = "Name must be alphabet";
 			proceed = false;
 		}
 		if (Validator.isEmpty(user.getEmail())){

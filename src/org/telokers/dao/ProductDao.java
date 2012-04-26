@@ -95,19 +95,27 @@ public class ProductDao {
 		try {
 			Key k = ds.put(p.getEntity());
 			ProductKeywords keywords = new ProductKeywords(k, UUID.randomUUID().toString());
-			keywords.setKeywords(Arrays.asList(
-					p.getProductName().toLowerCase(),
-					p.getCategory().toLowerCase(),
-					p.getPriceString(),
-					p.getSeller().toLowerCase(),
-					p.getPostedDateString()
-					));
+			List<String> kw = new ArrayList<String>();
+			parse(kw, p.getProductName().toLowerCase());
+			parse(kw, p.getCategory().toLowerCase());
+			parse(kw,p.getPriceString());
+			parse(kw,p.getSeller().toLowerCase());
+			parse(kw, p.getPostedDateString());
+			keywords.setKeywords(kw);
 			ds.put(keywords.getEntity());
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
 		}
 
+	}
+
+	/**
+	 * @param kw
+	 * @param postedDateString
+	 */
+	private static void parse(List<String> kw, String data) {
+		kw.addAll(Arrays.asList(data.split("\\s")));
 	}
 
 	/**
@@ -142,7 +150,7 @@ public class ProductDao {
 	 */
 	public static List<Product> findByKeyword(String q) {
 		Query query = new Query(ProductKeywords.getKind());
-		String[] qa = q.split(" ");
+		String[] qa = q.split("\\s");
 		List<String> queries = new ArrayList<String>();
 		for (String qq : qa) {
 			if (qq.length() > 0) {

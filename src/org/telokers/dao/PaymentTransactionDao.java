@@ -64,6 +64,7 @@ public class PaymentTransactionDao {
 			Query query = new Query(PaymentTransaction.getKind());
 			query.addFilter(PaymentTransactionProperty.userId.toString(), FilterOperator.EQUAL, userId);
 			query.addFilter(PaymentTransactionProperty.productIds.toString(), FilterOperator.IN, Arrays.asList(productId));
+			query.addFilter(PaymentTransactionProperty.status.toString(), FilterOperator.EQUAL, "Success");
 			query.setKeysOnly();
 			List<Entity> listE = DatastoreServiceFactory.getDatastoreService().prepare(query).asList(FetchOptions.Builder.withDefaults());
 			if (listE != null && listE.size() > 0) {

@@ -52,6 +52,9 @@ public class SearchServlet extends HttpServlet {
 		if (list == null) {
 			list = new ArrayList<Product>();
 		}
+		for (Product p : list) {
+			p.setComments(ProductDao.getComments(p.getProductId()));
+		}
 		req.setAttribute(MiscConstants.KEY_ALL_PRODUCTS, list);
 		getServletContext().getRequestDispatcher("/WEB-INF/jsp/search.jsp").forward(req, resp);
 	}

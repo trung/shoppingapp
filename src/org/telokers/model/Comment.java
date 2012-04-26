@@ -25,7 +25,8 @@ public class Comment extends AbstractModel {
 		userId,
 		rating,
 		comment,
-		createdDate
+		createdDate,
+		productId
 	}
 
 	public Comment(String id) {
@@ -65,7 +66,6 @@ public class Comment extends AbstractModel {
 	 */
 	public Comment(Entity entity) throws Exception {
 		super(entity);
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -74,6 +74,13 @@ public class Comment extends AbstractModel {
 	@Override
 	public Entity getEntity() {
 		return entity;
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getKind() {
+		return Comment.class.getSimpleName();
 	}
 
 }

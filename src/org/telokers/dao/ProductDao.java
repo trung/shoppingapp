@@ -10,6 +10,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.telokers.model.Comment;
+import org.telokers.model.Comment.CommentProperty;
 import org.telokers.model.Product;
 import org.telokers.model.Product.ProductProperty;
 import org.telokers.model.ProductKeywords;
@@ -159,6 +161,29 @@ public class ProductDao {
 			list.add(findByKey(e.getParent()));
 		}
 		return list;
+	}
+
+	/**
+	 * @param productId
+	 * @return
+	 */
+	public static List<Comment> getComments(String productId) {
+		try {
+			Query query = new Query(Comment.getKind());
+			query.addFilter(CommentProperty.productId.toString(), FilterOperator.EQUAL, productId);
+			List<Entity> e = DatastoreServiceFactory.getDatastoreService().prepare(query).asList(FetchOptions.Builder.withDefaults());
+			if (e == null || e.size() == 0) {
+				return new ArrayList<Comment>();
+			}
+			List<Comment> list = new ArrayList<Comment>();
+			for (Entity ee : e) {
+				list.add(new Comment(ee));
+			}
+			return list;
+		} catch (Exception e) {
+			logger.info("Can't get comments");
+			return new ArrayList<Comment>();
+		}
 	}
 
 }

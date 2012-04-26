@@ -126,14 +126,14 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				for (Product p : products) {
 			%>
 				<tr>
-					<td width="50"><a href="javascript:void()" onclick="onDetailsClick'<%= p.getProductId()%>')">Details</a></td>
+					<td width="50"><a href="javascript:void()" onclick="onDetailsClick('<%= p.getProductId()%>')">Details</a></td>
 					<td width="110"><% if (p.hasPicture()) { %><img alt="picture" width="100px" src="<%= p.getPictureUrl()%>"/> <% } %></td>
 					<td><%= HTMLEncode.encode(p.getProductName())%></td>
 					<td><%= HTMLEncode.encode(p.getCategory())%></td>
 					<td width="100"><%= p.getPriceString()%></td>
 					<td><%= p.getSeller()%></td>
 					<td><%= p.getPostedDateString()%></td>
-					<td><%= p.getRating()%></td>
+					<td><%= (p.getRating() == 0 ? "No rating yet" : p.getRating())%></td>
 				</tr>
 			<%
 				}

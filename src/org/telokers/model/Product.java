@@ -28,8 +28,12 @@ public class Product extends AbstractModel {
 		price,
 		comment,
 		seller,
-		postedDate
+		postedDate,
+		rating,
+		countRating
 	}
+
+	private List<Comment> comments = new ArrayList<Comment>();
 
 	public Product(String id) {
 		super(id);
@@ -157,11 +161,40 @@ public class Product extends AbstractModel {
 		return MiscUtils.formatDateTime(d);
 	}
 
-	public String getRating() {
-		return "";
+	public int getRating() {
+		Integer i = (Integer) getProperty(ProductProperty.rating);
+		if (i == null) {
+			return 0;
+		}
+		return i.intValue();
 	}
 
 	public List<Comment> getComments() {
-		return new ArrayList<Comment>();
+		return comments;
 	}
+
+
+	/**
+	 * @param comments
+	 */
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public void addRating(int r) {
+		int rating = getRating();
+		int count = getCountRating();
+		rating = (rating * count + r) / (count + 1);
+		setProperty(ProductProperty.rating, rating);
+		setProperty(ProductProperty.countRating, count + 1);
+	}
+
+	public int getCountRating() {
+		Integer i = (Integer) getProperty(ProductProperty.countRating);
+		if (i == null) {
+			return 0;
+		}
+		return i.intValue();
+	}
+
 }

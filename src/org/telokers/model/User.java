@@ -46,7 +46,9 @@ public class User extends AbstractModel{
 		lastModifiedOfStatus,
 		suspensionStart,
 		suspensionEnd,
-		remarks
+		remarks,
+		rating,
+		countRating
 	}
 
 	public User(String userId) {
@@ -281,7 +283,7 @@ public class User extends AbstractModel{
 		}
 		return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(d);
 	}
-	
+
 	public void setEncryptKeyString(String encryptKey) {
 		setProperty(UserProperty.encryptKeyString, encryptKey);
 	}
@@ -289,5 +291,29 @@ public class User extends AbstractModel{
 	public String getEncryptKeyString() {
 		return (String) getProperty(UserProperty.encryptKeyString);
 	}
-	
+
+	public void addRating(int r) {
+		int rating = getRating();
+		int count = getCountRating();
+		rating = (rating * count + r) / (count + 1);
+		setProperty(UserProperty.rating, rating);
+		setProperty(UserProperty.countRating, count + 1);
+	}
+
+	public int getRating() {
+		Integer i = (Integer) getProperty(UserProperty.rating);
+		if (i == null) {
+			return 0;
+		}
+		return i.intValue();
+	}
+
+	public int getCountRating() {
+		Integer i = (Integer) getProperty(UserProperty.countRating);
+		if (i == null) {
+			return 0;
+		}
+		return i.intValue();
+	}
+
 }

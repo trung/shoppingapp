@@ -1,12 +1,12 @@
 a {
 	text-decoration: none;
 	border-bottom: dotted 1px #9c9c9c;
-	color: black;
+	color: #15C;
 }
 
-a:visited a:hover {
-	color: black;
-	border-botton: 1px solid #9c9c9c;
+a:visited, a:hover {
+	color: #006AC8;
+	border-bottom: 1px solid #9c9c9c;
 }
 
 input {

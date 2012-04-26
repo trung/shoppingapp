@@ -35,6 +35,8 @@ public class Product extends AbstractModel {
 
 	private List<Comment> comments = new ArrayList<Comment>();
 
+	private boolean commentAllowed = false;
+
 	public Product(String id) {
 		super(id);
 		entity = new Entity(getKey(id));
@@ -203,6 +205,20 @@ public class Product extends AbstractModel {
 			return 0;
 		}
 		return i.intValue();
+	}
+
+	/**
+	 * @param commentAllowed the commentAllowed to set
+	 */
+	public void setCommentAllowed(boolean commentAllowed) {
+		this.commentAllowed = commentAllowed;
+	}
+
+	/**
+	 * @return the commentAllowed
+	 */
+	public boolean isCommentAllowed() {
+		return commentAllowed;
 	}
 
 }

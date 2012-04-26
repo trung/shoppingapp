@@ -1,3 +1,4 @@
+<%@page import="org.telokers.service.utils.MiscConstants"%>
 <%@page import="org.telokers.service.utils.RequestUtils"%>
 <%@page import="org.telokers.service.utils.HTMLEncode"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -16,14 +17,20 @@
   	}
   </script>
   <%
-  	String errorMsg = RequestUtils.getAttribute(request, "errorMsg");
+	String errorMsg = RequestUtils.getAttribute(request, MiscConstants.ERROR_MESSAGE);
+	if (errorMsg == null || errorMsg.length() == 0) {
+		errorMsg = RequestUtils.getParameter(request, MiscConstants.ERROR_MESSAGE);
+	}
+	String infoMsg = RequestUtils.getParameter(request, MiscConstants.INFO_MESSAGE);
+
   %>
   <body onload="startUp()">
 	<div id="loginDiv">
 		<center>
 		<form action="/login" method="POST">
 		    <h1>Shopping App</h1>
-		    <% if (errorMsg != null && errorMsg.length() > 0) { %><div id="errorMsg" class="errorMsg"><%= errorMsg%></div><% } %>
+			<div class="<%= (errorMsg.length() > 0 ? "errorMsg" : "") %>"><%= errorMsg%></div>
+			<div class="<%= (infoMsg.length() > 0 ? "infoMsg" : "") %>"><%= infoMsg%></div>
 		    <table border="0">
 		    	<tbody>
 		    		<tr>
@@ -36,7 +43,7 @@
 		    		</tr>
 		    		<tr>
 		    			<td colspan="2">
-		    				<a href="createUser.jsp" style="float:left; padding-top: 10px">Create new account</a>
+		    				<a href="/createUser.jsp" style="float:left; padding-top: 10px">Create new account</a>
 		    				<input type="submit" id="login" name="login" style="float:right" class="button" value="Login" />
 		    			</td>
 		    		</tr>

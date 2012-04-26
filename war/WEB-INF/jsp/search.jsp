@@ -44,6 +44,11 @@
 		$("addToCartForm").submit();
 	}
 
+	function onDeleteClick(productId) {
+		$("deleteProductId").value = productId;
+		$("deleteForm").submit();
+	}
+
 	function startUp() {
 	}
 </script>
@@ -119,6 +124,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</tbody>
 		</table>
 		<% } %>
+		<% %>
 	<% } else if (products == null || products.size() == 0)  {%>
 	<div class="infoMsg">No products found</div>
 	<% } else { %>
@@ -140,7 +146,11 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				for (Product p : products) {
 			%>
 				<tr>
-					<td width="50"><a href="javascript:void()" onclick="onDetailsClick('<%= p.getProductId()%>')">Details</a></td>
+					<td width="50"><a href="javascript:void()" onclick="onDetailsClick('<%= p.getProductId()%>')">Details</a>
+						<% if (user.isAdmin() || user.getUserId().equals(p.getSeller())) { %>
+							<p/><a href="javascript:void()" onclick="onDeleteClick('<%= p.getProductId()%>')">Delete</a>
+						<% } %>
+					</td>
 					<td width="110"><% if (p.hasPicture()) { %><img alt="picture" width="100px" src="<%= p.getPictureUrl()%>"/> <% } %></td>
 					<td><%= HTMLEncode.encode(p.getProductName())%></td>
 					<td><%= HTMLEncode.encode(p.getCategory())%></td>
@@ -161,6 +171,11 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 	<form id="addToCartForm" action="/secured/addToCart" method="POST">
 		<input type="hidden" id="productId" name="productId" />
+	</form>
+
+	<form id="deleteForm" action="/secured/deleteProduct" method="POST">
+		<input type="hidden" id="deleteProductId" name="productId" />
+		<input type="hidden" id="csrfToken" name="csrfToken" value="<%= user.getCSRFToken()%>" />
 	</form>
 
 </div>

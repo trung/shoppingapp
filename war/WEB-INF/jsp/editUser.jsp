@@ -61,7 +61,7 @@
 
 <%
 	User user = (User) request.getAttribute(MiscConstants.KEY_USER);
-	
+
 	//Decrypt credit card
 	/* String encryptedCreditCardNo = user.getCardNo();
 	if(!MiscUtils.isNullorBlank(encryptedCreditCardNo)){
@@ -160,6 +160,7 @@
 		</table>
 		<input type="hidden" id="action" name="action" value="EditUser"/>
 		<input type="button" id="editButton" name="createButton" value="SaveDetails" class="button" onclick="validate_and_submit()"/>
+		<a href="/secured/home">Cancel</a>
 		</form>
 	</div>
 </body>

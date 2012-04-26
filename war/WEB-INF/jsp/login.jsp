@@ -37,7 +37,7 @@
 		    		<tr>
 		    			<td colspan="2">
 		    				<a href="createUser.jsp" style="float:left; padding-top: 10px">Create new account</a>
-		    				<input type="submit" id="login" name="login" style="float:right" class="button" />
+		    				<input type="submit" id="login" name="login" style="float:right" class="button" value="Login" />
 		    			</td>
 		    		</tr>
 		    	</tbody>

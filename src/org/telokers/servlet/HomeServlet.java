@@ -51,9 +51,30 @@ public class HomeServlet extends HttpServlet {
 			saveProduct(req, resp);
 		} else if ("delete".equalsIgnoreCase(action)){
 			deleteProduct(req, resp);
+		} else if ("edit".equalsIgnoreCase(action)){
+			editProduct(req, resp);
 		} else {
 			render(req, resp);
 		}
+	}
+
+	/**
+	 * @param req
+	 * @param resp
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void editProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String productId = req.getParameter("productId");
+		Product product = ProductDao.findById(productId);
+		if (product == null) {
+			req.setAttribute(MiscConstants.ERROR_MESSAGE, "Product [" + productId + "] is not found");
+			render(req, resp);
+			return;
+		}
+		req.setAttribute(MiscConstants.IS_EDIT, true);
+		req.setAttribute(MiscConstants.KEY_MY_EDIT_PRODUCT, product);
+		getServletContext().getRequestDispatcher("/WEB-INF/jsp/home.jsp").forward(req, resp);
 	}
 
 	/**

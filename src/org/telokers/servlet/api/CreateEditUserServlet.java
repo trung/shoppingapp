@@ -39,38 +39,38 @@ public class CreateEditUserServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		//Re-initialize all error messagespera
 		ErrorMessageHolder errorMessageHolder = new ErrorMessageHolder();
 
 		boolean outerproceed = true;
 		boolean innerproceed = false;
-		
+
 		boolean isEdit = true;
-		
+
 		String operation = MiscUtils.blankifyString(req.getParameter("action"));
-		
-		
-		
+
+
+
 		//If "create"
 		if( operation != null && operation.equals("CreateUser") ){
 			isEdit = false;
 		}
-		
+
 		String userId = "";
-		
+
 		if(!isEdit){
 			userId = MiscUtils.blankifyString(req.getParameter(MiscConstants.USER_ID));
 		}
-				
+
 		if (!isEdit && UserDao.findbyUserId(userId) != null){
 			req.setAttribute(MiscConstants.ERROR_MESSAGE, "User has already existed");
 			RequestDispatcher rp = getServletContext().getRequestDispatcher("/createUser.jsp");
 			rp.forward(req, resp);
 		}
-		
-		
-		
+
+
+
 		String name = req.getParameter(MiscConstants.USER_NAME);
 		String email = req.getParameter(MiscConstants.EMAIL);
 		String password = req.getParameter(MiscConstants.PASSWORD);
@@ -85,8 +85,8 @@ public class CreateEditUserServlet extends HttpServlet{
 			errorMessageHolder.userIdErrorMsg = "Empty user Id";
 			outerproceed = false;
 		}
-		
-		User user = null;
+
+		User user = new User("1234");
 		if(isEdit){
 			user = (User) req.getAttribute(MiscConstants.KEY_USER);
 		}
@@ -95,19 +95,18 @@ public class CreateEditUserServlet extends HttpServlet{
 				user = new User(userId);
 			}
 		}
-		
 		user.setEmail(email);
 		user.setName(name);
 		user.setCardHolderName(cardHolderName);
 		user.setCardType(cardType);
 		user.setCardNo(cardNo);
 		user.setCardExpDate(simpleExpDate);
-		
+
 		if(isEdit){
 			user.setStatus(MiscConstants.STATUS_APPROVED);
 		}
-		
-		
+
+
 		if(isEdit){
 			if (!MiscUtils.isNullorBlank(password)){
 				user.setPassword(SecurityUtils.hashPassword(password));
@@ -125,10 +124,10 @@ public class CreateEditUserServlet extends HttpServlet{
 					case 2: errorMessageHolder.passwordErrorMsg = "Password length < 8"; outerproceed = false; break;
 					case 3: errorMessageHolder.passwordErrorMsg = "Password must be alphanumeric"; outerproceed = false; break;
 				}
+				user.setPassword(SecurityUtils.hashPassword(password));
 			}
-			user.setPassword(SecurityUtils.hashPassword(password));
 		}
-		
+
 
 		innerproceed = validateUser(user, errorMessageHolder);
 
@@ -136,7 +135,7 @@ public class CreateEditUserServlet extends HttpServlet{
 			//Pre approve user in edit mode
 			UserDao.persistUser(user);
 			logger.log(Level.FINE, "User created succesfully");
-			
+
 			//RequestDispatcher rp = null;
 			if(isEdit){
 				resp.sendRedirect("/secured/home?" + MiscConstants.INFO_MESSAGE +"=user profile edited successfully");
@@ -144,7 +143,7 @@ public class CreateEditUserServlet extends HttpServlet{
 			}
 			else {
 				resp.sendRedirect("/login?" + MiscConstants.INFO_MESSAGE +"=User profile created successfully. Please wait until admin has approved your account");
-				
+
 				/*req.setAttribute(MiscConstants.ERROR_MESSAGE, "User created successfully. Please login");
 				rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
 				rp.forward(req, resp);*/
@@ -176,7 +175,7 @@ public class CreateEditUserServlet extends HttpServlet{
 	private boolean validateUser (User user, ErrorMessageHolder errorMsgHolder) {
 		boolean proceed = true;
 
-		if (Validator.isEmpty(user.getUserId())){
+		if (Validator.isEmpty(user.getUserId()) || "1234".equalsIgnoreCase(user.getUserId())){
 			errorMsgHolder.userIdErrorMsg = "Empty User ID";
 			proceed = false;
 		}
@@ -218,7 +217,7 @@ public class CreateEditUserServlet extends HttpServlet{
 			errorMsgHolder.typeOfCardErrorMsg = "Invalid card type";
 			proceed = false;
 		}
-		
+
 		if(!Validator.isCCExpirationDate(user.getCardExpDate())){
 			errorMsgHolder.expiryDateErrorMsg = "Invalid expiry date";
 			proceed = false;

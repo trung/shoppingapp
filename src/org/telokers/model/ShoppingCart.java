@@ -89,4 +89,13 @@ public class ShoppingCart extends AbstractModel {
 		return ShoppingCart.class.getSimpleName();
 	}
 
+	/**
+	 * @param productId
+	 */
+	public void removeProduct(String productId) {
+		List<String> list = getProductIds();
+		list.remove(productId);
+		setProperty(ShoppingCartProperty.products, list);
+	}
+
 }

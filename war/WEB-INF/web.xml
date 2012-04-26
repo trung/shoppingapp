@@ -60,6 +60,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>addToCartServlet</servlet-name>
 		<servlet-class>org.telokers.servlet.AddToCartServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>deleteFromCartServlet</servlet-name>
+		<servlet-class>org.telokers.servlet.DeleteFromCartServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>cartServlet</servlet-name>
+		<servlet-class>org.telokers.servlet.CartServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>searchServlet</servlet-name>
 		<url-pattern>/secured/search</url-pattern>
@@ -67,6 +75,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>addToCartServlet</servlet-name>
 		<url-pattern>/secured/addToCart</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>deleteFromCartServlet</servlet-name>
+		<url-pattern>/secured/deleteFromCart</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>cartServlet</servlet-name>
+		<url-pattern>/secured/cart</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>importStandingDataApi</servlet-name>

@@ -92,6 +92,14 @@ public class Product extends AbstractModel {
 		return keyString != null && keyString.length() > 0;
 	}
 
+	public double getPrice() {
+		Double price = (Double) getProperty(ProductProperty.price);
+		if (price == null) {
+			return 0f;
+		}
+		return price.doubleValue();
+	}
+
 	public String getPriceString() {
 		Double price = (Double) getProperty(ProductProperty.price);
 		if (price == null) {

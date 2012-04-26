@@ -79,4 +79,32 @@ public class ProductDao {
 		DatastoreServiceFactory.getDatastoreService().delete(p.getEntity().getKey());
 	}
 
+	/**
+	 * @return
+	 */
+	public static List<Product> findAll() {
+		List<Product> list = new ArrayList<Product>();
+		try {
+			Query query = new Query(Product.class.getSimpleName());
+			List<Entity> listE = DatastoreServiceFactory.getDatastoreService().prepare(query).asList(FetchOptions.Builder.withDefaults());
+			if (listE != null && listE.size() > 0) {
+				for (Entity e : listE) {
+					list.add(new Product(e));
+				}
+			}
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Failed to get list of products", e);
+		}
+		return list;
+	}
+
+	/**
+	 * @param q
+	 * @return
+	 */
+	public static List<Product> findByKeyword(String q) {
+
+		return null;
+	}
+
 }

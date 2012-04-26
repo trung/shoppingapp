@@ -154,4 +154,8 @@ public class Product extends AbstractModel {
 		Date d = getPostedDate();
 		return MiscUtils.formatDateTime(d);
 	}
+
+	public String getRating() {
+		return "";
+	}
 }

@@ -70,7 +70,7 @@
 <body onload="startUp()">
 	<div id="createUserDiv">
 		<h1>Create new account</h1>
-		<div id="infoMsg">All fields are compulsory</div>
+		<div id="infoMsg" class="infoMsg">All fields are compulsory</div>
 		<div class="<%= (errorMsg.length() > 0 ? "errorMsg" : "") %>"><%= errorMsg%></div>
 		<form id="submitForm" action="/createUser" method="POST">
 		<h3>Profile</h3>

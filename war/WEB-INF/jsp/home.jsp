@@ -60,6 +60,11 @@
 		}
 	}
 
+	function onSearchClick() {
+		$("q").value=$("search").value;
+		$("searchForm").submit();
+	}
+
 	function startUp() {
 	}
 </script>
@@ -112,6 +117,14 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="cancel" name="cancel" value="Cancel" class="button" onclick="onCancelClick()" />
 
 	<% } else { %>
+	<h3>Search product</h3>
+	<a href="/secured/search">Browse all</a><p/>
+	<table border="0" style="margin: 0; padding: 0; border-collapse: collapse;">
+						<tr><td>Search</td>
+							<td><input type="text" id="search" name="search" class="value"/></td>
+							<td><input type="button" id="searchBtn" name="searchBtn" value="Go" onclick="onSearchClick()"/></td>
+						</tr>
+					</table>
 	<h3>My product listing</h3>
 	<input type="button" id="create" name="create" value="Create product listing" onclick="onCreateClick()" />
 	<table id="myProductsTable" border="0" class="container">
@@ -147,6 +160,9 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		</tbody>
 	</table>
 	<% } %>
+	</form>
+	<form id="searchForm" action="/secured/search" method="POST">
+		<input type="hidden" id="q" name="q" />
 	</form>
 </div>
 </body>

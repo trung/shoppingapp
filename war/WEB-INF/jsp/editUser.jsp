@@ -94,7 +94,7 @@
 			<tbody>
 				<tr>
 					<td class="label">User Id</td>
-					<td><input type="text" id="userId" name="userId" class="value" value="<%=HTMLEncode.encode(user.getUserId())%>" /></td>
+					<td><input type="text" id="userId" name="userId" class="value" value="<%=HTMLEncode.encode(user.getUserId())%>" readonly="readonly"/></td>
 					<td><div id="userIdErrorMsg" class="<%= (userIdErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= userIdErrorMsg%></div></td>
 				</tr>
 				<tr>

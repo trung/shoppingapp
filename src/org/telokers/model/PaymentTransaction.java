@@ -6,6 +6,8 @@ package org.telokers.model;
 import java.util.Date;
 import java.util.List;
 
+import org.telokers.service.utils.MiscUtils;
+
 import com.google.appengine.api.datastore.Entity;
 
 /**
@@ -20,7 +22,8 @@ public class PaymentTransaction extends AbstractModel {
 		productIds,
 		refId,
 		timestamp,
-		status
+		status,
+		amount
 	}
 
 	public PaymentTransaction(String key) {
@@ -80,5 +83,25 @@ public class PaymentTransaction extends AbstractModel {
 		return entity;
 	}
 
+
+	public String getRefId() {
+		return (String) getProperty(PaymentTransactionProperty.refId);
+	}
+
+	public String getStatus() {
+		return (String) getProperty(PaymentTransactionProperty.status);
+	}
+
+	public String getTimestampString() {
+		return MiscUtils.formatDateTime((Date) getProperty(PaymentTransactionProperty.timestamp));
+	}
+
+	public void setAmount(double d) {
+		setProperty(PaymentTransactionProperty.amount, d);
+	}
+
+	public String getAmountString() {
+		return MiscUtils.formatPrice((Double) getProperty(PaymentTransactionProperty.amount));
+	}
 
 }

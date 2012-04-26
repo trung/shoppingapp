@@ -108,6 +108,7 @@ public class MakePaymentServlet extends HttpServlet {
 		pt.setProductIds(cart.getProductIds());
 		pt.setUserId(u.getUserId());
 		pt.setTimestamp(transactionDate);
+		pt.setAmount(totalPrice);
 
 		switch (result) {
 		case 0:

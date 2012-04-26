@@ -105,7 +105,7 @@ public class Product extends AbstractModel {
 		if (price == null) {
 			return "";
 		}
-		return String.valueOf(new DecimalFormat("#,###00.##").format(price));
+		return String.valueOf(new DecimalFormat("####00.##").format(price));
 	}
 
 	public String getComment() {

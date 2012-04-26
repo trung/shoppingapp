@@ -43,6 +43,10 @@ public class AddToCartServlet extends HttpServlet {
 		}
 		ShoppingCart cart = (ShoppingCart) req.getAttribute(MiscConstants.KEY_CART);
 		User u = (User) req.getAttribute(MiscConstants.KEY_USER);
+		if (p.getSeller().equals(u.getUserId())) {
+			resp.sendRedirect("/secured/search?errorMsg=You can't purchase your own item");
+			return;
+		}
 		if (cart != null) {
 			if (cart.getProductIds().contains(productId)) {
 				resp.sendRedirect("/secured/search?errorMsg=Product already added");

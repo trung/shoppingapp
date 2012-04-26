@@ -50,7 +50,7 @@ public class MiscUtils {
 	}
 
 	public static String formatPrice(double d) {
-		return String.valueOf(new DecimalFormat("#,###00.##").format(d));
+		return String.valueOf(new DecimalFormat("####00.##").format(d));
 	}
 }
 

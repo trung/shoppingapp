@@ -1,3 +1,4 @@
+<%@page import="org.telokers.model.PaymentTransaction"%>
 <%@page import="org.telokers.model.ShoppingCart"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
@@ -24,6 +25,7 @@
 	boolean isEdit = isEditO == null ? false : isEditO.booleanValue();
 	String productId = product == null ? "" : product.getProductId();
 	List<Product> myProducts = (List<Product>) request.getAttribute(MiscConstants.KEY_MY_PRODUCTS);
+	List<PaymentTransaction> myTransactions = (List<PaymentTransaction>) request.getAttribute(MiscConstants.KEY_MY_TRANSACTIONS);
 	if (myProducts == null) {
 		myProducts = new ArrayList<Product>();
 	}
@@ -167,6 +169,32 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			%>
 		</tbody>
 	</table>
+	<h3>My transactions</h3>
+	<table id="myTransactionTable" border="0" class="container">
+		<thead>
+			<tr>
+				<th>Ref Id</th>
+				<th>Status</th>
+				<th>Transaction Date</th>
+				<th>Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%
+				for (PaymentTransaction p : myTransactions) {
+			%>
+				<tr>
+					<td><%= HTMLEncode.encode(p.getRefId())%></td>
+					<td><%= HTMLEncode.encode(p.getStatus())%></td>
+					<td><%= p.getTimestampString()%></td>
+					<td><%= p.getAmountString()%></td>
+				</tr>
+			<%
+				}
+			%>
+		</tbody>
+	</table>
+
 	<% } %>
 	</form>
 	<form id="searchForm" action="/secured/search" method="POST">

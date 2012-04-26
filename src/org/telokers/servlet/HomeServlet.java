@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.telokers.dao.PaymentTransactionDao;
 import org.telokers.dao.ProductDao;
 import org.telokers.dao.UserDao;
 import org.telokers.model.Product;
@@ -92,6 +93,7 @@ public class HomeServlet extends HttpServlet {
 	private void render(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		User u = (User) req.getAttribute(MiscConstants.KEY_USER);
 		req.setAttribute(MiscConstants.KEY_MY_PRODUCTS, ProductDao.findByUserId(u.getUserId()));
+		req.setAttribute(MiscConstants.KEY_MY_TRANSACTIONS, PaymentTransactionDao.findByUserId(u.getUserId()));
 		RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/home.jsp");
 		rp.forward(req, resp);
 	}

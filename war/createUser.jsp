@@ -83,22 +83,22 @@
 				</tr>
 				<tr>
 					<td class="label">Name</td>
-					<td><input type="text" id="name" name="name" class="value"/></td>
+					<td><input type="text" id="name" name="name" class="value" value="<%= HTMLEncode.encode(request.getParameter("name"))%>"/></td>
 					<td><div id="nameErrorMsg" class="<%= (nameErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= nameErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Email</td>
-					<td><input type="text" id="email" name="email" class="value"/></td>
+					<td><input type="text" id="email" name="email" class="value" value="<%= HTMLEncode.encode(request.getParameter("email"))%>"/></td>
 					<td><div id="emailErrorMsg" class="<%= (emailErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= emailErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Password</td>
-					<td><input type="password" id="password" name="password" class="value"/></td>
+					<td><input type="password" id="password" name="password" class="value" value="<%= HTMLEncode.encode(request.getParameter("password"))%>"/></td>
 					<td><div id="passwordErrorMsg" class="<%= (passwordErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= passwordErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Confirm Password</td>
-					<td><input type="password" id="cpassword" name="cpassword" class="value"/></td>
+					<td><input type="password" id="cpassword" name="cpassword" class="value" value="<%= HTMLEncode.encode(request.getParameter("cpassword"))%>"/></td>
 					<td><div id="cpasswordErrorMsg" class="<%= (passwordErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= passwordErrorMsg%></div></td>
 				</tr>
 			</tbody>
@@ -108,7 +108,7 @@
 			<tbody>
 				<tr>
 					<td class="label">Card holder name</td>
-					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value"/></td>
+					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value" value="<%= HTMLEncode.encode(request.getParameter("cardHolderName"))%>"/></td>
 					<td><div id="cardHolderNameErrorMsg" class="<%= (cardHolderNameErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardHolderNameErrorMsg%></div></td>
 				</tr>
 				<tr>
@@ -126,12 +126,12 @@
 				</tr>
 				<tr>
 					<td class="label">Credit Card number</td>
-					<td><input type="text" id="cardNumber" name="cardNumber" class="value"/></td>
+					<td><input type="text" id="cardNumber" name="cardNumber" class="value" value="<%= HTMLEncode.encode(request.getParameter("cardNumber"))%>" /></td>
 					<td><div id="cardNumberErrorMsg" class="<%= (cardNumberErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardNumberErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Expiry Date (mmyyyy)</td>
-					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value" style="width: 45px"/></td>
+					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value" style="width: 45px" value="<%= HTMLEncode.encode(request.getParameter("simpleExpiryDate"))%>"/></td>
 					<td><div id="expiryDateErrorMsg" class="<%= (expiryDateErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= expiryDateErrorMsg%></div></td>
 				</tr>
 			</tbody>

@@ -45,7 +45,8 @@ public class CreateEditUserServlet extends HttpServlet{
 
 		String operation = MiscUtils.blankifyString(req.getParameter("action"));
 		String userId = MiscUtils.blankifyString(req.getParameter(MiscConstants.USER_ID));
-
+		
+		//If "create"
 		if( (operation != null && operation.equals("Create"))
 		    && (UserDao.findbyUserId(userId) != null) ){
 
@@ -85,8 +86,9 @@ public class CreateEditUserServlet extends HttpServlet{
 		proceed = validateUser(user, errorMessageHolder);
 
 		if(proceed){
-
-			if( ! ((operation != null) || operation.equals("Create")) ){
+			
+			//Pre approve user in edit mode
+			if( ((operation != null) && !operation.equals("Create")) ){
 				user.setStatus(MiscConstants.STATUS_APPROVED);
 			}
 
@@ -94,8 +96,16 @@ public class CreateEditUserServlet extends HttpServlet{
 			user.setPassword(SecurityUtils.hashPassword(user.getPassword()));
 			UserDao.persistUser(user);
 			logger.log(Level.FINE, "User created succesfully");
-			req.setAttribute(MiscConstants.ERROR_MESSAGE, "User created successfully. Please login");
-			RequestDispatcher rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
+			
+			RequestDispatcher rp = null;
+			if( ((operation != null) && !operation.equals("Create")) ){
+				req.setAttribute(MiscConstants.ERROR_MESSAGE, "User profile edited successfully");
+				rp = getServletContext().getRequestDispatcher("/secured/home");
+			}
+			else {
+				req.setAttribute(MiscConstants.ERROR_MESSAGE, "User created successfully. Please login");
+				rp = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
+			}
 			rp.forward(req, resp);
 		}
 		else {

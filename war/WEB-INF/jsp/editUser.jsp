@@ -81,17 +81,17 @@
 			<tbody>
 				<tr>
 					<td class="label">User Id</td>
-					<td><input type="text" id="userId" name="userId" class="value" value="<%= user.getUserId()%>" /></td>
+					<td><input type="text" id="userId" name="userId" class="value" value="<%=HTMLEncode.encode(user.getUserId())%>" /></td>
 					<td><div id="userIdErrorMsg" class="<%= (userIdErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= userIdErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Name</td>
-					<td><input type="text" id="name" name="name" class="value" value="<%= user.getName()%>" /></td>
+					<td><input type="text" id="name" name="name" class="value" value="<%=HTMLEncode.encode(user.getName())%>" /></td>
 					<td><div id="nameErrorMsg" class="<%= (nameErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= nameErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Email</td>
-					<td><input type="text" id="email" name="email" class="value" value="<%= user.getEmail()%>" /></td>
+					<td><input type="text" id="email" name="email" class="value" value="<%=HTMLEncode.encode(user.getEmail())%>" /></td>
 					<td><div id="emailErrorMsg" class="<%= (emailErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= emailErrorMsg%></div></td>
 				</tr>
 				<tr>
@@ -111,7 +111,7 @@
 			<tbody>
 				<tr>
 					<td class="label">Card holder name</td>
-					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value" value="<%= user.getCardHolderName()%>" /></td>
+					<td><input type="text" id="cardHolderName" name="cardHolderName" class="value" value="<%= HTMLEncode.encode(user.getCardHolderName())%>" /></td>
 					<td><div id="cardHolderNameErrorMsg" class="<%= (cardHolderNameErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardHolderNameErrorMsg%></div></td>
 				</tr>
 				<tr>
@@ -135,17 +135,18 @@
 				</tr>
 				<tr>
 					<td class="label">Credit Card number</td>
-					<td><input type="text" id="cardNumber" name="cardNumber" class="value" value="<%= user.getCardNo()%>" /></td>
+					<td><input type="text" id="cardNumber" name="cardNumber" class="value" value="<%=HTMLEncode.encode(user.getCardNo())%>" /></td>
 					<td><div id="cardNumberErrorMsg" class="<%= (cardNumberErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= cardNumberErrorMsg%></div></td>
 				</tr>
 				<tr>
 					<td class="label">Simple Expiry Date</td>
-					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value" value="<%= user.getCardExpDate()%>" /></td>
+					<td><input type="text" id="simpleExpiryDate" name="simpleExpiryDate" class="value" value="<%=HTMLEncode.encode(user.getCardExpDate())%>" /></td>
 					<td><div id="expiryDateErrorMsg" class="<%= (expiryDateErrorMsg.length() > 0 ? "errorMsg" : "")%>"><%= expiryDateErrorMsg%></div></td>
 				</tr>
 			</tbody>
 		</table>
-		<input id="Edit" name="Edit" value="Edit" class="button" onclick="validate_and_submit()" />
+		<input type="hidden" id="action" name="action" value="Edit"/>
+		<input type="button" id="editButton" name="createButton" value="Edit" class="button" onclick="validate_and_submit()"/>
 		</form>
 	</div>
 </body>

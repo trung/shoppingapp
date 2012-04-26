@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.telokers.dao.UserDao;
 import org.telokers.model.User;
+import org.telokers.service.utils.MiscConstants;
+import org.telokers.service.utils.SecurityUtils;
 
 /**
  *
@@ -37,60 +39,25 @@ public class ImportStandingData extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		User user = new User("bear");
-		user.setEmail("bear@grizzly.com");
-		user.setPassword("abc123");
-		user.setName("Super Bear");
-
+		// all application initialization comes here
+		User user = new User("admin");
+		user.setEmail("admin@telokers.org");
+		user.setPassword(SecurityUtils.hashPassword(MiscConstants.SHARE_SECRET));
+		user.setName("Super Admin");
+		user.setRole(MiscConstants.ROLE_ADMIN);
+		user.setStatus(MiscConstants.STATUS_APPROVED);
 		UserDao.persistUser(user);
 
+		user = new User("user");
+		user.setEmail("user@telokers.org");
+		user.setPassword(SecurityUtils.hashPassword(MiscConstants.SHARE_SECRET));
+		user.setName("Telokers");
+		user.setRole(MiscConstants.ROLE_USER);
+		user.setStatus(MiscConstants.STATUS_APPROVED);
+		UserDao.persistUser(user);
 
+		resp.sendRedirect("/login");
 
-
-		/*
-		int categoryCount = 10;
-		int itemCount = 100;
-		List<Category> importedCategories = new ArrayList<Category>(categoryCount);
-		List<Item> importedItems = new ArrayList<Item>(itemCount);
-		// import some categories
-		DataStoreManager.instance().removeAll(Category.class);
-		DataStoreManager.instance().removeAll(Item.class);
-		for (int i = 0; i < categoryCount; i++) {
-			Category cat = new Category();
-			cat.setCategoryName("Category " + i);
-			cat.setCategoryDescription("Description " + i);
-			DataStoreManager.instance().save(cat);
-			importedCategories.add(cat);
-		}
-		DataStoreManager.instance().flush();
-		Random rnd = new Random();
-		for (int i = 0; i < itemCount; i++) {
-			Item item = new Item();
-			item.setItemName("Item Name " + i);
-			item.setItemDescription("Description " + i);
-			item.setQuantity(10L);
-			item.setCategoryIds(randomCategorySelection(importedCategories, rnd.nextInt(3)));
-			try {
-				DataStoreManager.instance().beginTransaction();
-				ItemIndex itemIndex = new ItemIndex(item);
-				itemIndex.addTag(item.getItemName());
-				itemIndex.addTag(item.getItemDescription());
-				itemIndex.addTags(ModelUtils.decompose(item.getItemName()));
-				itemIndex.addTags(ModelUtils.decompose(item.getItemDescription()));
-				DataStoreManager.instance().save(itemIndex);
-				DataStoreManager.instance().commitTransaction();
-			} finally {
-				DataStoreManager.instance().rollbackIfAlive();
-			}
-			importedItems.add(item);
-		}
-
-		DataStoreManager.instance().flush();
-		Map<String, Object> response = new HashMap<String, Object>();
-		response.put("categories", importedCategories);
-		response.put("items", importedItems);
-
-		resp.getWriter().write(JSONUtils.toJSON(response));*/
 	}
 
 	/**

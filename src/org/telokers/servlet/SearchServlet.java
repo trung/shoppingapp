@@ -39,10 +39,15 @@ public class SearchServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String q = req.getParameter("q");
 		List<Product> list = new ArrayList<Product>();
-		if (q == null) {
+		if (q == null || q.length() == 0) {
 			list = ProductDao.findAll();
 		} else {
-			list = ProductDao.findByKeyword(q);
+			Product p = ProductDao.findById(q);
+			if (p != null) { // just display the details
+				req.setAttribute(MiscConstants.KEY_MY_EDIT_PRODUCT, p);
+			} else {
+				list = ProductDao.findByKeyword(q);
+			}
 		}
 		if (list == null) {
 			list = new ArrayList<Product>();

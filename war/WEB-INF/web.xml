@@ -17,8 +17,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<listener-class>org.telokers.servlet.ApplicationInitializationListener</listener-class>
 	</listener>
 	<servlet>
-		<servlet-name>searchServletApi</servlet-name>
-		<servlet-class>org.telokers.servlet.api.SearchServlet</servlet-class>
+		<servlet-name>searchServlet</servlet-name>
+		<servlet-class>org.telokers.servlet.SearchServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>pictureServlet</servlet-name>
@@ -57,8 +57,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-class>org.telokers.servlet.api.EditUserServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>searchServletApi</servlet-name>
-		<url-pattern>/api/search</url-pattern>
+		<servlet-name>searchServlet</servlet-name>
+		<url-pattern>/secured/search</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>importStandingDataApi</servlet-name>

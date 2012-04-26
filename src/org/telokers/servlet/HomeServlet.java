@@ -66,9 +66,15 @@ public class HomeServlet extends HttpServlet {
 	 */
 	private void editProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String productId = req.getParameter("productId");
+		User u = (User) req.getAttribute(MiscConstants.KEY_USER);
 		Product product = ProductDao.findById(productId);
 		if (product == null) {
 			req.setAttribute(MiscConstants.ERROR_MESSAGE, "Product [" + productId + "] is not found");
+			render(req, resp);
+			return;
+		}
+		if (!product.getSeller().equals(u.getUserId())) {
+			req.setAttribute(MiscConstants.ERROR_MESSAGE, "You're not allowed to edit product [" + productId + "]");
 			render(req, resp);
 			return;
 		}

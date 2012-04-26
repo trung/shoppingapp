@@ -1,3 +1,4 @@
+<%@page import="org.telokers.model.Comment"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
 <%@page import="org.telokers.service.utils.HTMLEncode"%>
@@ -58,6 +59,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						</tr>
 					</table>
 	<% if (product != null) { %>
+		<h3>Product details</h3>
 		<table border="0">
 			<tbody>
 				<tr>
@@ -90,6 +92,19 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</tr>
 			</tbody>
 		</table>
+		<h3>Comments</h3>
+		<% for (Comment c : product.getComments()) { %>
+		<table border="0">
+			<tbody>
+				<tr>
+					<td><%= c.getUserId()%></td>
+					<td><%= c.getCreatedDateString()%></td>
+					<td><%= c.getRating()%></td>
+					<td><%= c.getComment()%></td>
+				</tr>
+			</tbody>
+		</table>
+		<% } %>
 	<% } else if (products == null || products.size() == 0)  {%>
 	<div class="infoMsg">No products found</div>
 	<% } else { %>
@@ -111,7 +126,7 @@ Welcome, <%= user.getName() %>!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				for (Product p : products) {
 			%>
 				<tr>
-					<td width="100"><a href="javascript:void()" onclick="onDetailsClick'<%= p.getProductId()%>')">Details</a></td>
+					<td width="50"><a href="javascript:void()" onclick="onDetailsClick'<%= p.getProductId()%>')">Details</a></td>
 					<td width="110"><% if (p.hasPicture()) { %><img alt="picture" width="100px" src="<%= p.getPictureUrl()%>"/> <% } %></td>
 					<td><%= HTMLEncode.encode(p.getProductName())%></td>
 					<td><%= HTMLEncode.encode(p.getCategory())%></td>

@@ -4,7 +4,9 @@
 package org.telokers.model;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.telokers.service.utils.MiscUtils;
 
@@ -157,5 +159,9 @@ public class Product extends AbstractModel {
 
 	public String getRating() {
 		return "";
+	}
+
+	public List<Comment> getComments() {
+		return new ArrayList<Comment>();
 	}
 }

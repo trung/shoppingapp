@@ -4,19 +4,25 @@
 package org.telokers.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.telokers.model.Product;
 import org.telokers.model.Product.ProductProperty;
+import org.telokers.model.ProductKeywords;
+import org.telokers.model.ProductKeywords.ProductKeywordsProperty;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Transaction;
 
 /**
  * @author trung
@@ -65,11 +71,39 @@ public class ProductDao {
 		}
 	}
 
+	public static Product findByKey(Key key) {
+		try {
+			DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+			Entity e = ds.get(key);
+			return new Product(e);
+		} catch (Exception e) {
+			logger.log(Level.FINE, "[" + key + "] not found due to " + e.getMessage(), e);
+			return null;
+		}
+	}
+
 	/**
 	 * @param p
 	 */
 	public static void persist(Product p) {
-		DatastoreServiceFactory.getDatastoreService().put(p.getEntity());
+		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+		Transaction tx = ds.beginTransaction();
+		try {
+			Key k = ds.put(p.getEntity());
+			ProductKeywords keywords = new ProductKeywords(k, UUID.randomUUID().toString());
+			keywords.setKeywords(Arrays.asList(
+					p.getProductName().toLowerCase(),
+					p.getCategory().toLowerCase(),
+					p.getPriceString(),
+					p.getSeller().toLowerCase(),
+					p.getPostedDateString()
+					));
+			ds.put(keywords.getEntity());
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+		}
+
 	}
 
 	/**
@@ -103,8 +137,28 @@ public class ProductDao {
 	 * @return
 	 */
 	public static List<Product> findByKeyword(String q) {
-
-		return null;
+		Query query = new Query(ProductKeywords.getKind());
+		String[] qa = q.split(" ");
+		List<String> queries = new ArrayList<String>();
+		for (String qq : qa) {
+			if (qq.length() > 0) {
+				queries.add(qq.toLowerCase());
+			}
+			if (queries.size() > 30) {
+				break;
+			}
+		}
+		query.addFilter(ProductKeywordsProperty.keywords.toString(), FilterOperator.IN, queries);
+		query.setKeysOnly();
+		List<Entity> keys = DatastoreServiceFactory.getDatastoreService().prepare(query).asList(FetchOptions.Builder.withDefaults());
+		if (keys == null || keys.size()  == 0) {
+			return null;
+		}
+		List<Product> list = new ArrayList<Product>();
+		for (Entity e : keys) {
+			list.add(findByKey(e.getParent()));
+		}
+		return list;
 	}
 
 }

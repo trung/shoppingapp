@@ -116,7 +116,7 @@ public class MakePaymentServlet extends HttpServlet {
 			pt.setRefId(refId);
 			break;
 		case 1:
-			pt.setStatus("Failed");
+			pt.setStatus("Payment failed");
 			break;
 		case 2:
 			pt.setStatus(info);
@@ -129,9 +129,14 @@ public class MakePaymentServlet extends HttpServlet {
 		cart = new ShoppingCart(u.getUserId());
 		ShoppingCartDao.persist(cart);
 
+		String msg;
 		PaymentTransactionDao.persis(pt);
-
-		resp.sendRedirect("/secured/cart?infoMsg=Payment made successfully");
+		if (result == 0) {
+			msg = "Payment made successfully";
+		} else {
+			msg = pt.getStatus();
+		}
+		resp.sendRedirect("/secured/cart?infoMsg=" + msg);
 	}
 
 

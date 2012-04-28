@@ -1,0 +1,11 @@
+Simple shopping cart application using pure jsp/servlet deployed on Google App Engine.
+
+No third party libraries are used.
+
+Enhanced security features like:
+
+* Single session management
+* Password hashing
+* RSA for credit card
+* CSRF protection
+* Fine-grained authorization control
